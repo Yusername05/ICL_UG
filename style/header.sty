@@ -1,0 +1,243 @@
+\ProvidesPackage{../../style/header}
+
+% PACKAGES
+
+%% Files
+\usepackage{subfiles}
+%% Symbols
+\usepackage{amsmath, amssymb, amsthm, stmaryrd, verbatim} % math symbols
+\usepackage{mathdots}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+%% Digrams
+\usepackage{tikz, tikz-cd, float, tikz-3dplot} % Commutative Diagrams
+\usetikzlibrary{decorations.pathmorphing} % for squiggly arrows in tikzcd
+\usetikzlibrary{calc,math,arrows,backgrounds,fit,patterns,patterns.meta,intersections} % general stuff
+\usepackage{nicematrix}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{cancel}
+
+\usepackage[dvipsnames]{xcolor} % Fancy Colours
+%% Misc
+\usepackage{perpage} %Changing counters
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%% Sets page size and margins
+\usepackage[a4paper,top=1in,bottom=1in,left=1in,right=1in,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{afterpage}
+\usepackage{csquotes}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+% Center figure captions:
+\usepackage{caption}
+\captionsetup[figure]{labelfont={bf},name={Figure},labelsep=quad}
+\captionsetup[table]{labelfont={bf},name={Table},labelsep=quad}
+
+% bullshit
+\usepackage{bm}
+\usepackage[normalem]{ulem}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\renewcommand*{\ttdefault}{lmtt}
+\newcommand{\citationneeded}{\textcolor{red}{[citation-needed]}}
+
+%\setlength\parindent{0pt}
+
+% Bibliography
+\usepackage[numbers, comma, square, sort&compress]{natbib}
+\bibliographystyle{abbrvunsrtnat.bst}
+
+%Math fonts
+%%Mathbb{
+  \newcommand{\bA}{\mathbb{A}}
+  \newcommand{\bB}{\mathbb{B}}
+  \newcommand{\bC}{\mathbb{C}}
+  \newcommand{\bD}{\mathbb{D}}
+  \newcommand{\bE}{\mathbb{E}}
+  \newcommand{\bF}{\mathbb{F}}
+  \newcommand{\bG}{\mathbb{G}}
+  \newcommand{\bH}{\mathbb{H}}
+  \newcommand{\bI}{\mathbb{I}}
+  \newcommand{\bJ}{\mathbb{J}}
+  \newcommand{\bK}{\mathbb{K}}
+  \newcommand{\bL}{\mathbb{L}}
+  \newcommand{\bM}{\mathbb{M}}
+  \newcommand{\bN}{\mathbb{N}}
+  \newcommand{\bO}{\mathbb{O}}
+  \newcommand{\bP}{\mathbb{P}}
+  \newcommand{\bQ}{\mathbb{Q}}
+  \newcommand{\bR}{\mathbb{R}}
+  \newcommand{\bS}{\mathbb{S}}
+  \newcommand{\bT}{\mathbb{T}}
+  \newcommand{\bU}{\mathbb{U}}
+  \newcommand{\bV}{\mathbb{V}}
+  \newcommand{\bW}{\mathbb{W}}
+  \newcommand{\bX}{\mathbb{X}}
+  \newcommand{\bY}{\mathbb{Y}}
+  \newcommand{\bZ}{\mathbb{Z}}
+%%}
+%% Mathcal{
+  \newcommand{\cA}{\mathcal{A}}
+  \newcommand{\cB}{\mathcal{B}}
+  \newcommand{\cC}{\mathcal{C}}
+  \newcommand{\cD}{\mathcal{D}}
+  \newcommand{\cE}{\mathcal{E}}
+  \newcommand{\cF}{\mathcal{F}}
+  \newcommand{\cG}{\mathcal{G}}
+  \newcommand{\cH}{\mathcal{H}}
+  \newcommand{\cI}{\mathcal{I}}
+  \newcommand{\cJ}{\mathcal{J}}
+  \newcommand{\cK}{\mathcal{K}}
+  \newcommand{\cL}{\mathcal{L}}
+  \newcommand{\cM}{\mathcal{M}}
+  \newcommand{\cN}{\mathcal{N}}
+  \newcommand{\cO}{\mathcal{O}}
+  \newcommand{\cP}{\mathcal{P}}
+  \newcommand{\cQ}{\mathcal{Q}}
+  \newcommand{\cR}{\mathcal{R}}
+  \newcommand{\cS}{\mathcal{S}}
+  \newcommand{\cT}{\mathcal{T}}
+  \newcommand{\cU}{\mathcal{U}}
+  \newcommand{\cV}{\mathcal{V}}
+  \newcommand{\cW}{\mathcal{W}}
+  \newcommand{\cX}{\mathcal{X}}
+  \newcommand{\cY}{\mathcal{Y}}
+  \newcommand{\cZ}{\mathcal{Z}}
+%%}
+%% Mathfrak{
+  \newcommand{\fA}{\mathfrak{A}}
+  \newcommand{\fB}{\mathfrak{B}}
+  \newcommand{\fC}{\mathfrak{C}}
+  \newcommand{\fD}{\mathfrak{D}}
+  \newcommand{\fE}{\mathfrak{E}}
+  \newcommand{\fF}{\mathfrak{F}}
+  \newcommand{\fG}{\mathfrak{G}}
+  \newcommand{\fH}{\mathfrak{H}}
+  \newcommand{\fI}{\mathfrak{I}}
+  \newcommand{\fJ}{\mathfrak{J}}
+  \newcommand{\fK}{\mathfrak{K}}
+  \newcommand{\fL}{\mathfrak{L}}
+  \newcommand{\fM}{\mathfrak{M}}
+  \newcommand{\fN}{\mathfrak{N}}
+  \newcommand{\fO}{\mathfrak{O}}
+  \newcommand{\fP}{\mathfrak{P}}
+  \newcommand{\fQ}{\mathfrak{Q}}
+  \newcommand{\fR}{\mathfrak{R}}
+  \newcommand{\fS}{\mathfrak{S}}
+  \newcommand{\fT}{\mathfrak{T}}
+  \newcommand{\fU}{\mathfrak{U}}
+  \newcommand{\fV}{\mathfrak{V}}
+  \newcommand{\fW}{\mathfrak{W}}
+  \newcommand{\fX}{\mathfrak{X}}
+  \newcommand{\fY}{\mathfrak{Y}}
+  \newcommand{\fZ}{\mathfrak{Z}}
+%%}
+%% Mathrm{
+  \newcommand{\rA}{\mathrm{A}}
+  \newcommand{\rB}{\mathrm{B}}
+  \newcommand{\rC}{\mathrm{C}}
+  \newcommand{\rD}{\mathrm{D}}
+  \newcommand{\rE}{\mathrm{E}}
+  \newcommand{\rF}{\mathrm{F}}
+  \newcommand{\rG}{\mathrm{G}}
+  \newcommand{\rH}{\mathrm{H}}
+  \newcommand{\rI}{\mathrm{I}}
+  \newcommand{\rJ}{\mathrm{J}}
+  \newcommand{\rK}{\mathrm{K}}
+  \newcommand{\rL}{\mathrm{L}}
+  \newcommand{\rM}{\mathrm{M}}
+  \newcommand{\rN}{\mathrm{N}}
+  \newcommand{\rO}{\mathrm{O}}
+  \newcommand{\rP}{\mathrm{P}}
+  \newcommand{\rQ}{\mathrm{Q}}
+  \newcommand{\rR}{\mathrm{R}}
+  \newcommand{\rS}{\mathrm{S}}
+  \newcommand{\rT}{\mathrm{T}}
+  \newcommand{\rU}{\mathrm{U}}
+  \newcommand{\rV}{\mathrm{V}}
+  \newcommand{\rW}{\mathrm{W}}
+  \newcommand{\rX}{\mathrm{X}}
+  \newcommand{\rY}{\mathrm{Y}}
+  \newcommand{\rZ}{\mathrm{Z}}
+
+  \newcommand{\ra}{\mathrm{a}}
+  \newcommand{\rb}{\mathrm{b}}
+  \newcommand{\rc}{\mathrm{c}}
+  \newcommand{\rd}{\mathrm{d}}
+  \newcommand{\re}{\mathrm{e}}
+  \newcommand{\rf}{\mathrm{f}}
+  \newcommand{\rg}{\mathrm{g}}
+  \newcommand{\rh}{\mathrm{h}}
+  \newcommand{\ri}{\mathrm{i}}
+  \newcommand{\rj}{\mathrm{j}}
+  \newcommand{\rk}{\mathrm{k}}
+  \newcommand{\rl}{\mathrm{l}}
+  \renewcommand{\rm}{\mathrm{m}}
+  \newcommand{\rn}{\mathrm{n}}
+  \newcommand{\ro}{\mathrm{o}}
+  \newcommand{\rp}{\mathrm{p}}
+  \renewcommand{\rq}{\mathrm{q}}
+  \newcommand{\rr}{\mathrm{r}}
+  \newcommand{\rs}{\mathrm{s}}
+  \newcommand{\rt}{\mathrm{t}}
+  \newcommand{\ru}{\mathrm{u}}
+  \newcommand{\rv}{\mathrm{v}}
+  \newcommand{\rw}{\mathrm{w}}
+  \newcommand{\rx}{\mathrm{x}}
+  \newcommand{\ry}{\mathrm{y}}
+  \newcommand{\rz}{\mathrm{z}}
+%%}
+
+% Brackets
+
+\newcommand{\pr}[1]{\left( #1 \right)} %parenthesis
+\newcommand{\br}[1]{\left[ #1 \right]} %brackets
+\newcommand{\abr}[1]{\left\langle #1 \right\rangle} % Angle brackets
+\newcommand{\aabr}[1]{\left|\left\langle #1 \right\rangle\right|} %angle then abs
+\newcommand{\fbr}[1]{\left\lfloor #1 \right\rfloor} % Floor brackets
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+% Operators
+\newcommand\newoperator[1]{\ifcsdef{#1}{\cslet{#1}{\relax}}{}\csdef{#1}{\operatorname{#1}}}
+
+% Theorem, Lemma, Corollary and Proofs
+
+\theoremstyle{definition}
+
+\newtheorem{definition}[subsubsection]{Definition}
+\newtheorem*{definition*}{Definition}
+\newtheorem{definition**}{Definition}
+
+\newtheorem{example}[subsubsection]{Example}
+\newtheorem*{example*}{Example}
+\newtheorem{example**}{Example}
+
+\newtheorem*{note*}{Note}
+\newtheorem{note**}{Note}
+
+\newtheorem{remark}[subsubsection]{Remark}
+\newtheorem*{remark*}{Remark}
+\newtheorem{remark**}{Remark}
+
+\newtheorem{corollary}[subsubsection]{Corollary}
+\newtheorem*{corollary*}{Corollary}
+\newtheorem{corollary**}{Corollary}
+
+\newtheorem{lemma}[subsubsection]{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{lemma**}{Lemma}
+
+\newtheorem{proposition}[subsubsection]{Proposition}
+\newtheorem*{proposition*}{Proposition}
+\newtheorem{proposition**}{Proposition}
+
+\newtheorem{theorem}[subsubsection]{Theorem}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{theorem**}{Theorem}
