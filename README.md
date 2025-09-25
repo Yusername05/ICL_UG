@@ -10,7 +10,7 @@ Please take note of section 2.4 https://www.imperial.ac.uk/media/imperial-colleg
 ## contents
 ### Year 3 Autumn
 - [ ] [MATH60029 Functional Analysis](https://github.com/Yusername05/ICL_UG/blob/main/Year%203/Functional%20Analysis/MATH60029.pdf)
-- [ ] [MATH60035 Alg/ebra 3](https://github.com/Yusername05/ICL_UG/blob/main/Year%203/Algebra%203/MATH60035.pdf)
+- [ ] [MATH60035 Algebra 3](https://github.com/Yusername05/ICL_UG/blob/main/Year%203/Algebra%203/MATH60035.pdf)
 - [ ] [MATH60036 Group Theory](https://github.com/Yusername05/ICL_UG/blob/main/Year%203/Group%20Theory/MATH60036.pdf)
 - [ ] [MATH60037 Galois Theory](https://github.com/Yusername05/ICL_UG/blob/main/Year%203/Galois%20Theory/MATH60037.pdf)
 
