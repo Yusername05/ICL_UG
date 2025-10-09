@@ -12,4 +12,97 @@ Scribed by Yu Coughlin}
 
 \tableofcontents
 
+\section{Banach Spaces}
+
+I'll write these notes mostly over $\bR$, everything works similarly over $\bC$ or any complete normed field. So when I say ``vector space'', I mean a real one.
+
+\begin{definition}
+    A \textbf{norm} on a vector space $E$ is a map $\norm{-}:E\rightarrow \bR_{\geq0}$ such that for all $x,y\in E,\lambda \in \bR$: \[
+    \norm{x}=0 \iff x = 0 \qquad \norm{\lambda x}=\abs{\lambda}\norm{x} \qquad \norm{x+y} \leq \norm{x} + \norm{y}
+    \] called \textbf{definiteness}, \textbf{homogenaity}, and the \textbf{triangle innequality} respectively.
+\end{definition}
+
+Common examples are $\norm{-}_1$, $\norm{-}_2$, and $\norm{-}_\infty$ on $\bR^n$.
+
+\begin{definition}
+    For a compact $K\subseteq \bR^n$ the \textbf{uniform norm} on the set of continuous functions $\cC(K,\bR)$ is given by: \[
+    \norm{f}_\infty := \sup_{x\in K}|f(x)| = \max_{x\in K}|f(x)|.
+    \]
+\end{definition}
+
+Letting $K$ be $n$ discrete points recovers $\norm{-}_\infty$ on $\bR^n$, how can we recover the other defintions like this?
+
+\begin{definition}
+    A \textbf{Banach space} is a complete normed vector space.
+\end{definition}
+
+We will show in the finite case that all normed vector spaces are complete. Note that the on the space $\cC([0,1],\bR)$ the norm: \[
+    \norm{f} := \int_0^1f(x)dx
+\] is not complete, many progressive continuous approximations to non-conintuous shapes are an example. The change is normally increasingly localised and extreme, the uniform norm will properly detect this.
+
+\begin{definition}
+    Two norms, $\norm{-},\norm{-}'$ on a vector space $E$ are \textbf{equivalent} if there exists $C_1,C_2\geq 0$ such that for all $x\in E$: \[
+        C_1\norm{x}' \leq \norm{x} \leq C_2\norm{x}'
+    \]
+\end{definition}
+This is obviously an equivalence relation. Equivalent norms induce homeomorphic topologies by $\id$, as:\[
+    B'_{r/C_2}(x)\subseteq B_r(x)\subseteq B'_{r/C_1}(x).
+\]
+
+\begin{proposition}
+    All finite dimensional normed vector spaces are equivalent.\begin{proof}
+        Choose any norm on a $d$ dimensional vector space $E$, and let $\{e_1,\ldots,e_d\}$ be a basis for $E$: \[
+        \norm{x} = \norm{\sum x_ie_i} \leq \sum\norm{x_ie_i} = \sum \abs{x_i}\norm{e_i}\leq \max_{1\leq i\leq d}\norm{e_i}\sum\abs{x_i} = \max_{1\leq i\leq d}\norm{e_i}\norm{x}_1.
+        \] Now, let $K$ be the unit sphere for $\norm{-}_1$. This is closed and bounded so, by the Heine-Borel theorem, compact. The previous step shows $x\mapsto\norm{x}$ is continuous wrt $\norm{-}_1$, so it will attain its infinum on $K$. By definiteness, this minimum, $m$, will be positive. And for all $x\in E$: $\norm{x}=\norm{x}_1 \norm{x/\norm{x}_1}\geq m\norm{x}_1$.
+    \end{proof}
+\end{proposition}
+
+From now onwards, let $\Omega$ be an open subset of $\bR^d$ such that $\overline{\Omega}$ is compact and $\partial\Omega$ is smooth. The particulars of these restrictions isn't important.
+
+\begin{definition}
+    The \textbf{uniform norm} for $f\in \cB(\Omega,\bR)$ is given by $\norm{f}_\infty := \sup_{x\in \Omega}\abs{f(x)}$.
+\end{definition}
+
+Think of $C_b^0(\Omega,\bR)$ as a subspace of $\cB(\Omega,\bR)$.
+
+\begin{proposition}
+    $C_b^0(\Omega,\bR)$ is closed (contains all limit points) w.r.t.~the uniform norm.
+    \begin{proof}
+        Let $(f_n)\rightarrow f$, and fix some $\varepsilon > 0$. By assumption, there exists some $N\geq 0$ such that $\norm{f_N-f}_\infty < \varepsilon$. As $f_N$ is continuous, there will exist some $B_\delta(x)\subseteq \Omega$ such that for all $y\in B_\delta(x)$ we have $|f_N(x)-f_N(y)| < \varepsilon$. So we can write: \begin{align*}
+            \abs{f(x)-f(y)} &= \abs{(f(x)-f_N(x)) - (f(y)-f_N(y)) + (f_N(x)-f_N(y))}\\
+            &\leq \abs{(f(x)-f_N(x))} + \abs{(f(y)-f_N(y))} + \abs{(f_N(x)-f_N(y))} < 3\varepsilon. \qedhere
+        \end{align*}
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}
+    $C_b^0(\Omega,\bR)$ is complete w.r.t.~the uniform norm.
+    \begin{proof}
+        Let $(f_n)$ be Cauchy w.r.t~$\norm{-}_\infty$, for any $x\in \Omega$, $(f_n(x))$ will be a Cauchy sequence in $\bR$ so converges to a limit we will call $f(x)$. It now suffices to show $(f_n)\rightarrow f$ w.r.t.~$\norm{-}_\infty$ and appeal to the previous proposition. Fix $\varepsilon > 0$, by assumption there exists $N$ such that $\forall n,m\geq N$, $\norm{f_n-f_m}_\infty < \varepsilon$. Consider for all $x\in \Omega$: \[
+        \abs{f_n(x)-f(x)} = \lim_{m\rightarrow\infty}\abs{f_n(x)-f_m(x)} \leq \varepsilon.
+        \] As each $\abs{f_n(x)-f(x)}\leq$ is  $\varepsilon$, so will $\norm{f_n-f}_\infty$, the supremum.
+    \end{proof}
+\end{proposition}
+
+\begin{definition}
+    Let $\cC^k(\Omega,\bR)$ be the set of $k$-times bounded continuously differentiably functions, equipped with the norm: \[
+    \norm{f}_{\cC^k} := \sum_{\abs{\alpha}\leq k} \norm{\partial^\alpha f}_\infty \qquad \alpha \in \bN^d
+    \]
+\end{definition}
+
+The simplest example is with $d=k=1$ where $\norm{f}_{\cC^1} = \norm{f}_\infty + \norm{f'}_\infty$.
+
+\begin{proposition}
+    For $\Omega\subset \bR$, $\cC^1(\Omega,\bR)$ with the $\norm{-}_{\cC^1}$ norm is complete.
+    \begin{proof}
+        Let $(f_n)$ be Cauchy w.r.t.~$\norm{-}_{\cC^1}$, then both $(f_n)$ and $(f'_n)$ must be Cauchy w.r.t.~$\norm{-}_\infty$. So, by the previous proposition, there exists continuous, uniform limits $(f_n)\rightarrow f$, $(f'_n)\rightarrow g$. Thus: \[
+        \norm{f_n-f}_{\cC^1} = \norm{f_n-f}_\infty + \norm{f'_n-g}_\infty \rightarrow 0.\]
+        How do we know $f'=g$ or even $f\in\cC^1$? By FTC and the exchange of uniform limits with Riemann integrals, we have: \[
+        f(x)-f(y) = \lim_{n\rightarrow\infty}f_n(x)-f_n(y) = \lim_{n\rightarrow\infty}\int_x^yf_n' = \int_x^yg
+        \] for all $x,y\in\Omega$, and all $n$.
+    \end{proof}
+\end{proposition}
+
+TODO: H\"older.
+
 \end{document}

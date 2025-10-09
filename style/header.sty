@@ -48,7 +48,7 @@
 \renewcommand*{\ttdefault}{lmtt}
 \newcommand{\citationneeded}{\textcolor{red}{[citation-needed]}}
 
-%\setlength\parindent{0pt}
+\setlength\parindent{0pt}
 
 % Bibliography
 \usepackage[numbers, comma, square, sort&compress]{natbib}
@@ -197,6 +197,7 @@
 
 % Brackets
 
+\newcommand{\abs}[1]{\left| #1 \right|}
 \newcommand{\pr}[1]{\left( #1 \right)} %parenthesis
 \newcommand{\br}[1]{\left[ #1 \right]} %brackets
 \newcommand{\abr}[1]{\left\langle #1 \right\rangle} % Angle brackets
@@ -206,6 +207,10 @@
 
 % Operators
 \newcommand\newoperator[1]{\ifcsdef{#1}{\cslet{#1}{\relax}}{}\csdef{#1}{\operatorname{#1}}}
+%Misc
+\newoperator{id}
+%Galois theory
+\newoperator{Gal}
 
 % Theorem, Lemma, Corollary and Proofs
 

@@ -4,12 +4,67 @@
 \begin{document}
 
 \title{Galois Theory}
-\author{Lectured by Alession Corti \\
+\author{Lectured by Alessio Corti \\
 Scribed by Yu Coughlin}
 \date{Autumn 2025}
 
 \maketitle
 
 \tableofcontents
+
+\section{Galois correspondence}
+
+Fix a field $\bQ\subset K \subset \bC$. For some $\alpha\in \bC$ we will use the notation: \[
+K(\alpha) := \left\{
+    \frac{P(\alpha)}{Q(\alpha)} \in \bC \ \middle| \ P,Q\in K[X], \ Q(\alpha)\neq 0
+\right\}.
+\]
+$K(\alpha_1,\ldots,\alpha_n)$ is defined recursively.
+
+\begin{definition}
+    Such an $\alpha\in \bC$ is \textbf{algebraic over} $K$ is there is some nonzero polynomial $P\in K[x]$ such that $P(\alpha) = 0$.
+\end{definition}
+
+Consider $\bQ(\sqrt{2})$, this has a simpler description than as the full quotient: \[
+\bQ(\sqrt{2}) + \{a + b\sqrt{2} \mid a,b\in\bQ\}.
+\]
+
+If we choose something transcendental (non-algebraic) like $\bQ(\pi)$, then we must use the full quotient definition, and in this case we have $\bQ(\pi)\cong Q(X)$ the field of fractions of $\bQ[X]$.
+
+\begin{definition}
+    For some $f\in K[x]$ with distinct complex roots $a_1,\ldots,a_n\in\bC$, the \textbf{splitting field} of $f$ is $L=K(\alpha_1,\ldots,\alpha_n)$.
+\end{definition}
+
+Let $K=\bQ$ and $f=x^3-2$. The roots of $f$ in $\bC$ are $\sqrt[3]{2}$, $\omega \sqrt[3]{2}$, and $\omega^2\sqrt[3]{2}$, where $\omega$ is $(1-i\sqrt{3})/2$. So the splitting field is $L=\bQ(\sqrt[3]{2},\omega\sqrt[3]{2},\omega^2\sqrt[3]{2})$ which can be simplified to just $\bQ(\sqrt[3]{2},i\sqrt{3})$. What are the intermediate fields between $\bQ$ and $L$? 
+\vspace{-10pt}
+\[
+\begin{tikzcd}[column sep=small]
+& &[-50pt] L = \bQ(\sqrt[3]{2},i\sqrt{3})\\
+\bQ(\sqrt[2]{3}) \arrow[urr] 
+& \bQ(\omega\sqrt[2]{3}) \arrow[ur] 
+& &[-50pt] \bQ(\omega^2\sqrt[2]{3}) \arrow[ul]\\[-20pt]
+& & & & \bQ(i\sqrt{3})\arrow[uull, end anchor={[xshift=-4ex]south east}]\\
+& & \bQ \arrow[uull] \arrow[uul] \arrow[uur] \arrow[urr]
+\end{tikzcd}
+\] Lots of fields you might guess, like $\bQ(i\sqrt{3}\sqrt[2]{3})$ and $\bQ(\sqrt[2]{3} + i\sqrt{3})$ happen to already be in this diagram. But we cannot yet prove this is everything. The length of the arrows is a clue, they relate to the dimension as $\bQ$-vector spaces and subgroups in the Galois correspondence.
+
+\begin{theorem}[Fundamental theorem of Galois theory]
+    The \textbf{Galois group} of a field extension $K\subset L$ is \[
+        G = \Gal(L/K) = \left\{\varphi:L \xrightarrow{\sim} L \ \middle| \ \varphi\vert_K = \id_K\right\}
+    \] and the eponymous Galois correspondence:\[
+    \begin{tikzcd}[row sep = tiny]
+        \phantom{..................}\{K\subset F \subset L\} \arrow[r, leftrightarrow, "\sim"] & 
+        \{H\leq G\}\phantom{.....................................}\\
+        \phantom{.....................................}F \arrow[r, maps to] & 
+        F^\dagger := \{g\in G \mid g\vert_F = \id_F\} = G_F\\
+        H^* := \{\alpha \in L \mid H\alpha = \alpha\} & 
+        H \arrow[l, maps to] \phantom{.................................................}
+    \end{tikzcd}.
+    \]
+\end{theorem}
+
+If one knows the Galois group is a supgroup of the permutation of all the roots, then for the case $L=\bQ(\sqrt[3]{2},i\sqrt{3})$, there is seemingly no way to distinguish the roots, so we expect $G=S_3$, which is luckily true.
+
+Fields are complicated and hard, there are two operations that ``cavort'' via a weird distributivity law, and proving the classification of subfields of $\bQ(\sqrt[3]{2},i\sqrt{3})$ already feels pretty impossible. Galois theory allows us to move information from the easy theory of finite groups into the world of field extensions.
 
 \end{document}
