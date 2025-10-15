@@ -12,7 +12,7 @@ Scribed by Yu Coughlin}
 
 \tableofcontents
 
-\section{Galois correspondence}
+\section{Motivation}
 
 Fix a field $\bQ\subset K \subset \bC$. For some $\alpha\in \bC$ we will use the notation: \[
 K(\alpha) := \left\{
@@ -66,5 +66,63 @@ Let $K=\bQ$ and $f=x^3-2$. The roots of $f$ in $\bC$ are $\sqrt[3]{2}$, $\omega 
 If one knows the Galois group is a supgroup of the permutation of all the roots, then for the case $L=\bQ(\sqrt[3]{2},i\sqrt{3})$, there is seemingly no way to distinguish the roots, so we expect $G=S_3$, which is luckily true.
 
 Fields are complicated and hard, there are two operations that ``cavort'' via a weird distributivity law, and proving the classification of subfields of $\bQ(\sqrt[3]{2},i\sqrt{3})$ already feels pretty impossible. Galois theory allows us to move information from the easy theory of finite groups into the world of field extensions.
+
+\begin{proposition}
+    $G$ is a subgroup of $\fS_n$, where $n$ is the degree of $f$.
+    \begin{proof}
+        We want to exhibit any $\sigma\in G$ as a permutation of the roots of $f$.
+        Any such $\sigma$ is already an automorphism, so we just need to check it sends roots to roots. If $f(\lambda)=0$, for some $\lambda \in L$, then we can rearrange $f(\sigma(\lambda)) = \sigma(f(\lambda)) = 0$.
+
+        So we get a homomorphism $\rho : G \rightarrow \fS_n$. Any automorphism in the kernel must fix every root, and so all of $L$, thus is the identity. Therefore, $\rho$ is injective and we get $G\leq \fS_n$.
+    \end{proof}
+\end{proposition}
+
+I claim this will be enough Galois theory to prove that the above diagram for $x^3-2$ is everything! Because in this case, $G$ is all of $\fS_3$. To prove this I just have to construct enough elements.
+
+In general, constructing elements of Galois groups is very hard. We've already accepted general fields are very baroque, general automorphisms between them will surely be even less manageable. There are some easy cases.
+
+\begin{proposition}
+    For some $a$ not a perfect square in $K$, the Galois group of the field extension $K\subset K(\sqrt{a})$ will be $C_2$.
+    \begin{proof}
+        The automomophism $a+b\sqrt{a}\mapsto a-b\sqrt{a}$ is certainly nontrivial, this is all of $\fS_2$.
+    \end{proof}
+\end{proposition}
+
+Now consider the quadratic extension in the diagram above: $K=\bQ(\sqrt[3]{2})\subset L = K(i\sqrt{3})$, the generator of $\Gal(L/K)$ is $\tau$ such that $\tau(i\sqrt{3}) = -i\sqrt{3}$, this is certainly part of all of $G$ as if it fixes $\bQ(\sqrt[3]{2})$ it definitely fixes $\bQ$. If we now explicitly calculate how this permutes the roots of $f$, we see $\tau = (2 \ 3)$.
+
+Let's now do the same with $\bQ(\omega\sqrt[3]{2})$, we'll see the generator of this Galois group is $(1 \ 3)$. I don't actually need to compute how this $\tau$ acts on the roots, certainly it fixes $\omega\sqrt[3]{2}$, and certainly it is non-trivial, so it can only be $(1 \ 3)$.
+
+These two roots generate all of $\fS_3$, so we have naively computed the galois group of $\bQ(\sqrt[3]{2},i\sqrt{3})$. BUT, we still haven't show that there are no other fields missing from our diagram, we must still simply believe in the full Galois correspondence to continue.
+
+\section{Actual Stuff}
+
+All field homomorphisms are injective\footnote{If $\phi:K\rightarrow L$ is a  field homomorphism then $\ker(\phi)\unlhd K$ is either $0$, making $\phi$ injective, or $K$, a contradicion as $\phi(1)=0$.}
+so I'll write $\Emb(K,L)$\footnote{$\Emb$ stands for embedding.} for $\Hom(K,L)$ to remind us. Typically there is a fixed field $k$ in the background, and all fields $L$ come with a fixed embedding $i:k\hookrightarrow K$ which we normally supress\footnote{
+    We normally think of $k=\bQ$, in which case there is only ever one embedding of $\bQ$ into any algebraic extension.
+}. If $K,L$ are two such fields, we should only consider embeddings that fix $k$: \[
+    \Emb_k(K,L) := \left\{f:K\rightarrow L \ \middle| \ f\vert_k = \id_k\right\}\footnote{more specifically, $f$ should commute with the two embeddings.}.
+\] In particular, $K$ will be a $k$-vector space. We can gain a lot of information by thinking about these field extensions in term of representations over our Galois groups, we won't talk about that here though.
+
+\begin{definition}
+    A field extension $K\subset L$ is \textbf{finite} if $L$ is finite as a $K$-vector space. The \textbf{degree} $[L:K]$ of the extension is $\dim_KL$.
+\end{definition}
+
+\begin{proposition}[Tower Law]
+    If $K\subset L \subset M$ is a tower of field extensions, then \[[M:K]=[M:L][L:K].\]\begin{proof}
+        TODO: finite case is just counting bases, this will suffice.
+    \end{proof}
+\end{proposition}
+
+\subsection{Minimal polynomials}
+
+\begin{definition}
+    Given $K\subset L$, for all $a\in L$, the \textbf{minimal polynomial} of $a$ in $K$ is the monic generator of the kernel of the ring homomorphism: \[
+        \ev_a : K[X] \rightarrow L \qquad \phi(x) \mapsto \phi(a)
+    \] Somewhere in a previous algebra course, we have proved $K[X]$ is an Euclidean domain, so a PID.
+\end{definition}
+
+The first isomorphism theorem for rings now tells us: \[
+    K[X] / (f) \cong \im(\ev_a) \subset L
+\] so $\im(\ev_a)$ is an integral domain, and thus $f$ is prime so irreducible, and so $(f)$ is maximal and $\im(\ev_a)$ is a field.
 
 \end{document}
