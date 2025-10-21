@@ -12,14 +12,14 @@ Scribed by Yu Coughlin}
 
 \tableofcontents
 
-\section{Banach Spaces}
+\subsection{Banach Spaces}
 
 I'll write these notes mostly over $\bR$, everything works similarly over $\bC$ or any complete normed field. So when I say ``vector space'', I mean a real one.
 
 \begin{definition}
     A \textbf{norm} on a vector space $E$ is a map $\norm{-}:E\rightarrow \bR_{\geq0}$ such that for all $x,y\in E,\lambda \in \bR$: \[
     \norm{x}=0 \iff x = 0 \qquad \norm{\lambda x}=\abs{\lambda}\norm{x} \qquad \norm{x+y} \leq \norm{x} + \norm{y}
-    \] called \textbf{definiteness}, \textbf{homogenaity}, and the \textbf{triangle innequality} respectively.
+    \] called \textbf{definiteness}, \textbf{homogenaity}, and the \textbf{triangle inequality} respectively.
 \end{definition}
 
 Common examples are $\norm{-}_1$, $\norm{-}_2$, and $\norm{-}_\infty$ on $\bR^n$.
@@ -104,5 +104,138 @@ The simplest example is with $d=k=1$ where $\norm{f}_{\cC^1} = \norm{f}_\infty +
 \end{proposition}
 
 TODO: H\"older.
+
+\subsection{Lebesgue spaces of functions}
+
+We will keep the same fixed $\Omega$, and continue to be interested in functions $f:\Omega\rightarrow\bR$; and, unless stated otherwise, by: \[
+\int_\Omega f(x)dx
+\] I mean the integral w.r.t.~the Lebesgue measure. We can generalise to functions from $\Omega$ to some arbitrary measure space, but won't in this course.
+
+\begin{definition}
+    For some real $p\geq 1$, the \textbf{$L^p$-norm} on the set of measurable functions $f:\Omega\rightarrow \bR$ is: \[
+    \norm{f}_{L^p} := \abs{\int_\Omega \abs{f}^pdx}^{\frac{1}{p}}
+    \]
+    and for $p=\infty$: \[
+    \norm{f}_{L^\infty} := \essup_\Omega f = \inf\{M\in\bR, \ \abs{f}\leq M \text{ a.e.}\}
+    \]
+    Unfortunately, if $f=g$ a.e.~but $f\neq g$ our norm fails to be definite. For this we consider $L^p(\Omega,\bR)$ the set of such measurable functions with finite $L^p$ modulo equality a.e.,~making our norm definite.
+\end{definition}
+
+Most of the discussion around $L^p$ spaces has a counterpart in $l^p$ spaces, either by adapting the proof directly, or consider the collection of sequences as a discrete measure space. Such discussions probably won't be included.
+
+To show the $L^p$ norm is in fact a norm, we know just have to show homogenaity, which is obvious, and the triangle inequality, which will involve some work.
+
+\begin{lemma}[Young's inequality]
+    Let $p,q,r\in\bR$ be such that \[
+    \frac{1}{p} + \frac{1}{q} = \frac{1}{r}
+    \] then for all $x,y>0$ we have \[
+        (xy)^r \leq \frac{r}{p}q^p + \frac{r}{q}y^q
+    \]\begin{proof}
+        On problem sheet 2.
+    \end{proof}
+\end{lemma}
+
+\begin{proposition}[H\"older's inequality]
+    Given $p,q,r\in[1,\infty]$ such that \[
+    \frac{1}{p} + \frac{1}{q} = \frac{1}{r}
+    \] if $f,g\in L^p,L^q$ respectively, then $fg\in L^r$ and $\norm{fg}_{L^r}\leq\norm{f}_{L^p}\norm{g}_{L^q}$.\begin{proof}
+        If $p$ or $q=\infty$ this is easy, so assume $p,q<\infty$. By homogenaity we may assume \[\norm{f}_{L^p} = \norm{g}_{L^q} = 1\] and by Young's inequality we see \[
+            \norm{fg}_{L^r}^r = \int\abs{f}^r\abs{g}^rdx \leq \int\frac{r}{p}\abs{f}^p + \frac{r}{q}\abs{g}^qdx = \frac{r}{p}\int\abs{f}^pdx + \frac{r}{q}\int\abs{g}^qdx = \frac{r}{p} + \frac{r}{q} = 1.\qedhere
+        \]
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}[Minkowski's inequality]
+    If $f,g\in L^p$, then $\norm{f + g}_{L^p} \leq \norm{f}_{L^p} + \norm{g}_{L^p}$.\begin{proof}
+        If $p=\infty$ this is easy, so assume $p=\infty$. Pointiwse, we know: \[
+        \abs{f + g}^p \leq \abs{f + g}^{p-1}(\abs{f} + \abs{g})
+        \] now integrate to get: \[
+        \norm{f+g}_{L^p}^p=\int\abs{f + g}^pdx \leq \int\abs{f + g}^{p-1}(\abs{f} + \abs{g})dx = \int\abs{f + g}^{p-1}\abs{f}dx+\int\abs{f + g}^{p-1}\abs{g}dx
+        \] applying H\"older's inequality on $\frac{p-1}{p} + \frac{1}{p} = 1$ gives this\[
+        \leq \abs{\int\abs{f+g}^pdx}^{1-\frac{1}{p}}(\norm{f}_{L^p}+\norm{g}_{L^p}) = \frac{\norm{f+g}_{L^p}^p}{\norm{f+g}_{L^p}}(\norm{f}_{L^p}+\norm{g}_{L^p})\] multiplying out now completes the proof.
+    \end{proof}
+\end{proposition}
+
+\begin{theorem}
+    $L^p(\Omega,\bR)$ is complete w.r.t.~the $L^p$ norm.
+    \begin{proof}
+        Let $(f_n)$ be a Cauchy sequence in $L^p$, as subsequences of Cauchy sequences are also Cauchy sequences, wlog we can have $\norm{f_{n+1}-f_n}_{L^p}< 2^{-n}$. We want to define: \[
+            f(x) = f_0(x) + \sum_{n=0}^\infty(f_{n+1}(x)-f(x))
+        \] but we don't yet know if the sum is well defined, so instead consider \[
+            g(x) = \abs{f_0(x)} + \sum_{n=0}^\infty\abs{f_{n+1}(x)-f(x)}
+        \] which does exist, and call the $N$th trucation $g_N$. By Minkowski's inequality: \[
+            \norm{g_N}_{L^p} \leq \norm{f}_{L^p} + \sum_{n=0}^N\norm{f_{n+1}-f_n}_{L^p} \leq C + \sum_{n=0}^N2^{-n} \leq C + 2.
+        \] $(g_N)$ is a monotone increasing sequence converging to $g$ all $\geq 0$, the same holds for $(g_N^p)$ and $g^p$, so by the monotone convergence theorem: \[
+            \norm{g}_{L^p}^p = \int\lim_{N\rightarrow\infty}\abs{g_N}^pdx = \lim_{N\rightarrow\infty}\norm{g_N}_{L^p}^p\leq(C+2)^p
+        \] so $g$ is finite a.e.~and thus $f$ is defined a.e.
+
+        $f$ is certainly in $L^p$ as $\abs{f}\leq g\in L^p$.
+
+        Now fix an $\varepsilon>0$ and consider \[
+        \abs{f-f_n} = \abs{f-f_0 - \sum_{k=0}^\infty\abs{f_{k+1}-f_k}}\leq \abs{f}+\abs{f_0} + \sum\cdots < \abs{f} + \abs{f_0} + g
+        \]so \[
+        \abs{f-f_n}^p \leq 3^p(\abs{f}^p+\abs{f_0}^0 + \abs{g}^p)
+        \] the RHS is finite and doesn't depend on $n$ so by the domianted convergence theorem $(f-f_n)\rightarrow 0$ a.e.~thus $\norm{f-f_n}_{L^p}\rightarrow 0$.
+    \end{proof}
+\end{theorem}
+
+\begin{proposition}
+    Continuous functions are dense in $L^p$.
+    \begin{proof}[Idea]
+        We can reduce the situation to only deal with characterisitc functions of measurable sets $\mathbbm{1}_A$, by the regularity of the Lebesgue measure we can always find a closed $F$ and open $U$ such that $\mu(U\setminus F) < \varepsilon$ and $F\subset A \subset U$. Now we can observe: \[
+        f(t) = \frac{\dist(t,\Omega\setminus U)}{\dist(t,\Omega\setminus U) + \dist(t,F)}
+        \] has suppose on $U$, and is $1$ on $F$, and thus $\norm{f-\mathbbm{1}_A}_{L^p}<\varepsilon$.
+    \end{proof}
+    TODO: i have no idea what the fuck this is saying, i should learn what it means.
+\end{proposition}
+
+\subsection{Convolutions and mollifiers}
+
+\begin{definition}
+    If $f\in L^1(\bR^d)$ and $\phi\in\cC^0_c(\bR^d)$, then $f*\phi:\bR^d\rightarrow \bR$ is given by \[
+    (f*\phi)(x) = \int_{\bR^d}f(x-y)\phi(y)dy
+    \]
+\end{definition}
+
+Some obvious first properties of the convolution are that $\Supp(f*\phi)\subset \Supp(f) + \Supp(\phi)$, and $f*\phi = \phi*f$ if both are in $\cC^0_c$. To go further we need this following result we will not prove.
+
+\begin{proposition}[Generalised Minkowski inequality]
+    For \textit{suitable} $F$, \[
+    \norm{\int F(x,y)dy}_{L^p(x)} \leq \int{\norm{F(x,y)}_{L^p(x)}dy}
+    \] Instead of interchanging $L^p$-norms with sums, we interchange $L^p$-norms with integrals.
+\end{proposition}
+
+\begin{lemma}
+    If $f\in L^p$ and $\phi\in\cC_c^0$ \[
+    \norm{\phi*f}_{L^p} \leq \norm{\phi}_{L^1}\norm{f}_{L^p}
+    \]\begin{proof}
+        Applying the generalised Minkowsky inequality diretly to the definition of the convolution \[
+        \norm{\int f(x-y)\phi(y)dy}_{L^p(x)} \leq \int\norm{f(x-y)\phi(y)}_{L^p(x)}dy = \int\abs{\phi(y)}\norm{f(x-y)}_{L^p(x)}dy
+        \] TODO: there is something missing here, idfk what
+    \end{proof}
+\end{lemma}
+
+\begin{proposition}
+    If $f\in L^p$ and $\phi\in \cC_c^k$, then $f*\phi\in\cC^k$ and for all $\alpha\in\bN^d$, we have $\partial^\alpha(f*\phi) = f*\partial^\alpha\phi$.
+    \begin{proof}
+        Once again, only consider the case $k=d=1$, so $\partial^\alpha = \partial_x$. Furthermore, it suffices to deal with $f\in L^1$ as convolution is a local process and $L^p$ functions are locally $L^1$. \[
+        \frac{(f*\phi)(x+h)-(f*\phi)(x)}{h} = \int f(y)\frac{\phi(x+h-y)-\phi(x-y)}{h}dy
+        \] and the assosiation of $y$ to the RHS of the integrand, for fixed $x$, is uniformly bounded and converges pointwise to $\phi'(x-y)$, the claim now follows from the dominated convergence theorem.
+    \end{proof}
+\end{proposition}
+
+The \textbf{mollifiers} $\varphi_n$ are defined as $\varphi_n(x) = n^d\varphi(nx)$ wherer $\varphi\in\cC^\infty_c$ and $\int\varphi=1$. These looks like bumb functions with increasing height and decreasing width as $n\rightarrow\infty$.
+
+\begin{theorem}
+    Given a sequence of mollifiers $(\varphi_n)$
+    \begin{enumerate}
+        \item If $f\in\cC_c^0$, then $f*\varphi_n\rightarrow f$ uniformly.
+        \item If $f\in L^p$, then $f*\varphi_n\rightarrow f$ in $L^p$.
+    \end{enumerate}
+    \begin{proof}
+        
+    \end{proof}
+\end{theorem}
+
 
 \end{document}

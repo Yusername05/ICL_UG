@@ -80,6 +80,73 @@ The kernel of a ring homomrophism is certainly a two-sided ideal. Conversely, to
 
 Are left units always right units? We know this to be true in commutative rings and $M_{n\times n}(k)$, but if we consider $GL(\bR^\bN)$, with the basis $\{e_1,e_2,\ldots\}$, then the linear map which sends each $e_i$ to $e_{i+1}$ is injective and has a left inverse, but is not surjective so has no right inverse. But, if $u$ has both a right inverse \textbf{and} a left inverse, then these will always be the same. The group of two-sided units is called $R^\times$.
 
+\subsection{Classical algebra and whatnot}
+
+You probably already know what an Euclidean domain, principal ideal domain, unique factorisation domain, and a Noetherian ring are.
+
+There won't be a particularly rigorous discussion of the relationship, because I don't care. Look at any set of official notes for something of higher quality if you require it.
+
+\begin{proposition}
+    An Euclidean domain is a principal ideal domain.
+    \begin{proof}
+        Let $R$ be an Euclidean domain with degree function $\varphi$, and let $I\unlhd R$, consider $\varphi(I)$, this must have a smallest element, call it $a$. Now for any $i\in I$, we can write $i = qa + r$ with $\phi(r)<\phi(a)$, but $r$ must be in $I$ so cannot have degree less than that of $a$, so $r=0$. Therefore, $I=(a)$.
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}
+    A ring is Noetherian iff all ideals are finitely generated.\begin{proof}
+        Suppose an ideal $I\unlhd R$ does not admit a finite generating set. Find $i_0\in I$, and $i_1\in I\setminus(i_0)$, and recursively find $i_n\in I\setminus(i_0,i_1,\ldots,i_{n-1})$, this produces an ascending chain: \[
+        (i_0) \subsetneq (i_0,i_1) \subsetneq (i_0,i_1,i_2) \subsetneq \cdots
+        \] Conversely, suppose every ideal in $R$ is finitely generated, then for any ascending chain of ideals: \[
+        I_0 \subset I_1 \subset I_2 \subset \cdots
+        \] their union $I$ is also an ideal, which is finitely generated with its elements living in some $I_N$, thus the chain stabilises at this ideal.
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}
+    A principal ideal domain is a unique factorisation domain.
+    \begin{proof}
+        First we show that any $r\in R$ a PID can't be an infinite product of irreducibles. Suppose such and $r$ exists, then as $r$ irreducible we can find a nontrivial factorisation $r=r_1s$, one of these must contain infinitely many irreducibles, let this be $r_1$. Repeat this process ad infinum to get a chain of ideals \[
+        (r)\subsetneq (r_1) \subsetneq (r_2) \subsetneq \cdots
+        \] as $R$ is a PID it is also Noetherian, so this ascending never stabilising chain of ideals cannot exist.\footnote{This proof is clearly nonconstructive as we are choosing contably many irreducible factorisations all at once}
+
+        We now wish to show any such product of irreducibles \[
+        r_1r_2\cdots r_n = r = s_1s_2\cdots s_m
+        \] are equivalent. First note that in a PID an element is irreducible iff it is prime.\footnote{Given $r$ irreducible, if $r\mid ab$ we can consider $c=\gcd(r,a)$ and observe $c\mid r$. I'm only really interested in $R$ an ED, so lets assume that. We know $r=cd$ for some $d$, as $r$ is irreducible either $c$ is a unit, in which case we can write $xr+ya=c$ implying $xrb+yab=cb$, as $r=ab$ we have that $r\mid b$. If, instead, $c$ is an associate of $r$, then $r\mid a$. The other direction is easier.} We can now see each $r_i$ appears in the RHS, as we are living in an integral domain we can cancel and thus are done.
+    \end{proof}
+\end{proposition}
+
+\subsection{Unique factorisation in polynomial rings}
+
+\begin{definition}
+    Let $R$ be a UFD, if $f\in R[x]$ the \textbf{content} of $f$ is the gcd of its nonzero coefficients, written $c(f)$.
+\end{definition}
+
+\begin{lemma}
+    If $f,g\in R[x]$, then $c(fg)=c(f)c(g)$.\footnote{As with lots of things in this course, this must be taken up to multiplication by a unit.}
+\end{lemma}
+
+This really follows easily from
+
+\begin{lemma}
+    If $c(f)=c(g)=1$ then $c(fg)=1$.
+    \begin{proof}
+        Suppose $c(fg)\neq 1$, then there exists some prime $p$ dividing all the coefficients. First observe that as $R$ is an integral domain, so is $R[x]$. Now consider the projection mod $p$, as $c(f)=c(g)=1$ there exists no prime dividing all elements so they are both nonzero in $R/(p)[X]$ which we know to be an ID, but supposedly their product is $0$. This is clearly a contradiction.
+    \end{proof}
+\end{lemma}
+
+For our next step we need the following 
+
+\begin{theorem}[Gauss lemma]
+    If $R$ is a UFD, and $f\in R[x]$ splits completely in $\Frac(R)[x]$, then $f$ splits completely in $R[x]$.
+\end{theorem}
+
+From these two statements you should apparently be able to deduce that if $R$ is a UFD, so is $R[X]$???
+
+\subsection{Newton polytopes}
+
+\subsection{Hilbert basis theorem}
+
 \section{Matrix Lie groups}
 
 \end{document}
