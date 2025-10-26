@@ -147,6 +147,42 @@ From these two statements you should apparently be able to deduce that if $R$ is
 
 \subsection{Hilbert basis theorem}
 
+\subsection{Invariant theory}
+
+All rings are commutative.
+
+\begin{definition}
+    If $K$ is a field, a \textbf{$k$-algebra} is a ring $R$ continaing $k$. If $k\subset R_1,R_2$ are two such $k$-algebras, then a \textbf{$k$-algebra homomorphism} is a ring homomorphism which is the identity when restircted to $k$.
+\end{definition}
+
+$R=\bC[X_1,\ldots,X_n]$ is a $\bC$ algeabra, $\bZ$ is not a $k$-algebra for any $k$.
+
+\begin{definition}
+    A $k$-algebra $R$ is \textbf{finitely generated} if there exists a finite subset $S\{a_1,\ldots,a_n\}\subset R$ such $R$ is the smallest $k$-subalgebra containing $S$.
+
+    Equivalently, if there exists a $k$-algebra homomorphism \[
+    \ev_S:k[X_1,\ldots,X_n]\rightarrow R
+    \] which send $f$ to $f(a_1,\ldots,a_n)$ and is surjective.
+\end{definition}
+
+So all f.g. $k$-algebras are rings of the form \[
+k[X_1,\ldots,X_n]/I
+\] for some ideal $I$ which, by the Hilbert basis theorem, will be finitely generated. We like these, because \textit{in principle} every questions about f.g. $k$-algebra (of which there are many of great intereset) can be answered algorithmically.
+
+Even thought there are many interesting $k$-algebras which aren't finitely generated, like $\bC[[X]]$ the ring of power series in complex coefficients with radius of convergence $R>0$, so we can do pointwise operations.
+
+The group $GL_n(\bC)$ has a \textbf{right}\footnote{People really don't like right actions, they like turning them into left actions by consider $G^\text{op}$ or explicitly acting  by inverses, we want to be able to efficiently compute things involving our actions, so we will tolerate just working with right actions.} action on $\bC[X_1,\ldots,X_n]$ by acting on $\bC^n$ as matrices before applying the polynomial.
+
+\begin{definition}
+    A \textbf{graded $k$-algebra} is a $k$-algebra \[
+    R = \bigoplus_{n\in\bN}R_n
+    \] such that $R_0=k$ and for each $n\geq 1$, $R_n$ is a finite dimension $k$-vector space, and for all $n,m\in\bN$, $R_nR_m\subset R_{n+m}$.
+
+    A \textbf{graded $k$-algebra homomorphism} $f:R\rightarrow S$ should satisfy $f(R_n)\subseteq S_n$ for all $n\in \bN$.
+\end{definition}
+
+$k[X_1,\ldots,X_n]$ is the obvious example of a graded $k$-algebra by the degree of the polynomials, and the action of $GL_n(k)$ is in fact graded, as it preserves polynomial degree.
+
 \section{Matrix Lie groups}
 
 \end{document}
