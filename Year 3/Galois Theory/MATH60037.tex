@@ -257,7 +257,7 @@ We have already seen this to be true! There are three embeddings of $\bQ(\sqrt[3
 \subsection{Normal extensions}
 
 \begin{definition}
-    $k\subset K$ is \textbf{normal} if for all $k\subset \Omega$ and $x_1,x_2\in\Emb_k(K,\Omega)$ there exists a $\varphi \in \Gal(K/k)$ such that $x_1=x_2\varphi$
+    $k\subset K$ is \textbf{normal} if for all $k\subset \Omega$ and $x_1,x_2\in\Emb_k(K,\Omega)$ there exists a $\varphi \in \Aut(K/k)$ such that $x_1=x_2\varphi$
 \end{definition}
 
 Intutively, the image of any $k$-embedding $K\subset \Omega$ is fully determined by the embedding $k\subset \Omega$. The shape of a normal extension around $k$ is fully determined.
@@ -330,7 +330,7 @@ So we only discover irreducible and inseparable polynomials in infinite fields o
     If $k\subset K_1,K_2\subset L$, then $K_1\cap K_2$ and $K_1K_2$ (the smallest subfield containing $K_1$ and $K_2$) are both fields between $k$ and $L$.\footnote{The interesection is visibly the pullback, but the product isn't just the pushout, in the notes this is called a \textbf{framed pushout}, my understanding is that there is no actual pushout, only when we specify how $K_1$ and $K_2$ are embedded into a bigger field $\Omega$ there is a pushout in $k\textbf{Gal}\downarrow\Omega$. What else do I name this category???}
 \end{proposition}
 
-\begin{proposition}
+\begin{proposition}[A4]
     Suppose $k\subset K,L$ then there exists some finite extension $k\subset\Omega$ containing them both: \[
     \begin{tikzcd}[row sep = small, column sep = small]
         & K \arrow[dr, phantom, sloped, "\subset"]\\
@@ -347,5 +347,50 @@ So we only discover irreducible and inseparable polynomials in infinite fields o
 \end{proposition}
 
 TODO: phrase this properly and actually define the specific galois category we work in.
+
+\begin{proof}[Proof of A4]
+    We will go by induction on $[K:k]$ the bases case has $K=k$ so taking $\Omega = L$ works. Now suppose $[K:k]>1$, then there exists some $\alpha\in K\setminus k$, this will have a minimal polynomial $f\in k[X]$, let $L'$ be the splitting field of $f\in L[X]$, then $\Emb_k(k(\alpha),L') = \{\text{roots of $f$ in $L'$}\}$ which must be nonempty as $f$ is nontrivial. THus we can form the daigram:\[
+    \begin{tikzcd}[row sep = small, column sep = small]
+        & & K \\
+        & k(\alpha) \arrow[ur, phantom, sloped, "\subset"] \arrow[dr, phantom, sloped, "\subset"]\\
+        k \arrow[ur, phantom, sloped, "\subset"] \arrow[dr, phantom, sloped, "\subset"] && L'\\
+        & L \arrow[ur, phantom, sloped, "\subset"]
+    \end{tikzcd}
+    \] where by the tower law $[K:k(\alpha)]<[K:k]$ so, by induction, we're done.
+\end{proof}
+
+This one is very important
+
+\begin{lemma}
+    Suppose $k\subset K$ is normal, and $k\subset F \subset K\subset \Omega$ is a tower, then the natural restriction: \[
+    \rho : \Emb_k(K,\Omega)\rightarrow \Emb_k(F,\Omega)
+    \] is surjective. Equivalently,
+    \begin{proof}
+        For any $x\in\Emb_k(F,\Omega)$, we can form the diagram: \[
+        \begin{tikzcd}
+            K \arrow[r, phantom, sloped, "\subset"] \arrow[rd, dashed] & \Omega'\\
+            F \arrow[u, phantom, sloped, "\subset"] \arrow[r, hookrightarrow, "x", swap] & \Omega \arrow[u, phantom, sloped, "\subset"] \\
+            k \arrow[u, phantom, sloped, "\subset"]
+        \end{tikzcd} 
+        \] where $\Omega'$ is produced by (A4), and as $k\subset K$ is normal, the inclusion $K\subset\Omega'$ factors through $K\subset\Omega$.
+    \end{proof}
+\end{lemma}
+
+So when $k\subset K$ is normal, the left action $\Aut(K/k)\curvearrowright\Emb_k(F,K)$ by post-composition is transitive. Specifically, if $f\in k[X]$ is irreducible and splits completely in $K$, then $\Aut(K/k)$ acts transitively on these roots, just by taking $F=k(a)$ for $a$ some root in $K$.
+
+\begin{corollary}
+    The natrual composition with the given $K\subset\Omega$: \[
+        \Emb_k(F,K)\rightarrow \Emb_k(F,\Omega)
+    \] is also surjective.
+    \begin{proof}
+        By the previous lemma it suffices to consider $\sigma\in \Emb_k(K,\Omega)$ restricted to $F$, but we already have a canonical $K\subset\Omega$, so $\sigma$ is just represented by some element of $\Aut(K/k)$ which we just restrict to $F$ to produce our desired $\Emb_k(F,K)$.
+    \end{proof}
+\end{corollary}
+
+This says any $k$-embedding $x:F\rightarrow \Omega$ still lands $F$ in $K$, this is a stronger statement of the definition of $K$ being a normal extensions, in fact if we take $F=K$ we recover this.
+
+A striking consequence of this corollary is that any irreducible $f\in k[X]$ either has no roots in $K$, or splits completely! Indeed if $f$ has any root $a\in K$ then let $\Omega$ be the splitting field of $f$ in $K$, we can form the tower $k\subset k(a)\subset K \subset \Omega$ and we have the isomorphism: \[
+    \{\text{roots of $f$ in $\Omega$}\} \cong \Emb_k(k(a),\Omega) \cong \Emb_k(k(a),K) \cong \{\text{roots of $f$ in $K$}\}
+\] 
 
 \end{document}

@@ -12,4 +12,67 @@ Scribed by Yu Coughlin}
 
 \tableofcontents
 
+\section{Introduction}
+
+\subsection{Basic constructions}
+
+A recap of some basic notions we will assume familiarity with going forward.
+
+\begin{proposition}
+    Let $\phi:G\rightarrow H$ be a group homomorphism, then there is a canonical isomorphism:\[
+    G / \ker(\phi)\cong \im(\phi)
+    \]
+\end{proposition}
+
+\begin{proposition}
+    Let $N\unlhd G$, then every subgroup of $G/N$ is of the form $G/H$ for some $N\leq H\leq G$.
+\end{proposition}
+
+\begin{definition}
+    A subgroup $H\leq G$ is \textit{characteristic} if for all $\phi\in\Aut(K)$, $\phi(H)=H$.
+\end{definition}
+
+This is a stronger condition that being a normal subgroup which only requires invariance under inner automorphisms. If $G\cong C_2\times C_2$, then $G$ has no characteristic subgroups, as there is an automorphism swapping the two $C_2$ factors, so this is a strictly stronger condition that just being normal.
+
+\begin{proposition}
+    If $M,N\leq G$ and $M\char N$, $N\unlhd G$, then $M\unlhd G$.\begin{proof}
+        If $M$ is just normal is $G$ then we don't know it to be invariant under all conjugations, just those from $N$, but now $G$ is close under all automorphisms of $N$, this includes conjugation from elements of $G$, so $M$ is normal.
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}
+    The commutator $G':= [G,G]$ is a characteristic subgroup of $G$, and $G/G'$ is abelian. For any normal subgroup $N\unlhd G$, $G/N$ is abelian iff $G'\leq N$
+        \begin{proof}
+        
+        \end{proof}
+\end{proposition}
+
+\begin{proposition}
+    If $A,B\unlhd G$, $A \cap B = \{1\}$, and $G=AB$, then $G\cong AB$.
+\end{proposition}
+
+\begin{theorem}
+    If $G$ is a finitely generated abelian group, then there exists a positive interger $m\geq 0$ and prime powers $p_1^{\alpha_1},\ldots,p_n^{\alpha_n}$ such that: \[
+    G \cong \bZ^m \times C_{p_1^{\alpha_1}} \times \cdots \times C_{p_n^{\alpha_n}}
+    \] said $m$ and the $p_i^{\alpha_i}$ are uniquely determined (up to reording of the prime powers) by $G$.
+\end{theorem}
+
+\subsection{Actions}
+
+\begin{proposition}
+    If $G\curvearrowright \Omega$, then for any $\alpha\in \Omega$, the size of the orbit $\alpha^G$ equals $\abs{G:G_\alpha} = |G| / |G_\alpha|$ where $G_\alpha\leq G$ is the stabiliser of $\alpha$ in $G$.
+\end{proposition}
+
+\begin{corollary}[Cauchy's theorem]
+    If $G$ is a finite group whose order is divisible by a prime $p$, then $G$ contains an element of order $p$
+\end{corollary}
+
+\section{Composition Series}
+
+\section{Finite simple groups}
+
+\section{Sylow's Theorems}
+
+\section{Extenstions}
+
 \end{document}
