@@ -3,63 +3,187 @@
 
 \begin{document}
 
-\subsection{Field extensions}
+\subsection{motivation and introduction}
 
-Most fields I know have obvious prime subfields, the set of elements formed by applying all possible field operations to $1$. In $\bR$, $\bC$, and algebraic number fields this is $\bQ$, in finite fields this $\bF_p$. If $k$ is the prime field of $K$, there is obviously only one embeddings $k\subset K$, and for any other field $k\subset L$, all of the homomorphisms $f:K\rightarrow L$ will fix $k$. So it is equivalent to consider the category of fields with prime subfield $k$, and the category of $k$-extensions.   
+\subsection{categorics}
 
-\subsection{Normal extensions}
+I want to state and prove the Galois correspondence purely categorically. Throughout fix a ground field $k$ and work in the category of algebraic $k$-extensions.
+
+\begin{proposition}[A4]
+    For all finite extensions $k\subset K,L$ there exists a diagram: \[
+    \begin{tikzcd}[row sep = small, column sep = small]
+        & K \arrow[dr, phantom, sloped, "\subset"]\\
+        k \arrow[ur, phantom, sloped, "\subset"] \arrow[dr, phantom, sloped, "\subset"] && \Omega\\
+        & L \arrow[ur, phantom, sloped, "\subset"]
+    \end{tikzcd}\]
+\begin{proof}
+    Go by induction on $[K:k]$: the base case has $K=k$ where taking $\Omega = L$ works. 
+    
+    Now suppose $[K:k]>1$: there will exist some $\alpha\in K\setminus k$, which will have minimal polynomial $f\in k[X]$, let $L'$ be the splitting field of $f\in L[X]$, then \[\Emb_k(k(\alpha),L') = \{\text{roots of $f$ in $L'$}\}\neq \emptyset\] and we can form the daigram:\[
+    \begin{tikzcd}[row sep = small, column sep = small]
+        & & K \\
+        & k(\alpha) \arrow[ur, phantom, sloped, "\subset"] \arrow[dr, phantom, sloped, "\subset"]\\
+        k \arrow[ur, phantom, sloped, "\subset"] \arrow[dr, phantom, sloped, "\subset"] && L'\\
+        & L \arrow[ur, phantom, sloped, "\subset"]
+    \end{tikzcd}
+    \] where, as $k\neq k(\alpha)$, the tower law says $[K:k(\alpha)] < [K:k]$. Thus, by strong induction, we are done.
+\end{proof}
+\end{proposition}
 
 \begin{definition}
-    An extension $k\subset K$ is \textbf{normal} if, for all $k\subset \Omega$, the \textit{right} action \[
-        \Emb_k(K,\Omega) \curvearrowleft \Aut_k(K)
-    \] by precompostion, is transitive.
+    $k\subset K$ is a \textbf{normal extension} if for all $K\subset\Omega$ the right action \[\Emb_k(K,\Omega)\curvearrowleft \Aut_k(K)\] by \textbf{pre}-composition is transitive\footnote{This action will always be free (no nontrivial element has a fixed point), as all field homomorphisms are injective thus mono. So normal extensions are precisely those extensions $k\subset K$ where $\Emb_k(K,\Omega)$ is an $\Aut_k(K)$-torsor.}, i.e.~every $x:K\hookrightarrow \Omega$ is just the canonical inclusion of $\sigma(K)$ into $\Omega$.
 \end{definition}
 
-This is equivalent to saying, if we have two embeddings $x_1,x_2:L\hookrightarrow\Omega$, then there exists some automorphism $\sigma\in\Aut(L/K)$ such that $x_2 = x_1\sigma$. If we just know $x_2(L)\subset x_1(L)$ as sets, this is also a field extension, and as the two fields are isomorphic they must in fact be equal in $\Omega$. This embedding is exactly the required $\sigma$.
+You can never embed a normal extension outside of its image.
 
 \begin{lemma}
-    Suppose $k\subset K$ is normal, and $k\subset F \subset K\subset \Omega$ is a tower, then the natural restriction: \[
-    \Emb_k(K,\Omega)\hookrightarrow \Emb_k(F,\Omega)
-    \] is surjective.
+    If $k\subset K$ is normal, and $k\subset F \subset K$ is an intermediate field, then $F\subset K$ is normal.
     \begin{proof}
-        For any $x\in\Emb_k(F,\Omega)$, we can form the diagram: \[
-        \begin{tikzcd}
-            K \arrow[r, phantom, sloped, "\subset"] \arrow[rd, dashed] & \Omega'\\
-            F \arrow[u, phantom, sloped, "\subset"] \arrow[r, hookrightarrow, "x", swap] & \Omega \arrow[u, phantom, sloped, "\subset"] \\
-            k \arrow[u, phantom, sloped, "\subset"]
-        \end{tikzcd} 
-        \] where $\Omega'$ is produced by (A4), and as $k\subset K$ is normal, the inclusion $K\subset\Omega'$ factors through $K\subset\Omega$.
+        Given $x,y\in\Emb_F(K,\Omega)\subseteq\Emb_k(K,\Omega)$ there exists some $\sigma\in\Aut_k(K)$ such that $x=y\sigma$, this $\sigma$ must be in $\Aut_F(K)$.
     \end{proof}
 \end{lemma}
 
-So when $k\subset K$ is normal, the left action $\Aut(K/k)\curvearrowright\Emb_k(F,K)$ by post-composition is transitive. Specifically, if $f\in k[X]$ is irreducible and splits completely in $K$, then $\Aut(K/k)$ acts transitively on these roots, just by taking $F=k(a)$ for $a$ some root in $K$.
+\begin{proposition}
+    Let $k\subset K$ be normal and $k\subset F \subset K \subset \Omega$ be a tower, then the natural restriction: \[
+    \Emb_k(K,\Omega)\rightarrow \Emb_k(F,\Omega)
+    \] is surjective, i.e.~any embedding $x:F\rightarrow\Omega$ extends to some $\tilde{x}:K\rightarrow\Omega$.
+\end{proposition}
+
+All components of a normal extension present in a bigger field still sit inside a copy of that normal extension.
+
+\begin{proof}
+    For any $x\in\Emb_k(F,\Omega)$, by (A4) I can form the following diagram: \[
+    \begin{tikzcd}
+        & \Omega \arrow[r, "y"] & \Omega' \\
+        k \arrow[r, phantom, sloped, "\subset"] & F\arrow[r, phantom, sloped, "\subset"] \arrow[u, "x"] & K \arrow[u, "z", swap] \arrow[ul, dashed, "\tilde{x}", swap]
+    \end{tikzcd} 
+    \] but as $k\subset K$ is normal, I must be able to write $z:K\rightarrow\Omega'$ as $y\circ\sigma$ for some $\sigma\in\Aut_k(K)$. This $\sigma$ (composed with the inclusion $K\subset\Omega$) is exactly the required $\tilde{x}$.
+\end{proof}
+
+From this, it is immediately obvious that the natural injective composition with $K\subset\Omega$: \[
+    \Emb_k(F,K)\rightarrow\Emb_k(F,\Omega)
+\] is also surjective.
+
+\begin{proposition}[A1]
+    For all extensions $k\subset K,L$ the set $\Emb_k(K,L)$ has cardinality at most $[K:k]$.
+    \begin{proof}
+        Once again going by induction on $[K:k]$ where the base case is trivial.
+
+        Supposing $[K:k]>1$, pick $\alpha\in K\setminus k$ and consider the restriction map: \[
+            \rho:\Emb_k(K,L)\rightarrow \Emb_k(k(\alpha),L)
+        \] Now for any $x\in \Emb_k(k(\alpha),L)$, the pre-image $\rho^{-1}(x)=\Emb_x(K,L)$ has cardinality $\leq[K:k(\alpha)]$, so I can consider the sum: \[
+            \abs{\Emb_k(K,L)} = \sum_{x\in\Emb_k(k(\alpha),L)}\abs{\rho^{-1}(x)} \leq [k(\alpha):k][K:k(\alpha)] = [K:k]\qedhere
+        \]
+    \end{proof}
+\end{proposition}
 
 \begin{lemma}
-    The natrual composition with the given $K\subset\Omega$: \[
-        \Emb_k(F,K)\rightarrow \Emb_k(F,\Omega)
-    \] is also surjective.
+    For an extension $k\subset K$ and $H\leq \Aut(K/k)$ a finite subgroup, $[K:K^H]\leq \abs{H}$.
     \begin{proof}
-        By the previous lemma it suffices to consider $\sigma\in \Emb_k(K,\Omega)$ restricted to $F$, but we already have a canonical $K\subset\Omega$, so $\sigma$ is just represented by some element of $\Aut(K/k)$ which we just restrict to $F$ to produce our desired $\Emb_k(F,K)$.
+        If $G = \{\sigma_1,\ldots,\sigma_n\}$, we need to show all sets $\{a_1,\ldots,a_{n+1}\}\subset L$ are linearly dependent over $K^H$. Let $\{a_1,\ldots,a_k\}$ consider the vectors: \[
+        \mathbf{a}_1=\begin{pmatrix}
+            \sigma_1(a_1) \\
+            \vdots \\
+            \sigma_n(a_1)
+        \end{pmatrix},
+        \ldots,
+        \mathbf{a}_{n+1}=\begin{pmatrix}
+            \sigma_1(a_{n+1}) \\
+            \vdots \\
+            \sigma_n(a_{n+1})
+        \end{pmatrix}
+        \] and wlog let $\{\mathbf{a}_1,\ldots,\mathbf{a}_k\}$ be the smallest nontrivial linearly dependent set, so we have $x_i\neq 0$ such that $x_1\mathbf{a}_1 + \cdots + x_k\mathbf{a}_k = 0$, wlog take $x_1=1$. Applying some $\sigma\in \Aut(K/k)$ will permute the rows of this linear system, but will always keep $x_1$ the same, this must always be the same system, otherwise we could subtract and find one of strictly smaller size. Thus all the $x_i\in K^H$ and equation corresponding to $\sigma_i=e$ is as required.
     \end{proof}
 \end{lemma}
 
-This says any $k$-embedding $x:F\rightarrow \Omega$ still lands $F$ in $K$, this is a stronger statement of the definition of $K$ being a normal extensions, in fact if we take $F=K$ we recover this.
-
-\begin{theorem}[Characterisation of normal extensions]
-    For an extension $k\subset K$, tfae:\begin{itemize}
-        \item[(1)] for all irreducible $f\in k[X]$, either $f$ has no roots in $K$ or $f$ splits completely in $K$;
-        \item[(2)] there exists some $f\in k[X]$ (not necessarily irreducible) such that $K$ is the splitting field of $f$ over $k$;
-        \item[(3)] $k\subset K$ is a normal extension.
-    \end{itemize}
-    \begin{proof}
-        $(1)\implies(2)$ Write $K=k(a_1,\ldots,a_n)$ and let $f_i$ be the minimal polynomial of $a_i$ over $k$, then $K$ is the splitting field of $f=f_1\cdots f_n$ over $k$.
-
-        $(2)\implies(3)$ For all $K\subset \Omega$ and $x\in\Emb_k(K,\Omega)$, we just have to show $x(K)\subset K$. If $a$ is a root of $f$ in $K$, then so is $x(a)$ which must also be in $K$, as $K$ is generated by these roots, we are done.
-
-        $(3)\implies(1)$ If $f$ has any root $a\in K$, and we let $\Omega$ be the splitting field of $f$ in $K$, we can apply the previous lemma to the tower\[k\subset k(a)\subset K \subset \Omega\]
-        yielding the series of isomorphisms:\[
-    \{\text{roots of $f$ in $\Omega$}\} \cong \Emb_k(k(a),\Omega) \cong \Emb_k(k(a),K) \cong \{\text{roots of $f$ in $K$}\}\qedhere\]
+\begin{corollary}[A5]
+    Under the same assumptions, $[K:K^H]=\abs{H}$, and the obvious inclusion $H\subset\Aut(K/K^H)$ is an isomorphism.\begin{proof}
+        (A1) already says $\abs{\Aut(K/K^H)}\leq [K:K^H]$, by the previous lemma we know $[K:K^H]\leq \abs{H}$, and by assumption we know $\abs{H}\leq \abs{\Aut(K/K^H)}$.
     \end{proof}
+\end{corollary}
+
+\begin{definition}
+    The extension $k\subset K$ is \textbf{separable} if for all towers of subfield: \[
+    k \subset K_1 \subsetneq K_2 \subset K
+    \] there exists some field $\Omega$ with at least two distince $K_1$-embeddings $x,y:K_2\rightarrow\Omega$.
+\end{definition}
+
+\begin{lemma}
+    If $k\subset K$ is separable, and $k\subset F \subset K$ is a tower, then $k\subset F$ and $F\subset K$ are separable.
+    \begin{proof}
+        Any pair of intermediate field of $k\subset F$ or $F\subset K$ are also intermediate field of $k\subset K$.
+    \end{proof}
+\end{lemma}
+
+\begin{theorem}[Fundamental theorem of Galois theory]
+    If $k\subset K$ is Galois (normal and separable) then the there is a bijective, order-reversing map between field and subgroups as follows: \[
+        H\leq G \longmapsto K^H \qquad k\subset F \subset K \longmapsto \Aut(K/F)
+    \]\begin{proof}
+        We know the images are fields and subgroups respectively, and the fact that these maps reverse the inclusion ordering is obvious. $H = \Aut(K/K^H)$ is exactly (A5). As all $k\subset F\subset K$ are also Galois, we just have to prove $k':=K^{\Gal(K/k)} = k$ we will go by showing that for all $k\subset \Omega$: $\Emb_k(k',\Omega)$ is just the inclusion $k'\subset K \subset \Omega$, where separability now implies the final result. Consider the tower: \[
+            k\subset k' \subset K \subset \Omega
+        \] we know any $\Emb_k(k',\Omega)$ is the restriction of some $\Emb_k(K,\Omega)$ but as $k\subset K$ is normal, this corresponds to composing the inclusion $K\subset \Omega$ with some $\sigma\in \Gal(K/k)$, by construction this is just $k'\subset K\subset \Omega$.
+    \end{proof}
+\end{theorem}
+
+\subsection{translating back down}
+
+We want to classify the categorical definitions of normal and separable extensions into field theoretic statements.
+
+\begin{theorem}
+    For a finite extension $k\subset K$ tfae: \begin{enumerate}
+        \item For all irreducible $f\in k[X]$, either $f$ has no roots in $K$ or $f$ splits completely in $K$;\footnote{This is a standard definition of a normal extension}
+        \item There exists some $f\in k[X]$ such that $K$ is the splitting field of $f$ over $k$;
+        \item $k\subset K$ is normal.
+    \end{enumerate}
+    \begin{proof}
+        $(1\Rightarrow2)$ If $K=k(a_1,\ldots,a_n)$ and $f_i$ is the minimal polynomial of $a_i$ over $k$ respectively, $K$ is clearly the splitting field of $f_1\cdots f_n$,
+
+        $(2\Rightarrow3)$ If $k\subset K$ is the splitting field of $f$ with root $a\in K$, then for any $K\subset \Omega$ and $x:K\rightarrow \Omega$, $x(a)$ will always be a root of $f$ in $\Omega$ and as $K$ is generated by all the roots of $f$, $x(K)\subset K \subset \Omega$.
+
+        $(3\Rightarrow 1)$ Now if $k\subset K$ is normal, for any irreducible $f\in k[X]$ let $K\subset\Omega$ be the splitting field of $f$ over $K$. If $f$ has any root $a\in K$ then we can form the tower $k\subset k(a)\subset K\subset \Omega$ giving the bijection: \[
+            \{\text{roots of $f$ in $\Omega$}\} = \Emb_k(k(a),\Omega) = \Emb_k(k(a),K) = \{\text{roots of $f$ in $K$}\}\qedhere
+        \] 
+    \end{proof}
+\end{theorem}
+
+\begin{lemma}
+    For all $k\subset K$ there exists some $K\subset L$ such that $k\subset L$ is normal.\begin{proof}
+        Let $K=k(a_1,\ldots,a_n)$, with $f_i$ the minimal polynomial of each $a_i$ over $k$ respectively, now let $L$ be the splitting field of $f_1\cdots f_n$ over $K$, and thus also over $k$.
+    \end{proof}
+\end{lemma}
+
+\begin{definition}
+    For $k\subset K$ define the \textbf{separable degree}\[
+        [K:k]_s := \abs{\Emb_k(K,\Omega)}
+    \] where $k\subset K \subset \Omega$ is normal extension that exists by the previous lemma.
+\end{definition}
+
+\begin{lemma}
+    The separable degree $[K:k]_s$ does not depend on the choice of $\Omega$.\begin{proof}
+        Let $\Omega_1,\Omega_2$ be such normal extensions of $k$, then by (A4) let $\Omega'$ be a field containing both of them, we know any embedding $K\rightarrow \Omega'$ must send $K$ to the normal subfield containg it, i.e. \[
+            \Emb_k(K,\Omega_1) = \Emb_k(K,\Omega) = \Emb_k(K,\Omega_2)\qedhere
+        \]
+    \end{proof}
+\end{lemma}
+Separable extensions are now exactly those $k\subset K$ such that for all towers $k\subset K_1\subset K_2\subset K$, if $[K_1:K_2]_s=1$, then $K_1=K_2$.
+
+\begin{proposition}
+    For a tower $k\subset K\subset L$ we have \[
+    [L:k]_s=[L:K]_s[K:k]_s
+    \]
+    \begin{proof}
+        Take $L\subset \Omega$ such that $k\subset \Omega$ is normal, we know the restriction: \[
+        \Emb_k(\Omega,\Omega)\rightarrow\Emb_k(L,\Omega)\xrightarrow{\rho} \Emb_k(K,\Omega)
+        \] is surjective, so we can count\[
+        [L:k]_s := \abs{\Emb_k(L,\Omega)} = \sum_{x\in\Emb_k(K,\Omega)}\abs{\rho^{-1}(x)} = [K:k]_s[L:K]_s
+        \] as the previous lemma says the size of $\rho^{-1}(x) = \Emb_K(L,\Omega)$ doesn't depend on the choice $x:K\rightarrow \Omega$.
+    \end{proof}
+\end{proposition}
+
+\begin{theorem}
+    For a finite extension $k\subset K$ tfae: \begin{enumerate}
+        \item 
+    \end{enumerate}
 \end{theorem}
 
 \end{document}

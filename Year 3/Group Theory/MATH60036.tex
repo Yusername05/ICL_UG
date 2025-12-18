@@ -67,12 +67,280 @@ This is a stronger condition that being a normal subgroup which only requires in
     If $G$ is a finite group whose order is divisible by a prime $p$, then $G$ contains an element of order $p$
 \end{corollary}
 
-\section{Composition Series}
+\section{Composition series}
 
 \section{Finite simple groups}
 
-\section{Sylow's Theorems}
+\subsection{Alternating groups}
 
-\section{Extenstions}
+\subsection{Matrix groups}
+
+\subsection{Iwasawa's lemma}
+
+\section{Sylow's theorems}
+
+\section{Extenstions and semidirect products}
+
+\subsection{Groups of order $pq$}
+
+\section{Solvable groups}
+
+\begin{proposition}[Frattini Argument]
+    Let $N\unlhd G$ and $P\in\Syl_p(N)$, then $G=N_G(P)N$.
+    \begin{proof}
+        For all $g\in G$, we have ${}^gP\leq{}^gN$, thus ${}^gP\in\Syl_p(N)$ and by Sylow $4$, there exists some $n\in N$ with ${}^gP={}^nP$, thus $gn^{-1}\in N_G(P)$, and $g\in N_G(P)N$.
+    \end{proof}
+\end{proposition}
+
+\subsection{Hall's theorem}
+
+\section{Nilpotent groups}
+
+\begin{definition}
+    A finite group $G$ is \textbf{nilpotent} if there exists a series of subgroups: \[
+    1 = G_0 \leq G_1 \leq \cdots \leq G_r = G\]
+    such that for all $0\leq i \leq r-1$ \[
+    G_i\unlhd G \text{ and } G_{i+1}/G_i \leq Z(G/G_i)
+    \] such a series of subgroups is called a \textbf{central series}
+\end{definition}
+
+Notably, all abelian groups are nilpotent; and all nilpotent groups are solvablem, as $G_{i+1}/G_i\leq Z(G/G_i)$ implies $G_{i+1}/G_i$ is abelian.
+
+\begin{proposition}
+    Every finite $p$-group is nilpotent.
+    \begin{proof}
+        Let $P$ be such a nontrivial $p$-group, define a series of subgroups as follows:\begin{itemize}
+            \item $P_0:= 1$;
+            \item $P_1 := Z(P)$;
+            \item Have $P_2$ a subgroup containing $P_1$ such that $P_2/P_1 = Z(P/P_1)$;
+            \item recursively define each $P_{i+1}$ to be a sugroup containing $P_i$ such that $P_{i+1}/P_i = Z(P/P_i)$.
+        \end{itemize}
+        as nontrivial $p$-groups always have nontrivial centre this series is strictly increase, so must termiante at some $P_r=P$.
+    \end{proof}
+\end{proposition}
+
+\begin{definition}
+    The \textbf{upper central series} of a finite group $G$ is the central series $Z_i(G)$ formed in the above proposition. We are taking the \textit{biggest step} possible at each point.
+\end{definition}
+
+\begin{definition}
+    For $G$ a finite group and $H,K\subseteq G$, define \[
+    [H,K] := \abr{[h,k] \mid h\in H, k\in K}\leq G
+    \] one can immediately see $[H,K]=[K,H]$. We want to define the central series that takes the biggest step down at each point: this will be the \textbf{lower central series} of $G$ defined as follows:\begin{itemize}
+        \item $\gamma_0(G) := G$;
+        \item For $\gamma_1(G)$ to be the next step down it must satisfy \[
+        G/\gamma_1(G) \leq Z(G/\gamma_1(G))
+        \] which just means $G/\gamma_1(G)$ is abelian, so we must have $[G,G]\leq \gamma_1(G)$, if we want to make the biggest just down $\gamma_1(G)$ must be as small as possible so we set $\gamma_1(G):=[G,G]$;
+        \item Now given our $\gamma_i(G)$, to construct $\gamma_{i+1}(G)$ we must satisfy: \[
+            \gamma_i(G)/\gamma_{i+1}(G) \leq Z(G/\gamma_{i+1}(G))
+        \] so $\gamma_i(G)$ should commutate with everything in $G$ up to $\gamma_{i+1}(G)$ which is just: \[
+            [G,\gamma_i(G)]\leq \gamma_{i+1}(G)
+        \] so to continue with our biggest steps, we should set $\gamma_{i+1}(G) := [\gamma_i(G),G]$.
+    \end{itemize}
+\end{definition}
+
+We shoul expect our two intuitively shortest possible sequences to be of the same minimal length, i.e.~our group is nilpotent iff these series terminate. This is true, we will first need a lemma to prove it.
+
+\begin{lemma}
+    For $G$ a finite group and $X,Y\leq G$: \begin{enumerate}
+        \item $Y\leq N_G(X)$ iff $[X,Y]\leq X$;
+        \item If $Y\unlhd G$ and $Y\leq X$ then we have\[
+            X/Y \leq Z(G/Y) \iff [X,G]\leq Y
+        \]
+    \end{enumerate}\begin{proof}
+        (1) $Y\leq N_G(X)$ iff for all $x\in X$ and $y\in Y$ we have $[x,y]=xyx^{-1}y^{-1}\in X$ iff $[X,Y]\leq X$.
+
+        (2) For all $x\in X$ we have: $xY\in Z(G/Y)$ iff $[xY,gY] = Y$ for all $g\in G$ iff $[x,g]Y=Y$ iff $[x,g]\in Y$.
+    \end{proof}
+\end{lemma}
+
+This formalises our intuition of taking the biggest steps possible in the definitions of our upper and lower central series.
+
+\begin{theorem}
+    For $G$ a finite group and $n$ a positive integer, $Z_n(G)=G$ iff $\gamma_n(G)=1$. Furthermore, $G$ is nilpotent iff these conditions hold for some $n$.
+    \begin{proof}
+        If either of the statements are true, then $G$ is certainly nilpotent. So it suffices to prove for nilpotent $G$ the set of $n$ such that $Z_n(G) = G$ and $\gamma_n(G)=1$ are equal and nonempty.
+
+        Let \[
+        1 = N_0 \leq N_1 \leq \cdots \leq N_k = G
+        \] be a central series for $G$. By the previous lemma, for each $i$ we have $[N_{i+1},G]\leq N_i$.
+
+        Consider $\gamma_0(G)=G\leq N_k$, so $\gamma_1(G)=[G,G]\leq[N_k,G]\leq N_{k-1}$ and inductively: \[
+        \gamma_i(G) = [\gamma_{i-1}(G),G] \leq [N_{k-i+1},G]\leq N_{k-1}
+        \] and $N_0=1$ we must have $\gamma_k(G)=1$, applying this to our upper central series is half way.
+
+        Now consider $Z_0(G) = 1 = N_0(G)$, assume for $i\geq 1$ that $N_{i-1}\leq Z_{i-1}(G)$, equivalently: \[
+        [N_i,G]\leq N_{i-1}\leq Z_{i-1}(G)
+        \] moreover $[N_iZ_{i-1}(G),G]\leq Z_{i-1}$ as for all $n\in N_i$, $z\in Z_{i-1}(G)$, and $g\in G$ we have \[
+        [nz,g]Z_{i-1}(G) = [n,zg][z,g]Z_{i-1}(G)\subseteq [N_i,G]Z_{i-1}(G) \leq Z_{i-1}(G)
+        \] hence \[
+            N_iZ_{i-1}(G)/Z_{i-1}(G) \leq Z(G/Z_{i-1}(G)) = Z_{i}(G)/Z_{i-1}(G)
+        \] so $N_i\leq Z_i(G)$ and by induction we are done.
+    \end{proof}
+\end{theorem}
+
+\begin{definition}
+    The a niplotent group $G$ the smallest integer $n$ such that $Z_n(G)=G$ (or equivalently $\gamma_n(G)=1$) is called the nilpotentce class of $G$.
+\end{definition}
+
+\begin{corollary}
+    Subgroups and quotients of nilpotent groups are also nilpotnet.\begin{proof}
+        Let $G$ have nilpotentcy class $n$, if $H\leq G$ then $\gamma_n(H)\leq\gamma_n(G)=1$ so $H$ is nilpotent.
+
+        Let $\phi$ be the quotient map $G\rightarrow G/N$ for some $N\unlhd G$, as homomorphisms commute with commutators and $\phi$ is surjective, we have $\phi(\gamma_i(G))=\gamma_i(\phi(G))$ for all $i$, specifically $\gamma_n(\phi(G))=1$ so $G/N$ is nilpotent.
+    \end{proof}
+\end{corollary}
+
+If such an $N$ and $G/N$ are both nilpotent, $G$ is not necessarily nilpotent. For example take $S_3=C_3\rtimes C_2$ which isn't nilpotent: $[S_3,S_3]=C_3$, $[C_3,S_3]=C_3$.
+
+Nilpotent groups have lots of very nice characterisations.
+
+\begin{theorem}
+    For a finite group $G$ tfae: \begin{enumerate}
+        \item $G$ is nilpotent;
+        \item for any $H < G$, we have $H < N_G(H)$ is proper;
+        \item every maximal subgroup of $G$ is normal;
+        \item every Sylow subgroup of $G$ is normal;
+        \item $G\cong P_1\times \cdots \times P_k$ for $P_i$ a $p_i$-group with all the $p_1,\ldots,p_k$ distinct primes.
+    \end{enumerate}
+
+    \begin{proof}
+        ($1\Rightarrow 2$) Let $1=N_0\leq \cdots \leq N_k = G$ be a central series, and let $H < G$. Let $r$ be the largest positive integer such that $N_r\leq H$, then $N_{r+1}/N_r\leq Z(G/N_r)$ and equivalently [$N_{r+1},H]\leq N_r \leq H$, by our lemma we know this is equivalent to $N_{r+1}\leq N_G(H)$, hence $H\leq N_G(H)$.
+
+        ($2\Rightarrow 3$) Let $M$ be a maximal subgroup of $G$, then $M\leq N_G(M)=G$, as $M$ is maximal.
+
+        ($3\Rightarrow 4$) Let $P\in \Syl_p(G)$ with $P$ not normal in $G$, so $N_G(P) < G$. There exists a maximal subgroup $M$ of $G$ containing $N_G(P)$ with $M\lhd G$. As $P\in\Syl_p(M)$ we can use the Frattini argument to get $G=N_G(P)M = M$, a contradiction, thus $P\unlhd G$.
+
+        ($4\Rightarrow 5$) Let $P_1,\ldots P_k$ be the Sylow subgroups of $G$ for distinct primes, as each $P_i$ is normal in $G$, $[P_i,P_j]\leq P_i\cap P_j = 1$, hence $P_1P_2\cdots P_k = G$ with each $g$ written uniquely as a product of elements from different $P_i$.
+
+        ($5\Rightarrow 1$) Products commute with the $\gamma_i$, so the finite maximum of all the components nilpotency classes will be the nilpotency class of $G$.
+    \end{proof}
+\end{theorem}
+
+\subsection{Solvable radical and fitting subgroup}
+
+\newpage
+
+\section{The Frattini subgroup}
+
+\begin{definition}
+    The $G$ a finite group the intersection all all maximal subgroups is called the \textbf{Frattini subgroup} and denoted $\Phi(G)$.
+\end{definition}
+
+\begin{proposition}
+    For all finite groups $G$ and $x\in G$ the following are equivalent: \begin{enumerate}
+        \item $x\in \Phi(G)$;
+        \item For all $S\subseteq G$, if $G=\abr{S,x}$, then $G=\abr{S}$.
+    \end{enumerate}
+    \begin{proof}
+        ($1\Rightarrow 2$) Suppose $x\in\Phi(G)$ and there exists some $S\subset G$ such that $\abr{S,x}=G$ but $\abr{S}\neq G$, then there exists some maximal subgroup $M< G$ containing $S$, but $x\in\Phi(G)\leq M$, thus $G=\abr{S,x}\leq M$, a contradiction.
+
+        ($2\Rightarrow 1$) If $x\in G$ satisfies property $2$ and $x\notin\Phi(G)$ then there exists some maximal $M<G$ with $x\notin M$, thus $\abr{M,x}=G$, but $\abr{M}\neq G$, a contradiction.
+    \end{proof}
+\end{proposition}
+
+We call elements of $\Phi(G)$ the \textbf{non-generators} of $G$.
+
+\begin{proposition}
+    $\Phi(G)$ is a characteristic nilpotent subgroup of $G$.
+    \begin{proof}
+        An automorphism of $G$ must permute the maximal subgroups, so fixes their intersection, thus $\Phi(G)\char G$.
+
+        Let $p$ be a prime and $P\in\Syl_p(\Phi(G))$, by the Frattini argument, we must have $G=N_G(P)\Phi(G)$. So by the previous proposition (and some induction) $G=N_G(P)$ so $P\unlhd G$, and a fortiori $G\unlhd\Phi(G)$. Now, by the characterisation of nilpotent subgroups, $\Phi(G)$ is nilpotent.
+    \end{proof}
+\end{proposition}
+
+\begin{theorem}[Burnside Basis Theorem]
+    For $P$ a $p$-group with $\abs{P}=p^n$ and $\abs{\Phi(P)} = p^{n-d}$ for some $d\geq 1$, we have the following: \begin{enumerate}
+        \item $P/\Phi(P)\cong \bF_p^d$ the elementary abelian group of order $p^d$;
+        \item If $N\unlhd P$ and $P/N$ is an elementary abelian group, then $\Phi(P)\leq N$, thus $\Phi(G)$ is the unique normal subgroups with minmal elementary abelian quotient;
+        \item For $x_1,\ldots,x_d\in P$ which equivalence classes $\overline{x_i}\in P/\Phi(P)$ respectively: \[
+            P = \abr{x_1,\ldots,x_d} \iff \overline{x_1}, \ldots, \overline{x_d} \text{ is a basis for $\bF_p^d$}
+        \]
+    \end{enumerate}
+    \begin{proof}
+        (1) We know any maximal subgroup $M<P$ is normal, for a maximal normal subgroup the quotient is simple, so $\abs{P/M}=p$. Thus $P'\leq M$ and $x^p\in M$ for all $x\in P$, so $P'\leq\Phi(P)$ and $P/\Phi(P)$ is elementary abelian.
+
+        (2) Suppose $N\unlhd P$ and $P/N$ is elementary abelian, then $\Phi(P/N)=1$. The maximal subgroups of $P/N$ are of the form $M/N$ for some maximal $M<P$ containing $N$. As $\Phi(P/N)=N$, the intersection of these must be contained in $N$, thus $\Phi(P)\leq N$.
+
+        (3) If $x_1,\ldots, x_d$ span $P$, then they must span $\bF_p^d$ and so form a basis. If $\overline{x_1}\ldots,\overline{x_d}$ is a basis for $\bF_p^d$ then $P=\abr{x_1,\ldots,x_d,\Phi(P)}$ and thus $P = \abr{x_1,\ldots,x_d}$.
+    \end{proof}
+\end{theorem}
+
+We can use this to relate the minimal number of generators of $P$ to its Frattini subgroup:
+
+The minimal number of generators of $D_8$ is $2$, so $D_8/\Phi(D_8)\cong C_2^2$, the only order two subgroup $\Phi(D_8)$ can be is $\abr{r^2}$.
+
+\subsection{Groups of order $p^3$}
+
+The only ones left are non-abelian groups of order $p^3$ with $p$ odd.
+
+\begin{lemma}
+    Let $G$ be a group such that $G'\leq Z(G)$, then for all $x,y\in G$ and $n\geq 1$: \[
+        x^ny^n = (xy)^n[x^{-1},y^{-1}]^{n(n-1)/2}
+    \]\begin{proof}
+        We go by induction on $n$, noting:\[
+        xy = yx[x^{-1},y^{-1}]
+        \] and that by assumption $[x^{-1},y^{-1}]\in Z(G)$. Assume the claim is true for $n$ and consider: \begin{align*}
+            (xy)^{n+1}[x^{-1},y^{-1}]^{n(n+1)/2} &= (xy)^n[x^{-1},y^{-1}]^{n(n-1)/2}xy[x^{-1},y^{-1}]^n \\
+            &= x^ny^nx[x^{-1},y^{-1}]^ny = x^ny^{n-1}xy[x^{-1},y^{-1}]^{n-1}y \\
+            &\ \vdots \\
+            &= x^{n+1}y^{n+1}\qedhere
+        \end{align*}
+    \end{proof}
+\end{lemma}
+
+\begin{theorem}
+    For $p$ an odd prime, there are two non-abelian groups of order $p^3$ up to isomorphism: \begin{enumerate}
+        \item $P_1 = \abr{a,b,c \mid a^p=b^p=c^p=1,\ [a,b]=c,\ [a,c]=[b,c]=1}\cong \abr{a,c}\rtimes\abr{b}\cong C_p^2\rtimes C_p$;
+        \item $P_2 = \abr{a,b \mid a^{p^2}=b^p=1,\ [a,b]=a^p} \cong \abr{a}\rtimes\abr{b}\cong C_{p^2}\rtimes C_p$.
+    \end{enumerate}
+    \begin{proof}
+        Let $P$ be such a group, then By the Burnside basis theorem $P/\Phi(P)\cong C_p^d$ for one of $d=1,2,3$. If $d=1$, then $P$ is cyclic; it $d=3$ then $P\cong C_p^3$ abelian, so we must have $d=2$. Write: \[
+        P = \abr{a,b}, \quad \Phi(P) = \abr{c}
+        \] for some $a,b,c\in P$. We also know $\Phi(P) = Z(P) = P'$.
+
+        First, assume $a^p=b^p=1$. As $[a,b]\neq 1$ ($P$ non-abelian), take $c=[a,b]$, this gives all the relations for $P_1$, so this caes is done.
+
+        Secondly, assume $a$ has order $p^2$, from the proof of the Burnside basis theorem we know $a^p\in \Phi(P)$, so $\Phi(P) = \abr{a^p}$. If $b^p=1$, then by taking $[a,b]=a^p$we have all the relations for $P_2$.
+
+        If, instead, we let $b$ have order $p^2$, wlog we may assume $a^p = c$ and $b^p = c^{-1}$ (by choosing different powers of $a$ and $b$). Now by the previous lemma we can write \[
+        1 = a^pb^p = (ab)^p[a^{-1},b^{-1}]^{p(p-1)/2}
+        \] where $p$ being odd must divide $p(p-1)/2$, thus $[a^{-1},b^{-1}]^{p(p-1)/2}=1$ and hence $(ab)^p=1$ and by replacing $b$ with $ab$ we reach the first state.
+    \end{proof}
+\end{theorem}
+
+$P_1$ also has an upper unitriangular representation over $\bF_p^3$ given by: \[
+a \mapsto \begin{pmatrix}
+    1 & 1 & 0 \\
+    0 & 1 & 0 \\
+    0 & 0 & 1
+\end{pmatrix}, \quad
+b \mapsto \begin{pmatrix}
+    1 & 0 & 0 \\
+    0 & 1 & 1 \\
+    0 & 0 & 1
+\end{pmatrix}, \quad
+c \mapsto \begin{pmatrix}
+    1 & 0 & 1 \\
+    0 & 1 & 0 \\
+    0 & 0 & 1
+\end{pmatrix}
+\]
+
+\subsection{Groups of order $16$}
+
+Not lectured.
+
+\begin{definition}
+    Here are four new classes of groups of order $p^n$ for $n\geq 3$: \begin{itemize}
+        \item $\Mod_{p^n}$
+        \item $D_{2^n}$
+        \item $SD_{2^n}$
+        \item $Q_{2^n}$
+    \end{itemize}
+\end{definition}
+
+\section{The transfer homomorphism}
 
 \end{document}
