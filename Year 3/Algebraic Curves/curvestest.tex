@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage{../../style/header}
+
+\begin{document}
+
+\section{Intersections}
+
+\subsection{Resultants}
+
+\begin{lemma}
+    For $R$ a UFD, and $f,g\in R[x]$ of degree $d\geq1$ and $e\geq 1$ respectively. $f$ and $g$ have a non-constant common factor iff there exists non-zero polynomails $a,b\in R[x]$ such that: \[
+    af + bg = 0
+    \] where $\deg(a)\leq e-1$ and $\deg(b)\leq d-1$.
+    \begin{proof}
+        Suppose $f,g$ have a common factor $h$ of degree $n\geq 1$, then there exists $p,q\in R[x]$ such that $f=ph$ and $g=qh$, so we can have: \[
+        qf - pg = 0
+        \] where $\deg(q) = e-n \leq e-1$ and $\deg(p) = d-n \leq d-1$.
+
+        If, instead, we can find such $a,b\in R[x]$ then be factoring $af$ into irreducible components: \[
+        af = c \cdot h_1^{\alpha_1}h_2^{\alpha_2}\cdots h_k^{\alpha_k} = -bg
+        \] if $f$ and $g$ contain none of the same factors, $g$ must divide $a$, which contradicts the degree requirement.
+    \end{proof}
+\end{lemma}
+
+This tells us that the polynomials $f,g$ are coprime iff the polnomials: \[
+    x^{e-1}f, \ldots, xf, f, x^{d-1}g, \ldots, xg, g
+\] are linearly independent. The best test we know for linear independence is the determinant, leading us to the definition of the resultant.
+
+\begin{definition}
+    For $R$ a UFD, and $f,g\in R[x]$ of the form: \[
+    f(x) = a_dx^d + \cdots + a_1x + a_0 \qquad g(x) = b_ex^e + \cdots + b_1x + b_0
+    \] where $a_d,b_e\neq 0$, the \textbf{resultant} of $f,g$ is: \[ \mathcal{R}_{fg} := 
+    \begin{vmatrix}
+        a_d & a_{d-1} & a_{d-2} & \cdots & a_0 \\
+        & a_d & a_{d-1} & \cdots & a_1 & a_0 \\
+        & & a_d & \cdots & a_2 & a_1 & a_0 \\
+        & & & \ddots & & \ddots & \ddots & \ddots \\
+        & & & & a_d & \cdots & a_2 & a_1 & a_0 \\
+        b_e & b_{e-1} & b_{e-2} & \cdots & b_0 \\
+        & b_e & b_{e-1} & \cdots & b_1 & b_0 \\
+        & & b_e & \cdots & b_2 & b_1 & b_0 \\
+        & & & \ddots & & \ddots & \ddots & \ddots \\
+        & & & & b_e & \cdots & b_2 & b_1 & b_0 \\
+    \end{vmatrix}
+    \substack{
+    \left. \begin{matrix}
+        \\ \\ \\ \\ \\ \\
+    \end{matrix} 
+    \right\}e \text{ rows}
+    \\
+    \left. \begin{matrix}
+        \\ \\ \\ \\ \\ \\
+    \end{matrix}
+    \right\}d \text{ rows}}
+    \] the determinant of this $(d+e)\times (d+e)$ matrix.\footnote{This is called the \textbf{Sylvester} matrix.}
+\end{definition}
+
+\begin{corollary}
+    $f$ and $g$ share a non-constant common factor iff $\cR_{f,g} = 0$.
+\end{corollary}
+
+We should now consider the resultant in the context of projective plane curves, not just arbitrary polynomials.
+
+\newpage
+
+\subsection{Weak B\'ezout}
+
+Throughout this section, we want to consider two projective plane curves: \[
+C = \bV(F(x,y,z)) \quad C' = \bV(G(x,y,z))
+\] For homogeneous polynomials $F,G\in k[x,y,z]$, which we view as $R[x]$ over the UFD $R=k[y,z]$, given by: \vspace{-12pt}\begin{gather*}
+    F(x,y,z) = f_0(y,z)x^d + f_1(y,z)x^{d-1} + \cdots + f_d(y,z) \\
+    G(x,y,z) = g_0(y,z)x^e + g_1(y,z)x^{e-1} + \cdots + g_e(y,z)
+\end{gather*}
+
+we know these curves won't cover all of $\bP^2$, so they must avoid some common point. By applying a projective transformation, we may assume that they both miss $[1,0,0]$.
+
+\begin{proposition}
+    There exist polynomials $A,B\in k[x,y,z]$ with $x$-degrees less than $e,d$ respectively such that: \[
+    \mathcal{R}_{F,G}(y,z) = AF + BG \in k[y,z]
+    \] Furthermore, if $\mathcal{R}_{F,G}$ is nonzero, it will be a homogeneous polynomial of degree $de$.
+    \begin{proof}
+        We will perform a series of column operators on the Sylvester matrix: for each $1\leq k \leq d+e-1$, add $x^{d+e-j}$ times the $j$th column to the last column. This doesn't effect the determinant, and gives the final column the form: \[
+        (x^{e-1}F, \ldots, xF, F, x^{d-1}G, \ldots, xG, G)
+        \] we can now expand the determinant along this column, giving the polynomials $A,B$; as every other entry in the matrix is in $k[y,z]$ the degrees of $A$ and $B$ are as desired.
+
+        Now to show $\mathcal{R}_{F,G}$ is homogeneous, we can write: \[
+            \mathcal{R}_{F,G} = \det(-) = \sum_{\sigma\in S^{d+e}}(-1)^\sigma\prod_{i=1}^df_{\sigma(i)-i}\prod_{j=1}^eg_{\sigma(j+e)-j}
+        \] each of these is a product of homogeneous polynomails of degree: \begin{gather*}
+            \sum_{i=1}^d\deg(f_{\sigma(i)-i}) + \sum_{j=1}^e \deg(g_{\sigma(j+e)-j}) = \sum_{i=1}^d \sigma(i)-i + \sum_{j=1}^e \sigma(j+e)-j \\
+             = \frac{(d+e)(d+e+1)}{2} - \frac{d(d+1)}{2} - \frac{e(e+1)}{2} = de\qedhere
+        \end{gather*}
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}
+    $\mathcal{R}_{F,G}(y,z)$ is zero iff $F$ and $G$ share a non-constant common factor in \begin{proof}
+        We already know $\mathcal{R}_{F,G}$ is zero iff $F$ and $G$ share a non-constant common factor in $k[y,z]$. But, by out assumption that $F$ and $G$ are nonzero on $[1,0,0]$ this factor must have positive $x$-degree, else $F(1,0,0)$ has $0$ as a fator.
+    \end{proof}
+\end{proposition}
+
+\begin{theorem}[Weak B\'ezout theorem]
+    The intersetion $C\cap C'$ is nonemtpy, and either $\abs{C\cap C'}\leq de$ or $C\cap C'$ contains a plane curve.
+
+    \begin{proof}
+        
+    \end{proof}
+\end{theorem}
+
+\newpage
+
+\subsection{Conics}
+
+\subsection{Constructive nullstellensatz}
+
+\subsection{Intersection multiplicity}
+
+\subsection{Strong B\'ezout}
+
+\subsection{Multiple points}
+
+\subsection{Cubics}
+
+
+
+
+\end{document}
