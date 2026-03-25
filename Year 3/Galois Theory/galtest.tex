@@ -3,38 +3,65 @@
 
 \begin{document}
 
-\subsection{motivation and introduction}
+Field theory is very hard, Galois theory is the gymnastics of recovering information about fields from the much easier linear algebra, and finite groups acting on finite sets.
 
-\subsection{categorics}
+\begin{definition}
+    The \textbf{degree} of a field extension $K\subset L$ is $[L:K] := \dim_K L$ as a $K$-vector space. A field extension is called finite if its degree is.
+\end{definition}
 
-I want to state and prove the Galois correspondence purely categorically. Throughout fix a ground field $k$ and work in the category of algebraic $k$-extensions.
+From now on, unless otherwise said, all field extensions are finite.
+
+\begin{proposition}[Tower law]
+    If $K\subset F \subset L$ is a tower of extensions, then $[L:K]=[L:F][F:K]$.\begin{proof}
+        If $B = \{b_1,\ldots,b_n\}$ and $C=\{c_1,\ldots,c_m\}$ is a $K$-basis for $F$ and an $F$-basis for $L$ respectively, then $\{b_ic_j \mid 1\leq i \leq n, \ 1\leq j \leq m\}$ is a $K$-basis for $L$.
+    \end{proof}
+\end{proposition}
+
+All field homomorphisms $f:K\rightarrow L$ are injective, as the kernel is a proper ideal of $K$, so instead of $\Hom(K,L)$ I'll write $\Emb(K,L)$. Now by the first isomorphism theorem, if $f:K\rightarrow K$ is a field \textit{endomorphism}, it must be an isomorphism, so I'll write $\Aut(K)$ for $\Emb(K,K)$.
+
+\begin{definition}
+    If $K\subset F,L$ are field extensions, then the set of $K$-embeddings from $F$ to $L$ is \[
+    \Emb_K(F,L) = \{f\in \Emb(F,L) \mid f\vert_K = \id_K\}
+    \]
+\end{definition}
+
+In Galois theory, $K$ is almost always the prime subfield, and so this distinction often doesn't matter. When there are multiple embeddings $K\rightarrow F,L$, by writing $K\subset F,L$ I am choosing a canonical embedding, and specifying some $f\in \Emb_K(F,L)$ is asking for this map to commute with the canonical embeddings, in which case things like the cardinality of this set may depend on my choice of canonical embedding.
+
+I will avoid this complication by almost always having a fixed \textit{ground field} $k$ of which every field $K$ is an extension, so I am really working in the category of finite field extensions $k\subset K$. Here $k$ is the special initial object, and I will try to state all propositions that don't require this, without using $k$ as an object.
+
+\begin{proposition}[A2]
+    If $K \subset L$ is a field extension, then there is a \textit{right} action of $\Aut_k(K)$ on $\Emb_k(K,L)$ by composition, and this action is free.
+    \begin{proof}
+        As all $f\in \Emb_k(K,L)$ are injective, if there exists $\sigma \in \Aut_k(K)$ with $f\sigma = f$, then $\sigma=\id_K$.
+    \end{proof}
+\end{proposition}
+
+\subsection{Categorics}
 
 \begin{proposition}[A4]
-    For all finite extensions $k\subset K,L$ there exists a diagram: \[
-    \begin{tikzcd}[row sep = small, column sep = small]
-        & K \arrow[dr, phantom, sloped, "\subset"]\\
-        k \arrow[ur, phantom, sloped, "\subset"] \arrow[dr, phantom, sloped, "\subset"] && \Omega\\
-        & L \arrow[ur, phantom, sloped, "\subset"]
+    For all finite extensions $K\subset F,L$ there exists a diagram: \[\begin{tikzcd}
+        K \arrow[r, phantom, "\subset"] \arrow[d, phantom, sloped, "\subset"]  & F \arrow[d, phantom, sloped, "\subset"] \\
+        L \arrow[r, phantom, "\subset"] & \Omega
     \end{tikzcd}\]
 \begin{proof}
-    Go by induction on $[K:k]$: the base case has $K=k$ where taking $\Omega = L$ works. 
+    Go by induction on $[F:K]$, the base case has $F=K$ where taking $\Omega = L$ works. 
     
-    Now suppose $[K:k]>1$: there will exist some $\alpha\in K\setminus k$, which will have minimal polynomial $f\in k[X]$, let $L'$ be the splitting field of $f\in L[X]$, then \[\Emb_k(k(\alpha),L') = \{\text{roots of $f$ in $L'$}\}\neq \emptyset\] and we can form the daigram:\[
-    \begin{tikzcd}[row sep = small, column sep = small]
-        & & K \\
-        & k(\alpha) \arrow[ur, phantom, sloped, "\subset"] \arrow[dr, phantom, sloped, "\subset"]\\
-        k \arrow[ur, phantom, sloped, "\subset"] \arrow[dr, phantom, sloped, "\subset"] && L'\\
-        & L \arrow[ur, phantom, sloped, "\subset"]
-    \end{tikzcd}
-    \] where, as $k\neq k(\alpha)$, the tower law says $[K:k(\alpha)] < [K:k]$. Thus, by strong induction, we are done.
+    Now suppose $[F:K]>1$, there will exist some $a\in F\setminus K$, which will have minimal polynomial $f\in K[X]$, let $L'$ be the splitting field of $f\in L[X]$, then \[\Emb_k(k(a),L') = \{\text{roots of $f$ in $L'$}\}\neq \emptyset\] and we can form the daigram:
+    \[\begin{tikzcd}
+        K \arrow[r, phantom, "\subset"] \arrow[d, phantom, sloped, "\subset"] & K(a) \arrow[r, phantom, "\subset"] \arrow[d, phantom, sloped, "\subset"] & F \\
+        L \arrow[r, phantom, "\subset"] & L'
+    \end{tikzcd}\]
+    where, as $K\neq K(a)$, the tower law says $[F:K(a)] < [F:K]$.
 \end{proof}
 \end{proposition}
 
-\begin{definition}
-    $k\subset K$ is a \textbf{normal extension} if for all $K\subset\Omega$ the right action \[\Emb_k(K,\Omega)\curvearrowleft \Aut_k(K)\] by \textbf{pre}-composition is transitive\footnote{This action will always be free (no nontrivial element has a fixed point), as all field homomorphisms are injective thus mono. So normal extensions are precisely those extensions $k\subset K$ where $\Emb_k(K,\Omega)$ is an $\Aut_k(K)$-torsor.}, i.e.~every $x:K\hookrightarrow \Omega$ is just the canonical inclusion of $\sigma(K)$ into $\Omega$.
-\end{definition}
+This looks like a pushout, but because we are asking for canonical embeddings $F,L\subset \Omega$ there is no universal property.
 
-You can never embed a normal extension outside of its image.
+It's an exercise on one of the problem sheets to show fibered products, which are given by intersections, and ``framed'' pushouts, which are pushouts in the category of subfields of some $\Omega$, and given by products, exist.
+
+\begin{definition}
+    $k\subset K$ is a \textbf{normal extension} if for all $K\subset\Omega$ the action $\Emb_k(K,\Omega)\curvearrowleft \Aut_k(K)$ is transitive, i.e.~every $x:K\hookrightarrow \Omega$ is just the canonical inclusion of $\sigma(K)$ into $\Omega$.
+\end{definition}
 
 \begin{lemma}
     If $k\subset K$ is normal, and $k\subset F \subset K$ is an intermediate field, then $F\subset K$ is normal.
@@ -125,9 +152,9 @@ From this, it is immediately obvious that the natural injective composition with
     \end{proof}
 \end{theorem}
 
-\subsection{translating back down}
+We now want to translate the categorical definitions of normal and separable extensions into field theoretic statements.
 
-We want to classify the categorical definitions of normal and separable extensions into field theoretic statements.
+\subsection{Normal extensions}
 
 \begin{theorem}
     For a finite extension $k\subset K$ tfae: \begin{enumerate}
@@ -151,6 +178,8 @@ We want to classify the categorical definitions of normal and separable extensio
         Let $K=k(a_1,\ldots,a_n)$, with $f_i$ the minimal polynomial of each $a_i$ over $k$ respectively, now let $L$ be the splitting field of $f_1\cdots f_n$ over $K$, and thus also over $k$.
     \end{proof}
 \end{lemma}
+
+\subsection{Separable extensions}
 
 \begin{definition}
     For $k\subset K$ define the \textbf{separable degree}\[
@@ -180,10 +209,70 @@ Separable extensions are now exactly those $k\subset K$ such that for all towers
     \end{proof}
 \end{proposition}
 
+\begin{definition}
+    A polynomial $f\in K[X]$ is \textbf{separable} if it has $n=\deg(f)$ distinct roots in its splitting field. An element $a\in K$ is then called separable if its minimal polynomial is.
+\end{definition}
+
+\begin{proposition}
+    An irreducible polynomial $f\in K[X]$ is inseparable iff $K$ has characteristic $p>0$ and there exists some irreducible $h\in K[X]$ with $f(X)=h(X^p)$.
+\end{proposition}
+
+\begin{lemma}
+    If $K\subset K(a)$ is separable, then $a$ is separable over $K$.
+    \begin{proof}
+        Let $f\in K[X]$ be the minimal polynomial of $a$ over $K$, and suppose it isn't separable, then we have $f(X) = h(X^p)$ for some irreeucible $h$, and $b=a^p$ is a root of $h$, so we can form the tower $K\subset K_1 = K(b) \subset K_2 = K(a)$ where, by the tower law \[
+        p \deg(h) = \deg(f) = [K_2:K] = [K_2:K_1][K_1:K] = [K_2:K_1]\deg(h)
+        \] so $[K_2:K_1] = p$ and $(X-a)^p = X^p-b\in K_1[X]$ is the minimal polynomial of $a$ over $K_1$, so $[K_2:K_1]_s = 1$, and thus $K\subset K(a)$ is inseparable.
+    \end{proof}
+\end{lemma}
+
 \begin{theorem}
-    For a finite extension $k\subset K$ tfae: \begin{enumerate}
-        \item 
-    \end{enumerate}
+    A finite extension $k\subset K$ is separable iff $[K:k]_s = [K:k]$.
+    \begin{proof}
+        ($\impliedby$) If $[K:k]_s = [K:k]$, then by applying two tower laws to \[
+        k \subset K_1 \subset K_2 \subset K
+        \] and by (A1), $[-:-]_s\leq [-:-]$, if $[K_2:K_1]_s = 1$, so if $[K_2:K_1]_s = 1$, we get \[
+        [K:K_2][K_2:K_1][K_1:k] = [K:K_2]_s[K_1:k]_s \leq [K:K_2][K_1:k]
+        \] so $[K_2:K_1]=1$ and $K_1 = K_2$.
+
+        ($\implies$) Now, if $k\subset K$ is separable, pick $a\in K\setminus k$ and consider the tower $k\subset k(a) \subset K$, we have $[k:k(a)]$ separable, so by the previous lemma we know $a$ is separable over $k$, so \[
+        [k(a):k] = \deg(f) = \abs{\{\text{roots of }f\}} = [k(a):k]_s
+        \] and as $[K:k(a)]<[K:k]$, we may inductively assume $[K:k(a)]_s = [K:k(a)]$, and the tower law finished the proof.
+    \end{proof}
 \end{theorem}
+
+\begin{corollary}
+    The following list of statements immediately hold: \begin{enumerate}
+        \item For all towers $k\subset K \subset L$, is $k\subset K$ and $K\subset L$ are separable, then $k\subset L$ is separable;
+        \item $k\subset K$ is separable iff every $a\in K$ is separable over $k$;
+        \item if $a$ is separable over $k$, then $k\subset k(a)$ is separable;
+        \item if $k\subset K$ is the splitting field of a separable polynomial, then $k\subset K$ is separable.
+    \end{enumerate}
+\end{corollary}
+
+\subsection{Primitive element theorem}
+
+This is Stacks project lemma 9.19.1, and very much not categorical.
+
+\begin{proposition}
+    For all finite field extensions $K\subset L$, tfae: \begin{enumerate}
+        \item $L$ is \textbf{simple} over $K$, i.e.~there exists some $\alpha \in L$ such that $L=K(\alpha)$;
+        \item there are finitely many intermediary subfields $K\subset F \subset L$.
+    \end{enumerate}
+    \begin{proof}
+        ($\Rightarrow$) suppose we have a subfield $K\subset F \subset K(\alpha)$ with $f$ the minimal polynomial of $\alpha$ over $F$, then $\deg(f)=[K(\alpha):F]$ and if $f=x^d + a_{d-1}x^{d-1}+\cdots + a_0$, then $K(a_0,\ldots,a_{d-1})\subset F$ and they have the same degree in $K(\alpha)$, so are equal. All such $f$ must be one of the finitely many factors of the minimal polynomial of $\alpha$ in $K$ when viewed in $K(\alpha)$.
+
+        ($\Leftarrow$) If we are working with finite fields then we can always find primitive elements as generators of the cyclic groups $L^\times$. Now assume $K$ is infinite, and has only finitely many subfields $K_1,\ldots, K_n$, these are all proper subspaces so we can find $\alpha \not\in K_i$ for all $i$, this is our primitive element.
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}
+    If $K\subset L$ is separable, then the above conditions hold.
+    \begin{proof}
+        Let $k\subset L\subset\Omega$ be a normal extension---so $K\subset L \subset \Omega$ is as well---and consider an enumeration of the finite set $\Emb_K(L,\Omega) = \{\sigma_1,\ldots,\sigma_n\}$, if $K\subset L$ is separable, then $[L:K]=n$ and for all $i\neq j$ we have $V_{ij} = \ker(\sigma_i-\sigma_j)\subsetneq L$ from which we can find a primitive element as in the previous proposition.
+    \end{proof}
+\end{proposition}
+
+The primitive element theorem is important in algebraic number theory as all number fields are separable over $\bQ$.
 
 \end{document}

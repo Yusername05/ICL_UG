@@ -16,7 +16,7 @@ Scribed by Yu Coughlin}
 
 \subsection{Solving harder polynomials}
 
-Corti's way of teaching Galois theory is a charming combination of categorifying the main theory, while involving lots of computational methods. It is probably wise to try and approach his spartan expectation of your command of algebraic manipulation.
+The first goal for this course, is exact solutions to polynomials, for polynomials in low degree with coefficients in $\bC$, we already know some nice formulas.
 
 \begin{proposition}
     Quadratic equations over a field $k$ can be \textit{solved by radicals}.\footnote{This has a precise definition we \textit{might} talk about later on in this course, but you have an intuitive idea of what it really means.}
@@ -26,6 +26,8 @@ Corti's way of teaching Galois theory is a charming combination of categorifying
         \]
     \end{proof}
 \end{proposition}
+
+This example is familiar even from highschool. The next step up in degree, already makes things significantly more challenging.
 
 \begin{proposition}
     Cubic equations over a field $k$ can be solved by radicals.
@@ -37,6 +39,12 @@ Corti's way of teaching Galois theory is a charming combination of categorifying
         \] This is now a quadratic in $u^3$, so we can use the previous method and find $6$ values for $u$, only $3$ of these will be distinct, we can then substitue back into $Y$ and then $X$.
     \end{proof}
 \end{proposition}
+
+While the quadratic equation is pretty easy to derive, the unassuming undergrad might struggle to discover the \textit{trick} for the cubic formula. ``The best way to appreciate this is to go to a deserted island with no food, the only way to leave is once you have solved the problem. Some of you will die of hunger on that island, but at least you will have learned the problem is tough''.
+
+Galois theory is a method for translating information from the baroque theory of fields, to the much simpler theories of finite groups and linear algebra. We will see that the \textbf{Galois group} associated to this polynomial is in general $S_3$ which is solvable, the composition series will show us how to produce the above formula.
+
+There is a similar method for the quartic, which comes from the fact that $S_4$ is also solvable.
 
 \begin{proposition}
     Quartic equations over a field $k$ can be solved by radicals.
@@ -50,8 +58,6 @@ Corti's way of teaching Galois theory is a charming combination of categorifying
         \] This is a cubic in $\lambda$, so we can use the previous method to solve it. Substituting, probably the nicest, solution for $\lambda$ back in lets us write our expression for $f$ as the difference of two squares, factoring our quartic as the product of two quadratics which we can solve with the first method.\footnote{I know this as ``Ferrari's method''.}
     \end{proof}
 \end{proposition}
-
-I have not really proved that the last two methods work, do my $\lambda$ and $u$ always exists, do the multiple roots all collapse nicely, how did people come up with this? I'm content not knowing any of these details and just using these algorithms, because they do in fact always work.
 
 \subsection{Field stuff}
 

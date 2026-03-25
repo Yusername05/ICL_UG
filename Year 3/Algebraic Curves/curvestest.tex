@@ -3,12 +3,12 @@
 
 \begin{document}
 
-\section{Intersections}
+\section{Intersections of curves}
 
 \subsection{Resultants}
 
 \begin{lemma}
-    For $R$ a UFD, and $f,g\in R[x]$ of degree $d\geq1$ and $e\geq 1$ respectively. $f$ and $g$ have a non-constant common factor iff there exists non-zero polynomails $a,b\in R[x]$ such that: \[
+    For $R$ a UFD, and $f,g\in R[x]$ of degree $d\geq1$ and $e\geq 1$ respectively, $f$ and $g$ have a non-constant common factor iff there exists non-zero polynomials $a,b\in R[x]$ such that: \[
     af + bg = 0
     \] where $\deg(a)\leq e-1$ and $\deg(b)\leq d-1$.
     \begin{proof}
@@ -35,16 +35,17 @@ This tells us that the polynomials $f,g$ are coprime iff the polnomials: \[
         & a_d & a_{d-1} & \cdots & a_1 & a_0 \\
         & & a_d & \cdots & a_2 & a_1 & a_0 \\
         & & & \ddots & & \ddots & \ddots & \ddots \\
-        & & & & a_d & \cdots & a_2 & a_1 & a_0 \\
-        b_e & b_{e-1} & b_{e-2} & \cdots & b_0 \\
-        & b_e & b_{e-1} & \cdots & b_1 & b_0 \\
-        & & b_e & \cdots & b_2 & b_1 & b_0 \\
-        & & & \ddots & & \ddots & \ddots & \ddots \\
-        & & & & b_e & \cdots & b_2 & b_1 & b_0 \\
+        & & & & a_d & a_{d-1} & a_{d-2} & \cdots & a_0 \\
+        & & & & & a_d & a_{d-1} & \cdots & a_1 & a_0 \\
+        b_e & b_{e-1} & b_{e-2} & \cdots & b_1 & b_0 \\
+        & b_e & b_{e-1} & \cdots & b_2 & b_1 & b_0 \\
+        & & b_e & \cdots & b_3 & b_2 & b_1 & b_0 \\
+        & & & \ddots & & \ddots & \ddots & \ddots & \ddots \\
+        & & & & b_e & b_{e-1} & \cdots & b_2 & b_1 & b_0 \\
     \end{vmatrix}
     \substack{
     \left. \begin{matrix}
-        \\ \\ \\ \\ \\ \\
+        \\ \\ \\ \\ \\ \\ \\
     \end{matrix} 
     \right\}e \text{ rows}
     \\
@@ -52,27 +53,35 @@ This tells us that the polynomials $f,g$ are coprime iff the polnomials: \[
         \\ \\ \\ \\ \\ \\
     \end{matrix}
     \right\}d \text{ rows}}
-    \] the determinant of this $(d+e)\times (d+e)$ matrix.\footnote{This is called the \textbf{Sylvester} matrix.}
+    \] the determinant of this $(d+e)\times (d+e)$ \textbf{Sylvester matrix}.
 \end{definition}
 
 \begin{corollary}
     $f$ and $g$ share a non-constant common factor iff $\cR_{f,g} = 0$.
 \end{corollary}
 
-We should now consider the resultant in the context of projective plane curves, not just arbitrary polynomials.
+\begin{proposition}
+    If $\Frac(R)$ has characteristic zero, then $f\in R[x]$ has a repeated factor iff $\cR_{f,f'}=0$.
+    \begin{proof}
+        The product rule for differentiation gives $(\Rightarrow)$, if $f$ and $f'$ share a common factor $g$, then $f=gh$ and $f'=gh' + g'h$ being a multiple of $g$ implies $g\mid h$, thus $g^2\mid f$.
+    \end{proof}
+\end{proposition}
 
-\newpage
+If $f$ is the quadratic $ax^2 + bx + c$, then the resultant $\cR_{f,f'}$ is $-a(b^2-4ac)$, so we recover the normal condition that the discriminant be nonzero.
 
 \subsection{Weak B\'ezout}
 
 Throughout this section, we want to consider two projective plane curves: \[
 C = \bV(F(x,y,z)) \quad C' = \bV(G(x,y,z))
-\] For homogeneous polynomials $F,G\in k[x,y,z]$, which we view as $R[x]$ over the UFD $R=k[y,z]$, given by: \vspace{-12pt}\begin{gather*}
+\] for homogeneous polynomials $F,G\in k[x,y,z]$, which we view as $R[x]$ over the UFD $R=k[y,z]$, given by:
+\begin{equation}
+\begin{gathered}
     F(x,y,z) = f_0(y,z)x^d + f_1(y,z)x^{d-1} + \cdots + f_d(y,z) \\
     G(x,y,z) = g_0(y,z)x^e + g_1(y,z)x^{e-1} + \cdots + g_e(y,z)
-\end{gather*}
+\end{gathered}
+\end{equation}
 
-we know these curves won't cover all of $\bP^2$, so they must avoid some common point. By applying a projective transformation, we may assume that they both miss $[1,0,0]$.
+We know these curves won't cover all of $\bP^2$, as otherwise for all $c\in k$, the union $C\cup C' = \bV(FG)$ would contain the line $\{x-cy\}=0$, so this must be a factor of the product, which contradicts having finite degree. So our curves avoid some common point; by applying a projective transformation, we may assume that they both miss $[1,0,0]$.
 
 \begin{proposition}
     There exist polynomials $A,B\in k[x,y,z]$ with $x$-degrees less than $e,d$ respectively such that: \[
@@ -85,7 +94,7 @@ we know these curves won't cover all of $\bP^2$, so they must avoid some common 
 
         Now to show $\mathcal{R}_{F,G}$ is homogeneous, we can write: \[
             \mathcal{R}_{F,G} = \det(-) = \sum_{\sigma\in S^{d+e}}(-1)^\sigma\prod_{i=1}^df_{\sigma(i)-i}\prod_{j=1}^eg_{\sigma(j+e)-j}
-        \] each of these is a product of homogeneous polynomails of degree: \begin{gather*}
+        \] each of these is a product of homogeneous polynomials of degree: \begin{gather*}
             \sum_{i=1}^d\deg(f_{\sigma(i)-i}) + \sum_{j=1}^e \deg(g_{\sigma(j+e)-j}) = \sum_{i=1}^d \sigma(i)-i + \sum_{j=1}^e \sigma(j+e)-j \\
              = \frac{(d+e)(d+e+1)}{2} - \frac{d(d+1)}{2} - \frac{e(e+1)}{2} = de\qedhere
         \end{gather*}
@@ -93,33 +102,164 @@ we know these curves won't cover all of $\bP^2$, so they must avoid some common 
 \end{proposition}
 
 \begin{proposition}
-    $\mathcal{R}_{F,G}(y,z)$ is zero iff $F$ and $G$ share a non-constant common factor in \begin{proof}
-        We already know $\mathcal{R}_{F,G}$ is zero iff $F$ and $G$ share a non-constant common factor in $k[y,z]$. But, by out assumption that $F$ and $G$ are nonzero on $[1,0,0]$ this factor must have positive $x$-degree, else $F(1,0,0)$ has $0$ as a fator.
+    $\mathcal{R}_{F,G}(y,z)$ is zero iff $F$ and $G$ share a non-constant common factor in $k[x,y,z]$.\begin{proof}
+        We already know $\mathcal{R}_{F,G}$ is zero iff $F$ and $G$ share a non-constant common factor in $k[x,y,z]$ with positive $x$-degree. If $F$ and $G$ share a non-constant common factor in $k[y,z]$, then this contradicts the assupmtion that $F$ and $G$ are nonzero on $(1,0,0)$, so all non-constant factors have positive $x$-degree.
     \end{proof}
 \end{proposition}
 
+Our assupmtion that we can apply a projective transformation such that $C$ and $C'$ both miss $[1,0,0]$ is the same as $F$ and $G$ being nonzero on $(1,0,0)$.
+
 \begin{theorem}[Weak B\'ezout theorem]
     The intersetion $C\cap C'$ is nonemtpy, and either $\abs{C\cap C'}\leq de$ or $C\cap C'$ contains a plane curve.
-
     \begin{proof}
-        
+        Consider $\cR_{F,G}\in k[y,z]$ which is either zero of homogeneous of degree $de$. If it is zero, then by the previous proposition our polynomials have a non-constant common factor $H$, which corresponds to $C\cap C'$ containing the plane curve $\{H=0\}$.
+
+        If $\cR_{F,G}$ is not zero, as we are working over an algebraically closed $k$, we can factor this as \[
+        \cR_{F,G}(y,z) = \prod_{i=1}^{de}(a_iy + b_iz)
+        \] where at any finxed $(y_0,z_0)$, $F(x,y_0,z_0)$ and $G(x,y_0,z_0)$ have a common root at some $x_0$ iff $\cR_{F,G}(y_0,z_0)=0$, which is equivalent to finding some $i$ with $a_iy_0 + b_iz_0 = 0$. So there is an $x_0\in k$ with  $[x_0,y_0,z_0]\in C\cap C'$ iff there is some $i$ with $[y_0,z_0] = [b_i,-a_i]$, thus $C\cap C'$ is nonempty.
+
+        Now we just have to bound $\abs{C\cap C'}$, suppose there exists some set $S\subseteq C\cap C'$ of $de+1$ distinct points. Then, by the same argument to show $C\cup C' \subsetneq \bP^2$, the set of projective lines between any pair of points in $S$ can be assumed to miss $[1,0,0]$. Now for all $[x,y,z]\in C\cap C'$, we have $(y,z)\neq (0,0)$ and $a_iy + b_iz = 0$ for some $1\leq i \leq de$, so for $S$ to exist there must be two distinct $[x,y,z], [x',y',z']z \in S$ corresponding to the same $i$, but then the unique line through these points is $\{a_iy + b_iz=0\}\ni [1,0,0]$, a contradiction.
     \end{proof}
 \end{theorem}
 
-\newpage
+To the get the equality of the full B\'ezout's theorem, we need to count our points geometrically, instead of set-theoretically, this is called an intersection multiplicity. First we see a few applications of what we've already developed.
+
+\begin{proposition}
+    Nonsingular plane curves are irreducible, and irreducible plane curves have at most finitely many singular points.
+    \begin{proof}
+        Let $C$ be the reducible plane curve given by $P(x,y,z)Q(x,y,z)=0$, we know $P$ and $Q$ have an intersection, at this point the deriviative of $PQ$ is also $0$.
+
+        Now if $C'$ is the irreducible plane curve $F(x,y,z)=0$, wlog we may assume $F_x\not\equiv 0$, then as $F$ is irreducible, $F$ and $F_x$ don't share any non-constant common factors. All singular points of $C$ satisfy $F=F_x = 0$, which by B\'ezout's theorem is a finite set.
+    \end{proof}
+\end{proposition}
 
 \subsection{Conics}
 
-\subsection{Constructive nullstellensatz}
+A conic is a projective plane curve of degree $2$, the classification of conics of $\bR$ are the ellipses, parabolas, hyperbolas, and degenerate cases. Over $\bC$ they are all equivalent.
 
-\subsection{Intersection multiplicity}
+\begin{theorem}
+    If $C$ is an irreducible conic over an algebraically closed field of characteristic zero, then $C$ is projectively equivalent to $\{x^2=yz\}$.\begin{proof}
+        As all but finitely many points of $C$ are singular, we may take $p\in C$ smooth and  $q\in T_pC$ by applying a projective transformation we may assume $p = [1,0,0]$ and $q = [0,1,0]$ so $T_{[1,0,0]}C = \{z=0\}$. If $C$ is defined by $F(x,y,z) = ax^2 + bxy + cy^2 + dyz + ez^2 + fzx=0$, then we know: $[1,0,0]\in C \implies a=0$, $T_{[1,0,0]}=\{z=0\}\implies b=0$, and $F$ irreducible $\implies c,d\neq 0$; which leaves $F$ in the form \[
+        F(x,y,z) = (\sqrt{c}y)^2 + (dx+ey+fz)z
+        \] so $C$ is equivalent, by projective transformation, to $\{x^2-yz\}=0$.
+    \end{proof}
+\end{theorem}
 
-\subsection{Strong B\'ezout}
+\begin{corollary}
+    A conic over an algebraically closed field of characteristic 0 is smooth iff it's irreducible.
+\end{corollary}
 
-\subsection{Multiple points}
+\begin{proposition}
+    Every five points in $\bP^2$ lie on a conic, if no four of the points are collinear, then this conic is unique.
+    \begin{proof}
+        If we write the defining euqation of the conic explicitly as in the previous proof, then the five points on $C$ determine a system of five linear equations on the 6 coefficients of $F$, this will admit a nonzero solution.
+
+        Suppose five points lie on two different conics, $C$ and $C'$, then B\'ezout's theorem says their intersection must contain some irreducible curve $C_0$ which must be linear for $C\neq C'$. It is an exercise to show that $C$ and $C'$ can now be seen as the union of $C_0$ with lines $L\neq L'$. If at most three of our points lie on $C_0$, then at least two lie on both $L$ and $L'$, but as the line between two points is unique, this is a contradiction. THus at least four of the points lie on $C_0$, so are collinear.
+    \end{proof}
+\end{proposition}
+
+\subsection{Intersection multiplicities and strong B\'ezout}
+
+\begin{definition}
+    For plane curves $C,D$ and $p\in \bP^2$ the \textbf{intersection multiplicity} $I_p(C,D)$ of $C$ and $D$ at $p$ satisfies the following: \begin{enumerate}
+        \item $I_p(C,D) = I_p(D,C)$;
+        \item if $p\not\in C\cap D$, then $I_p(C,D)=0$;
+        \item if $C\cap D$ contains the irreducible curve $C_0$ and $p\in C_0$, then $I_p(C,D)=\infty$;
+        \item if $C$ and $D$ are distinct lines intersecting at $p$, then $I_p(C,D)=1$;
+        \item if $D=D_1\cup D_2$ is a union of plane curves, then $I_p(C,D) = I_p(C,D_1) + I_p(C,D_2)$;
+        \item if $C$ and $D$ are defined by $F(x,y,z)=0$ and $G(x,y,z)=0$ respectively, and if $D'$ is given by $FQ + G = 0$ for some homogeneous $Q$, then $I_p(C,D) = I_p(C,D')$.
+    \end{enumerate}
+\end{definition}
+
+To show the existence of an intersection multiplicity, we'll need a few more results about the resultant.
+
+\begin{proposition}
+    For $R$ a UFD, and $f,g\in R[x]$ non-constant polynomials which factor into linear terms: \begin{gather*}
+        f(x) = a(x-\lambda_1)(x-\lambda_2)\cdots(x-\lambda_d) \\
+        g(x) = b(x-\mu_1)(x-\mu_2)\cdots(x-\mu_e)
+    \end{gather*} then their resultant is \[
+    \cR_{f,g} = a^eb^d\prod_{\substack{1\leq i\leq d \\ 1\leq j \leq e}}(\lambda_i - \mu_j)
+    \]\begin{proof}
+        We can assume $f$ and $g$ are monic, then each of the coefficients $a_k$ and $b_k$ are homogeneous polynomials in the $\lambda_i$ and $\mu_j$ of degree $n-k$ and $m-k$ respectively. So the $ij$th entrance of the Sylvester matrix is a degree $n+i-k$ if $1\leq i\leq m$, or $i-j$ if $m+1\leq i \leq n+m$ homogeneous polynomial, and so by the same argument as in Prop 1.2.1, the resultant is a homogeneous degree $de$ polynomial in the $d+e$ variables which vanished precisely when one of the $\lambda_i=\mu_j$, thus is a scalar multiple of our desiderata. If we send all the $\lambda_i$ to $1$ and $\mu_i$ to $0$, we get a homomorphism from our big polynomial ring to $R[x]$, which sends our leading coefficient to $\cR_{(x-1)^d,x^e}$, it is a straightforward computation to show this is $1$.
+    \end{proof}
+\end{proposition}
+
+\begin{corollary}
+    For all $c\in R$, and $f$ as above, $\cR_{x-c,f}=f(c)$.
+\end{corollary}
+
+For this case, we don't actually need to assume $f$ splits into linear factors in $R$, if we do all the work in an algebraic closure of the field of fractions of $R$.
+
+\begin{corollary}
+    For $R$ a UFD and $f,g,h\in R[x]$ non-constant polynomaisl, then $\cR_{f,gh} = \cR_{f,g}\cR_{f,h}$.\begin{proof}
+        We also work in $k$ and algebraic closure of the field of fractions of $R$. Here we can write \[
+        \cR_{f,gh} = \prod_{i=1}^d (gh)(\lambda_i) = \prod_{i=1}^d g(\lambda_i)\prod_{i=1}^d h(\lambda_i) = \cR_{f,g}\cR_{f,g}\qedhere
+        \]
+    \end{proof}
+\end{corollary}
+
+\begin{corollary}
+    If, as above, $f$, $g$, and $hf+g$ have positive degree and $f$ is monic, then $\cR_{f,g}=\cR_{f,hf+g}$.\begin{proof} 
+        Same structure, it can be an exercise.
+    \end{proof}
+\end{corollary}
+
+We're now prepared to prove half of the proposition.
+
+\begin{theorem}
+    As in the definition, there is a unique intersection multiplicity $I_p(C,D)$, which is defined to satisfy $2$ and $3$, and otherwise is given by the following.
+
+    Let $C'\subset C$ and $D'\subset D$ be the unions of componenets not common to $C$ and $D$, with a projective transofrmation applied such that $[1,0,0]\not\in C'$, $D'$, or any of the lines through pairs of points of $C'\cap D'$. If $C'$ and $D'$ are given by $\{F(x,y,z)=0\}$ and $\{G(x,y,z)=0\}$ respectively, and $p=[a,b,c]$, then $I_p(C,D)$ is the multiplicyt of $[b,c]$ as a root of $\cR_{F,G}(y,z)$.
+
+    \begin{proof}
+        The proof of uniqueiness is Theoreom 3.18 of Kirwan's book: the rough sketch is than once we've shown $I_p(C,D)=k$, we use the six axioms to express $I_p(C,D)$ as a combination of intersection multiplicities strictly less than $k$ and uniqueness follows by induction on $k$.
+
+        Properties $1,2,3,5,6$ are all immediate from the definition of the resultant or the previous propositions, so all that's left is $4$, which is just a direct computation.
+    \end{proof}
+\end{theorem}
+
+\begin{theorem}[B\'ezout's theorem]
+    For $k$ an algebraically closed field and $C,D$ plane curves of degrees $d,e\geq 1$ respectively with no common componennts, then \[
+    \sum_{p\in C\cap D} I_p(C,D) = de
+    \]\begin{proof}
+        We follow the normalisation procedure in the proof of the weak B\'ezout's theorem and get a bijection between points $p = [a,b,c]\in C\cap D$ and roots $[b,c]$ of $\cR_{F,G}(y,z)$, now the multiplicity of this root is $I_p(C,D)$ and $\cR_{F,G}(y,z)$ has exacltly $de$ roots, so we are done.
+    \end{proof}
+\end{theorem}
+
+Points $p$ in the intersection $C\cap D$ with $I_p(C,D)=1$ are called \textbf{transverse intersections}.
+
+\begin{proposition}
+    If $k$ is algebraically closed, and $p$ is a smooth point on the projective plane curves $C=\{F=0\}$ and $D=\{G=0\}$, then $I_p(C,D)=1$ iff $T_pC$ and $T_p D$ are different.
+    \begin{proof}
+        Wlog assume $C\neq D$, both are irreducible, and $\deg(C)\geq \deg(D) \geq 1$. Now the intersection $C\cap D$ is finite, and we can apply a projective transformation such that $p=[0,0,1]$, $T_pD = \{x= 0\}$, and none of $C$, $D$, or the lines through pairs of points in $C\cap D$ pass through $[1,0,0]$.  $I_p(C,D)$ is now the greatest multiplicity $y^k$ which divides $\cR_{F,G}(y,z)$
+    \end{proof}
+\end{proposition}
 
 \subsection{Cubics}
 
+\begin{theorem}[Cayley-Bacharach]
+    If $C$ and $D$ are cubics that intersect at $9$ distinct points, and $C'$ is any cubic that passes through $8$ of these points, then $C'$ belongs to the pencil of cubics \[
+    \left\{C_{[a,b]} = \{aF + bG = 0 \} \ \middle| \ [a,b]\in \bP^1\right\}
+    \] and so also contains the $9$th point.
+\end{theorem}
+
+\begin{theorem}[Pascal's theorem]
+    For all sets of six points $\{p_1,p_2,p_3,q_1,q_2,q_3\}$ on a conic $C$, no three of which are collinear, if $L_ij$ is the line through $p_i$ and $q_j$ then forthe points $r_i = L_{jk}\cap L_{kj}$, for all $\{i,j,k\}=\{1,2,3\}$, are collinear.
+\end{theorem}
+
+\begin{corollary}[Hexagrammum mysticum]
+    
+\end{corollary}
+
+\begin{theorem}
+    If $C$ is a smooth cubic over an algebraically closed field of chracteristic zero, the $C$ is projectively equivalent to $y^2z = x(x-z)(x-\lambda z)$ for some $\lambda\neq 0,1$.
+\end{theorem}
+
+\begin{theorem}
+    A smooth cubic curver over an algebraically closed field of characteristic zero has exactly nine inflection points.
+\end{theorem}
+
+\section{Genus}
 
 
 

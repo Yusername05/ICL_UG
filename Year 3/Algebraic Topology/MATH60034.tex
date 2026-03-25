@@ -12,46 +12,280 @@ Scribed by Yu Coughlin}
 
 \tableofcontents
 
-\section{Topology}
-
-\subsection{(co)limits in the category of topological spaces}
-
-\subsection{CW complexes}
-
-\section{Fundamental group}
-
-\subsection{The circle}
-
-\subsection{Functoriality}
-
-\subsection{Siefert-van Kampen}
-
-\section{Covering spaces}
-
-\subsection{Covers and $\pi_1$}
-
-\subsection{Deck transformations}
-
-\subsection{Universal covers}
-
-\subsection{Galois correspondence}
-
 \section{Homology}
+
+If we want an invariant that detects higher dimensional holes, the natural choice would be to consider $\pi_n(X)$ the homotopy classes of maps $S^n\rightarrow X$; unforutnately, these are very difficult to compute. By adding some combinatorial structure to our shapes, and keeping our groups abelian, we can define a functor that's much easier to compute on many of the nice spaces we care about.
 
 \subsection{Simplicial homology}
 
+\begin{definition}
+    A \textbf{$\Delta$-complex} structure on a space $X$ is a collection of maps: \[
+    \sigma_{\alpha} : \Delta^n\rightarrow X
+    \]where $n$ depends on $\alpha$, with all of the $\sigma_\alpha$ satisfying the following:\begin{itemize}
+        \item The restriction of each $\sigma_\alpha$ to $\mathring{\Delta}^n$ is injective;
+        \item Each point $x\in X$ lies in exactly one of the $\sigma_\alpha(\mathring{\Delta}^n)$;
+        \item For each face map $\delta_i$, there exists some $\sigma_\beta$ in the $\Delta$-complex with $\sigma_\alpha\circ\delta_i=\sigma_\beta$;
+        \item A subset $U\subset X$ is open iff all of the $\sigma_{\alpha}^{-1}(U)$ is open in each $\Delta^n$.
+    \end{itemize}
+\end{definition} 
+
+$\Delta$-complexes are a special example of CW-complexes, thus are Hausdorff. When considering these examples, it is paramount to conflate the most injective maps $\sigma_\alpha$ with their images in $X$, which will be simplices with some collapsing of their boundaries.
+
+TODO: 
+
+\begin{definition}
+    Given a $\Delta$-complex structure on $X$, we form the \textbf{simplicial complex}: \[
+    \cdots \xrightarrow{d_{n+1}^\Delta} C_n^\Delta(X) \xrightarrow{d_n^\Delta} C_{n-1}^\Delta(X) \xrightarrow{d_{n-1}^\Delta} \cdots \xrightarrow{d_3^\Delta} C_2^\Delta(X) \xrightarrow{d_2^\Delta} C_1^\Delta(X) \xrightarrow{d_1^\Delta} C_0^\Delta(X) \xrightarrow{d_0^\Delta} 0
+    \] where $C_n^\Delta(X)$ is the free abelian groups on the $n$-simplices in $X$, and the differential is given by \[
+    d_n^\Delta(\sigma_\alpha) = \sum_{i=0}^n(-1)^i\sigma_\alpha\circ\delta_i
+    \]
+\end{definition}
+
+\begin{proposition}
+    $d_\bullet^\Delta$ does in fact make $C_\bullet^\Delta$ a chain complex, i.e. $d_n^\Delta\circ d_{n+1}^\Delta=0$ for all $n$.
+    \begin{proof}
+        By linearity, it suffices to consider an $(n+1)$-simplex $\sigma_\alpha:\Delta^{n+1}\rightarrow X$, on which we have: \[
+        d_n^\Delta d_{n+1}^\Delta(\sigma) = d_n^\Delta\pr{\sum_{i=0}^{n+1}(-1)^i\sigma\delta_i} = \sum_{i=0}^{n+1}(-1)^id_n^\Delta(\sigma\delta_i)
+        = \sum_{i=0}^{n+1}(-1)^i\pr{\sum_{j=0}^{i-1}(-1)^{j}\sigma\delta_i\delta_j -
+        \sum_{j=i+1}^{n+1}(-1)^{j}\sigma\delta_i\delta_j}
+        \] in this sum, for each $0\leq a < b \leq n+1$, there will be two terms of $\sigma\delta_a\delta_b$, one with coefficient $(-1)^{a+b}$, and the other with $-(-1)^{a+b}$, thus the sum is zero on all $(n-1)$-simplices.
+    \end{proof}
+\end{proposition}
+
+
+
+\begin{definition}
+    If $X$ has a $\Delta$-complex structure, then we define the \textbf{simplicial homology} of $X$, as the homology of the chain complex $(C_\bullet^\Delta,d_\bullet^\Delta)$, we write this as $H_*^\Delta(X):= H_*(C^\Delta_\bullet(X),d)$.
+\end{definition}
+
+TODO: computations and pictures
+
+Maps of spaces don't necessarily induce maps on chain complexes, there is no guarantee that the image of the $\Delta$-complex is a $\Delta$-complex.
+
+TODO: give an example
+
 \subsection{Singular homology}
 
-\subsection{LES of a pair}
+We want a formulation of homology that is immediately functorial.
+
+\begin{definition}
+    To a space $X$ we can associate the \textbf{singular complex} $C_\bullet(X)$, when $C_n(X)$ is the free abelian group on maps $\sigma:\Delta^n\rightarrow X$, and the differential is as with the simplicial complex.
+
+    From this we also define the \textbf{singular homology} of $X$, $H_*(X) := H_*(C_\bullet(X),d)$
+\end{definition}
+
+\begin{proposition}
+    A continuous map $f:X\rightarrow Y$ induces homomorphisms $f_*:H_n(X)\rightarrow H_n(Y)$ for all $n$, this makes each homology group a functor $H_n(-):\textbf{Top}\rightarrow\textbf{Ab}$.
+    \begin{proof}
+        We will show $f$ induces a chain map $f_\sharp:C_\bullet(X)\rightarrow C_\bullet(Y)$. We define $f_\sharp$ on generators by $f_\sharp(\sigma)=f\circ\sigma$, to see this is a chain map observe: \[
+            f_\sharp(d\sigma) = f_\sharp\pr{\sum_{i=0}^n(-1)^i\sigma\circ d_i} = \sum_{i=1}^n(-1)^if_\sharp(\sigma\circ d_i) = \sum_{i=1}^n(-1)^i(f\circ\sigma)\circ d_i= d(f\circ\sigma) = d(f_\sharp)
+        \] All the other properties are obvious.
+    \end{proof}
+\end{proposition}
+
+\begin{corollary}
+    If $f:X\rightarrow Y$ is a homeomorphism, then $f_*$ is an isomorphism.
+\end{corollary}
+
+We can go further, showing homotopy equivalences induce isomorphisms on homology.
+
+\begin{proposition}
+    If $f,g:X\rightarrow Y$ are homotopic maps, then the chain maps $f_\sharp,g_\sharp$ are chain homotopic,\footnote{Two chain maps $f,g:A_\bullet\rightarrow B_\bullet$ are called \textbf{chain homotopic} if there exists some $K:A\rightarrow B[1]$ such that $f-g=dK+Kd$.} thus $f_*=g_*$.
+
+    \begin{proof}
+        Let $H:X\times I\rightarrow Y$ be the homotopy from $f$ to $g$, then $H\circ(\sigma\times\id)$ is a homotopy from $f\circ\sigma$ to $g\circ\sigma$. But the domain of this map, $\Delta^n\times I$, isn't a simplex, we can decompose it as: \[
+        \Delta^n\times I = [v_0,\ldots,v_n]\times I = \bigcup_{i=0}^n[(v_0,0),\ldots,(v_i,1),(v_i,1),\ldots,(v_n,1)] =: \bigcup_{i=0}^nG_\sigma^i
+        \]TODO: low dimensional picture 
+
+        Giving us $n+1$ $n$-simplices in $Y$ associated to $\sigma$, let's defien the obvious maps $K_n:C_n(X)\rightarrow C_{n+1}(Y)$: \[
+        K_n(\sigma) = \sum_{i=0}^n(-1)^iG_\sigma^i
+        \] which I claim is a chain homotopy. Observe: \begin{gather*}
+        dK_n(\sigma) = \sum_{i=0}^n(-1)^id(G_\sigma^i) = 
+        \sum_{i=0}^n\pr{\sum_{j=0}^i (-1)^{i+j}G_\sigma^i\circ \delta_j - \sum_{j=i}^n(-1)^{i+j}G_\sigma^i\circ\delta_{j+1}}\\
+        K_{n-1}(d\sigma) = \sum_{i=0}^n(-1)^iK_{n-1}(\sigma\circ\delta_i) = 
+        \sum_{i=0}^n\pr{\sum_{j=0}^{i-1} (-1)^{i+j}G_\sigma^j\circ \delta_{i+1} - \sum_{j=i+1}^n(-1)^{i+j}G_\sigma^j\circ\delta_i}
+        \end{gather*}
+        with some careful inspection, and some picturing the $n=2$ case, we can see the only terms remaining in the sum are those where we miss a point with the index that $G$ double counts: \[
+            dK_n(\sigma) + K_{n-1}d(\sigma) = \sum_{i=0}^n(G_\sigma^i\circ\delta_i - G_\sigma^i\circ\delta_{i+1}) = G_\sigma^0\circ\delta_i - G_\sigma^n\circ\delta_{n+1} = g\circ\sigma - f\circ\sigma
+        \] Thus, by linearity, $K_\bullet$ is a chain homotopy.
+    \end{proof}
+\end{proposition}
+
+So we can view each singular homology groups as a functor \[
+H_n:\textbf{hTop}\rightarrow\textbf{Ab}
+\] from the category of topological spaces and \textit{homotopy equivalence classes} of continuous maps.
+
+\begin{corollary}
+    If $f:X\rightarrow Y$ is a homotopy equivalence, then $f_*:H_n(X)\rightarrow H_n(Y)$ is an isomorphism.
+\end{corollary}
+
+\subsection{Relative homology}
+
+\begin{lemma}
+    Given a short exact sequence of chain complexes: \[
+    0 \rightarrow A_\bullet \xrightarrow{i} B_\bullet \xrightarrow{j} C_\bullet \rightarrow 0
+    \] there is a long exact sequence of homology groups: \[
+    \cdots \rightarrow H_n(A) \xrightarrow{i_*} H_n(B) \xrightarrow{j_*} H_n(C) \xrightarrow{\partial} H_{n-1}(A) \rightarrow \cdots
+    \]
+    \begin{proof}
+        We first define $\partial$:\[
+        \begin{tikzcd}
+        0 \arrow[r] & A_n \arrow[r, "i"] \arrow[d, "d"] & B_n \arrow[r, "j"] \arrow[d, "d"] & C_n \arrow[r] \arrow[d, "d"] & 0 
+        & & & b \arrow[r, mapsto] \arrow[d, mapsto] & c \arrow[d, mapsto]\\
+        0 \arrow[r]& A_{n-1} \arrow[r, "i"] \arrow[d, "d"] & B_{n-1} \arrow[r, "j"] \arrow[d, "d"] & C_{n-1} \arrow[r] \arrow[d, "d"] & 0 
+        & & a \arrow[r,mapsto] \arrow[d, mapsto] & d(b) \arrow[r, mapsto] \arrow[d,mapsto]& 0 \\
+        0 \arrow[r]& A_{n-2} \arrow[r, "i"] & B_{n-2} \arrow[r, "j"] & C_{n-2} \arrow[r]& 0 
+        &  & 0 \arrow[r,mapsto] & 0\\
+        \end{tikzcd}
+        \] Following the above diagram: given some $[c]\in H_n(C)$, as $j$ is surjective there is some $b\in B_n$ with $j(b)=c$, by commutativity we have $j(d(b))=d(c)=0$, so $d(b)\in\ker{j}=\im{i}$, as $i$ is injective we can find a unique $a\in A_{n-1}$ with $i(a)=d(b)$, once again by commutativity $i(d(a)) = d(d(b)) = 0$, as $i$ is injective we must have $d(a) = 0$ giving a homology class $[a]\in H_n(A)$ which take as $\partial([c])$.
+
+        We have to check our choice is well defined, as we have made a choice for $b$; if we chose a different $b'\in B_n$ with $j(b')=c$, then $j(b-b')=0$, thus $b-b'\in\im{i}$ with preimage $a'\in A_n$ so $b'=b+i(a')$, now $d(b') = d(b)+di(a') = d(b)+id(a') = i(a+d(a'))$, which will give the same homology class.
+
+        I claim $\partial$ is now obviously a homomorphism $\ker d_{n}\rightarrow H_{n-1}(A)$.
+
+        To show this descends to a map on homology we have to show the image of $\im d\subseteq C_n$ is $0$. If $c=d(c')$ for some $c'\in C_{n+1}$, then by surjectivity there exists some $b'\in B_{n+1}$ with $j(b')=c'$, by commutativity our $b = d(b')$ and so $i(a)=d(b)=0$, thus $a=0$.
+
+        All of the exactness are very direct diagram chases, everything will work if you follow your nose.
+    \end{proof}
+\end{lemma}
+
+\begin{corollary}
+    For $A\subset X$ a subspace, write $C_\bullet(X,A)$ for $C_\bullet(X)/C_\bullet(A)$, and $H_*(X,A)$ for the homology groups of this complex, then there is a long exact sequence in \textbf{relative} homology: \[
+    \cdots \rightarrow H_n(A) \xrightarrow{i_*} H_n(X) \xrightarrow{\pi_*} H_n(X,A) \xrightarrow{\partial} H_{n-1}(A) \rightarrow \cdots
+    \]
+\end{corollary}
+
+\begin{corollary}
+    Given a triple $A\subset B \subset X$, by the third isomorphism theorem there is a long exact sequence in relative homology: \[
+    \cdots \rightarrow H_n(B,A) \xrightarrow{i_*} H_n(X,A) \xrightarrow{\pi_*} H_n(X,B) \xrightarrow{\partial} H_{n-1}(B,A) \rightarrow \cdots
+    \]
+\end{corollary}
+
+\begin{lemma}[Five lemma]
+    Given the following commutative diagram of abeliang groups:\[\begin{tikzcd}
+        A \arrow[r, "f"] \arrow[d, "\alpha"] &
+        B \arrow[r, "g"] \arrow[d, "\beta"] &
+        C \arrow[r, "h"] \arrow[d, "\gamma"] &
+        D \arrow[r, "k"] \arrow[d, "\delta"] &
+        E \arrow[d, "\varepsilon"] \\
+        A' \arrow[r, "f'", swap] &
+        B' \arrow[r, "g'", swap] &
+        C' \arrow[r, "h'", swap] &
+        D' \arrow[r, "k'", swap] &
+        E'
+    \end{tikzcd}\]
+    if both rows are exact and $\alpha,\beta,\delta,\varepsilon$ are all isomorphisms, then $\gamma$ is also an isomorphism.
+    \begin{proof}
+        We prove this with two different \textit{four lemmas}:\[
+        (1)\quad
+        \begin{tikzcd}
+            A \arrow[r, "f"] \arrow[d, "\alpha", swap] &
+            B \arrow[r, "g"] \arrow[d, "\beta", swap] &
+            C \arrow[r, "h"] \arrow[d, "\gamma"] &
+            D \arrow[d, "\delta"] \\
+            A' \arrow[r, "f'", swap] &
+            B' \arrow[r, "g'", swap] &
+            C' \arrow[r, "h'", swap] &
+            D'
+        \end{tikzcd}
+        \qquad \qquad
+        (2)\quad
+        \begin{tikzcd}
+            B \arrow[r, "g"] \arrow[d, "\beta", swap] &
+            C \arrow[r, "h"] \arrow[d, "\gamma", swap] &
+            D \arrow[r, "k"] \arrow[d, "\delta"] &
+            E \arrow[d, "\varepsilon"] \\
+            B' \arrow[r, "g'", swap] &
+            C' \arrow[r, "h'", swap] &
+            D' \arrow[r, "k'", swap] &
+            E'
+        \end{tikzcd}
+        \]
+    For $(1)$ we assume both rows are exact, $\beta,\delta$ are injective, and $\alpha$ is surjectve; and show $\gamma$ is injective:
+
+        Have $c\in C$ such that $\gamma(c)=0\in C'$ so $\delta h(c) = h'\gamma(c) = 0$ and as $\delta$ is injective, $h(c)=0$;
+
+        so $c\in \ker h = \im g$, there exists $b\in B$ with $c=g(b)$ and $g'(\beta(b)) = \gamma(g(b)) = \gamma(c) = 0$;
+
+        so $\beta(b)\in\ker g'=\im f'$, there exists $a'\in A'$ with $f'(a') = \beta(b)$;
+
+        $\alpha$ surjective $\implies$ there exists $a\in A$ with $a' = \alpha(a)$ and $\beta(b) = f'(\alpha(a)) = \beta(f(a))$;
+
+        $\beta$ injective $\implies b=f(a)$ so $c=g(b) = f(g(a)) = 0$.
+
+    \noindent For $(2)$ we assume both rows are exact, $\beta,\delta$ are surjective, and $\varepsilon$ is injective; and show $\gamma$ is surjective:
+        
+        Have $c'\in C'$; as $\delta$ is surjective there is a $d\in D$ with $\delta(d)=h'(c')$;
+        
+        $\varepsilon (k(d)) = k'\delta(d) = k'h'(c) = 0$; as $\varepsilon$ is injective, $k(d) = 0$;
+        
+        so $d\in\ker k = \im h$, there exists $c\in C$ with  $h(c) = d$; so $h'(\gamma(c))\delta(h(c)) = \delta(b) = c'$;
+        
+        so $c'-\gamma(c)\in\ker h' = \im g'$, there is $b'\in B'$ with $g'(b')=c'-\gamma(c)$;
+        
+        as $\beta$ is surjective, there is $b\in B$ with $\beta(b) = b'$; so $\gamma(g(b)) = g'(\beta(b)) = c'-\gamma(c)$;
+        
+        so $c'=\gamma(g(b))+\gamma(c) = \gamma(g(b) + c)$.
+
+    \noindent Therefore $\gamma$ is both injective and surjective, thus an isomorphism.
+    \end{proof}
+\end{lemma}
+
+All of the previously established properties of homology also hold for relative homology as a functor from the category of pairs of spaces and continuous functions preservings subspaces to \textbf{Ab}.
+
+\begin{corollary}
+    Let $f:(X,A)\rightarrow (Y,B)$ be a map of pairs. If any tow of the follows maps are isomorphisms, the third is as well: \[
+    (f\vert_A)_* : H_*(A)\rightarrow H_*(B) \qquad f_*:H_*(X)\rightarrow H_*(Y) \qquad f_*: H_*(X,A) \rightarrow H_*(X,B)
+    \]\begin{proof}
+        Apply the five lemma to the induced maps between the long exact sequences of pairs.
+    \end{proof}
+\end{corollary}
 
 \subsection{Barycentric subdivision}
 
-\subsection{Excision, MV, and equivalence}
+\begin{definition}
+    Let $\cU=\{U_i\}$ be a collection of subsets of $X$ whose interiors form an open cover of $X$. For each $n$ consider \[
+    C^\cU_n(X) = \sum_iC_n(U_i) \subseteq C_n(X)
+    \] equipping this with the usual differential gives us the chain complex $C_\bullet^\cU(X)$ with the canonical natural map $i:C^\cU_\bullet(X)\rightarrow C_\bullet(X)$ which induces $i_*:H_n^\cU(X)\rightarrow H_n(X)$.
+\end{definition}
 
-\subsection{Cellular homology}
+With this construction, we want to approximate a general homology class as a sum of small simplices, each of which lie entirely within one component of an open cover. This will be reified with an isomorphism between the $H_*(X)$ and $H_*^\cU(X)$ above, and our exact method for replacing our simplices with smaller ones will be \textit{barycentric subdivision}.
 
-\subsection{Degrees}
+We define the barycentric subdivision of the $n$-simplex $\Delta^n=[v_0,\ldots,v_n]\subset \bR^{n+1}$ inductively. Let $b=\frac{1}{n+1}(v_0+\cdots+v_n)$, then for each facet $[w_1,\ldots,w_n]$ of $\Delta^n$, consider the $n$-simplex $[b,w_1,\ldots,w_n]$. This collection of $(n+1)!$ sipmlices are the barycentric subdivision of $\Delta^n$.
 
-\subsection{$\pi_1$ and $H_1$}
+TODO: some pictures in multiple dimensions of multiple iterations of barycentric subdivision.
+
+To show these simplices get appropriately small, recall this lemma from analysis.
+
+\begin{proposition}[Lebesgue covering lemma]
+    Let $\{U_i\}$ be an open cover of a compact metric space $X$, there exists some $\delta>0$ such that for all $x\in X$, the ball $B_\delta(x)$ is wholy contained in one of the $U_i$.
+    \begin{proof}
+        As $X$ is compact, wlog we may take $\{U_i\}$ to be finite. So we can consider the function $f:X\rightarrow \bR$ given by \[
+        f(x) := \frac{1}{n}\sum_{i=0}^nd(x,U_i^c)
+        \] as $f$ is continuous and defined on a compact set, it must achieve a minimum $\delta$. And, as every $x$ is contained in some $U_i$, $f$ is never $0$, thus $\delta>0$. Now, for all $x\in X$, there exists some $U_i$ such that $d(x,U_i^c)\geq\delta$, thus $B_\delta(x)\subseteq U_i$.
+    \end{proof}
+\end{proposition}
+
+\begin{lemma}
+    Let $\{U_i\}$ be an open cover of the $n$-simpliex $\Delta^n$, then we can barycentrically subdivide $\Delta$ finitely many times so that every simpliex is wholy contained in one of the $U_i$.
+    \begin{proof}
+        Let $\delta>0$ be the Lebesgue number for this open cover, then every simplex of diameter $<\delta$ will lie whole in one $U_i$. So it suffices to show the diameter of the subdivided simplices can be made arbitrarily small with a finite number of subdivisions.
+
+        Suppose $\Delta'$ is a simplex in the barucentric subdivision of $\Delta$, then I claim: \[
+        \diam(\Delta')\leq \frac{n}{n+1}\diam(\Delta)
+        \] which is clearly sufficient. The diameter of a linear simplex in $\bR^n$ is in fact equal to the distance between a pair of vertices, so for all pairs of vertices $x,y\in\Delta'$ we just have to consider two cases:\begin{itemize}
+            \item If neither $x$ nor $y$ is the barycenter $b$, then they belong to a simplex in the barycentric subdivision of a facet of $\tilde{\Delta}\subset \Delta$, so by induction \[
+            \abs{x-y} \leq \frac{n-1}{n}\diam(\tilde{\Delta}) \leq \frac{n}{n+1}\diam(\tilde{\Delta})\leq \frac{n}{n+1}\diam(\Delta)
+            \]
+            \item If instead $y$ is the barycenter $b$, then if we let $b_0$ be the barycenter of the facet of $\Delta$ opposite $x=v_0$, we have \vspace{-12pt}\begin{gather*}
+                \abs{x-y} = \abs{v_0 - \frac{v_0+\cdots+v_n}{n+1}}
+                = \abs{\frac{n}{n+1}v_0 - \frac{n}{n+1}\pr{\frac{v_1+\cdots v_n}{n}}} = \\\frac{n}{n+1}\abs{v_0-b_0}\leq \frac{n}{n+1}\diam(\Delta)\qedhere
+            \end{gather*}
+        \end{itemize}
+    \end{proof}
+\end{lemma}
+We now just have to put barycentric subdivision into the form of a chain map. We will do this inductively: for a singular $n$-simplex $\sigma:\Delta^n\rightarrow X$ consider each of its facets $\sigma\circ\delta_i$, and consider its barycentric subdivision consisting of $(n-1)$-simplices. Consider the cone of each of these simplices, and send $\sigma$ to the alternating sums of the subdivision of facets.\[
+S(\sigma) = c_b(S(d \sigma))
+\]
 
 \end{document}

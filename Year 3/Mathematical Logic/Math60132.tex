@@ -14,34 +14,431 @@ Scribed by Yu Coughlin}
 
 \section{Propositional logic}
 
-\subsection{Formulas and logical validity}
+\subsection{Propositional formulas}
 
-\subsection{Formal systems}
+\begin{definition}
+    A proposition is a statement which is either \textbf{true} ($T$) or \textbf{false} ($F$). Given propositional variables $p$ and $q$ we can combine these into longer propositions using the following connective, which are represented by truth tables:
+    \[\begin{array}{cc|cccccc}
+        p & q & (\neg p) & (p\wedge q) & (p\vee q) & (p \rightarrow q) & (p\leftrightarrow q) & (p\downarrow q)\\ \hline 
+        T & T & F & T & T & T & T & F\\
+        T & F & F & F & T & F & F & F\\
+        F & T & T & F & T & T & F & F\\
+        F & F & T & F & F & F & T & T
+    \end{array}\]
+    All \textbf{propositional formulas} are either:\begin{itemize}
+        \item propositional variables like $p$ or $q$;
+        \item the negation $(\neg\phi)$ for some propositional formula $\phi$;
+        \item a connective applied to two propositional formulas $(\phi\cdot\psi)$ for $\cdot\in\{\wedge,\vee,\rightarrow,\leftrightarrow,\downarrow\}$.
+    \end{itemize}
+\end{definition}
 
-\subsection{Soundness and completeness}
+Because of the strict bracketing, we can use induction to prove every formula is either a propositional variable or build from strictly shorter formulas in a unique way.
 
-\section{Predicate logic}
+\begin{lemma}
+    The connectives $\vee$ and $\wedge$ are associative, so we often omit brackets in expressions like $(p_1\vee(p_2\vee p_3))$ for $(p_1\vee p_2\vee p_3)$.
+    \begin{proof}
+        Truth tables, and induction on number of connectives.
+    \end{proof}
+\end{lemma}
 
-\subsection{First-order languages and structures}
+\begin{definition}
+    For $n\in \bN$, a \textbf{truth function} of $n$ variables is a function $f:\{T,F\}^n\rightarrow \{T,F\}$. Given a propositional formula $\phi$ with variables among $\{p_1,\ldots,p_n\}$, there is a associated truth function $F_\phi$ whose value at $(x_1,\ldots,x_n)$ is the truth value of $\phi$ when each $p_i$ has value $x_i$.
+\end{definition}
 
-\subsection{Satisfaction and truth of formulas}
+\begin{lemma}
+    There are $2^{2^n}$ truth functions of $n$ variables.
+    \begin{proof}
+        These are just functions, so we can count.
+    \end{proof}
+\end{lemma}
 
-\subsection{The formal system}
+\begin{definition}
+    A set of connectives $S$ is called \textbf{adequate} if for all $n\geq 1$, for all truth functions $f$ of $n$ variables, there exists some formula which only involves connectives from $S$, and variables $p_1,\ldots,p_n$.
+\end{definition}
+
+\begin{theorem}
+    The set $\{\neg,\wedge,\vee\}$ is adequate.\begin{proof}
+        Let $G:\{T,F\}^n\rightarrow \{T,F\}$ be the truth function. If $G\equiv F$ on all inputs, then take $\phi = (p_1\wedge(\neg p_1))$, and we have $G=F_\phi$.
+
+        Now write $\{v_1,\ldots,v_k\}$ for the set of all $v\in\{T,F\}^n$ such that $G(v)=T$. For each $v_i=(v_{i1},\ldots,v_{il})$ we define: \[
+        q_{ij} = \begin{cases}
+            p_j & \text{if } v_{ij}=T\\
+            (\neg p_j) & \text{if } v_{ij}=F
+        \end{cases}
+        \] and then define $\psi_i:= (q_{i1}\wedge \cdots \wedge q_{il})$, a propositional formula which is true iff each $p_j$ has the same value as $v_{ij}$. Now take $\phi=(\psi_1\vee \cdots \vee \psi_k)$, so we have $G=F_\phi$, where $\phi$ only consists of connectives in $\{\neg,\wedge,\vee\}$.
+    \end{proof}
+\end{theorem}
+
+The form of propositions used in this proof is \textbf{disjoint normal form} written dnf.
+
+\begin{corollary}
+    Suppose $\chi$ is a formula whose truth function is not always $F$, then $\chi$ is logcially equivalent to a formula in disjunctive normal form.
+\end{corollary}
+
+\begin{corollary}
+    To show any other set of connectives $S$ is adequate, we just have to construct the truth tables for $\{\neg,\wedge,\vee\}$ from connectives in $S$.
+\end{corollary}
+
+\begin{corollary}
+    The sets of connectives $\{\neg,\vee\}$, $\{\neg,\wedge\}$, $\{\neg, \rightarrow\}$, and $\{\downarrow\}$ are all adequate.
+\end{corollary}
+
+\begin{definition}
+    A propositional formula $\phi$ is called a \textbf{tautology} if its truth function always has value $T$. If $\psi$ is another propositional formula, then we say $\phi$ and $\psi$ are \textbf{logically equivalent} iff $(\phi\leftrightarrow\psi)$ is a tautology.
+\end{definition}
+
+\subsection{The formal system $K$}
+
+\begin{definition}
+    The \textbf{formal system} $L$ (for propositional logic) has the following ingredients: \begin{itemize}
+        \item An \textbf{alphabet} of symbols which consists of \textbf{variables} $\{p_1,p_2,\ldots\}$, \textbf{connectives} $\{\neg,\rightarrow\}$, and \textbf{punctuation} $\{(, )\}$.
+        \item \textbf{Formulas}, which are certain finite sequences of symbols from the alphabet constructed as follows \begin{itemize}
+            \item any variable is a formula;
+            \item If $\phi$ and $\psi$ are formulas of $L$, then so are $(\neg\phi)$ and $(\phi\rightarrow\psi)$
+            \item All formulas arise in this way.
+        \end{itemize}
+        We call these $L$\textbf{-formulas}.
+        \item \textbf{Axioms}, suppose $\phi,\psi,\chi$ are $L$-formulas, then the following are \textbf{Axioms of $L$}: \begin{itemize}
+            \item[(A1)] $(\phi\rightarrow(\psi\rightarrow\phi))$
+            \item[(A2)] $((\phi\rightarrow(\psi\rightarrow\chi))\rightarrow((\phi\rightarrow\psi)\rightarrow(\phi\rightarrow\chi)))$
+            \item[(A3)] $(((\neg\psi)\rightarrow(\neg\phi))\rightarrow(\phi\rightarrow\psi))$
+        \end{itemize}
+        \item \textbf{Deduction rules}, in $L$ this is just modus ponens\begin{itemize}
+            \item[(MP)] From $\phi$, and $(\phi\rightarrow\psi)$, deduce $\psi$. 
+        \end{itemize}
+    \end{itemize}
+\end{definition}
+
+The collection of an alphabet, formulas, axioms, and deduction rules, constitute a general \textbf{formal deduction system}.
+
+\begin{definition}
+    A \textbf{proof} in a formal deduction system $\Sigma$ is a finite sequence of $\Sigma$-formulas, each of which is either an axioms, or deduced from previous formulas in the proof by a deduction rule. The last formula in a proof is called a \textbf{theorem} of $\Sigma$. The number of formulas in the proof is called its \textbf{length}.
+\end{definition}
+
+The main goal of this section is to show that the theorems of $L$ are precisely the tautologies.
+
+\begin{definition}
+    Suppose $\Gamma$ is a set of $L$-formulas, then a \textbf{deduction from} $\Gamma$ is a finite sequence of $L$-formulas, each of which is either an axioms, in $\Gamma$, or a deduction from the previous terms. Write $\Gamma\vdash_L\phi$ if there is a deduction from $\Gamma$ ending in $\phi$, in which case we say $\phi$ is a \textbf{consequence} of $\Gamma$.
+\end{definition}
+
+The theorems of $L$ are precisely the formulas $\phi$ such that $\emptyset\vdash_L\phi$, we normally write this as $\vdash_L\phi$.
+
+\begin{proposition}[Deduction theorem]
+    Suppose $\Gamma$ is a set of $L$-formulas and $\phi,\psi$ are $L$-formulas such that $\Gamma\cup\{\phi\}\vdash_L\psi$, then $\Gamma\vdash_L(\phi\rightarrow\psi)$.
+    \begin{proof}
+        We go by induction on $n$, the length of the deduction $\Gamma\cup\{\phi\}\vdash_L\psi$.
+
+        If $n=1$, then $\psi$ is either an axiom, in $\Gamma$, or is $\phi$. In the first two cases $\Gamma\vdash_L\psi$ is a one line deduction. Otherwise, showing $(\phi\rightarrow\phi)$ is a theorem is a classic exercise.
+
+        For the inductive step, in the deduction $\Gamma\cup\{\phi\}\vdash_L\psi$, then final line is either $\psi$, in $\Gamma$, or is $\phi$, in which case we argue as in the inductive step. Otherwise $\psi$ is obtained from earlier steps using MP, in which case there are formulas $\chi$ and $(\chi\rightarrow\psi)$ earlier on in the deduce, we apply the induced to step to get $\Gamma\vdash_L(\phi\rightarrow\chi)$ and $\Gamma\vdash_L(\phi\rightarrow(\chi\rightarrow\psi))$. Now (A2) and two uses of MP, gives $\Gamma\vdash_L(\phi\rightarrow\psi)$ as required.
+    \end{proof}
+\end{proposition}
+
+\begin{corollary}[Hypothetic syllogism]
+    Suppose $\phi,\psi,\chi$ are $L$-formulas, such that $\vdash_L(\phi\rightarrow\psi)$ and $\vdash_L(\psi\rightarrow\chi)$, then $\vdash_L(\phi\rightarrow\chi)$.
+    \begin{proof}
+        We use the deduction theorem for $\Gamma=\emptyset$ on $\vdash_L(\phi\rightarrow\psi)$, and modus ponenes on the two theorems we have to deduce $\chi$, now use the converse of the deduction theorem to deduce $\phi\rightarrow\chi$.
+    \end{proof}
+\end{corollary}
+
+I will frequently write just $\vdash$ for $\vdash_L$.
+
+\subsection{Soundness}
+
+\begin{definition}
+    A \textbf{propositional valuation} is an assignment of truth values to the propositional variable $\{p_1,p_2,\ldots\}$ which we can view as a function $v:\bN\rightarrow\{T,F\}$. Using truth tables, we can extend $v$ to a function on the set of $L$-formulas. This will have some immediate properties such as $v((\neg\phi))\neq v(\phi)$ and $v((\phi\rightarrow\psi))=F$ iff $v(\phi)=T$ and $v(\psi)=F$.
+\end{definition}
+
+Valutations correspond to rows in a truth table.
+
+\begin{theorem}[Soundness of $L$]
+    Suppose $\phi$ is a theorem of $L$, then $\phi$ is a tautology.
+    \begin{proof}
+        We do induction on the length of a proof of $\vdash\phi$.
+
+        In the base case, $\phi$ must be an axiom, by truth tables three axioms are tautologies.
+
+        In the inductive step, we assume $\phi$ has a proof of length $n$, the last step is either: an axiom, in which case we argue as in the base case; or modus ponens from two theorems $\chi$ and $(\chi\rightarrow\phi)$, by induction we know both of these are tautologies, and now by considering the truth tables, we know $\chi$ and $(\chi\rightarrow\phi)$ are both true implies $\phi$ is true.
+    \end{proof}
+\end{theorem}
+
+Using the same proof strategy, there is an immediate generalisation.
+
+\begin{corollary}[Generalisation of soundness]
+    Suppose $\Gamma$ is a set of $L$ formulas and $\phi$ is an $L$-formula such that $\Gamma\vdash\phi$. Suppose $v$ is a valuation with $v(\Gamma)=\{T\}$, then $v(\phi)=T$.
+\end{corollary}
+
+\subsection{Completeness}
+
+\begin{definition}
+    Suppose $\Gamma$ is a set of $L$-formulas. We say $\Gamma$ is \textbf{consistent} if there is no $L$-formula $\phi$ such that $\Gamma\vdash\phi$ and $\Gamma\vdash(\neg\phi)$. We say $\Gamma$ is \textbf{complete} is for every $L$-formula $\phi$ either $\Gamma\vdash\phi$ or $\Gamma\vdash(\neg\phi)$.
+\end{definition}
+
+Unfortunately, the completeness theorem says in the case $\Gamma=\emptyset$, $\Gamma$ is consistent. But in this case, $\Gamma$ is not complete. The word complete is being used with two \textit{completely} different meanings.
+
+\begin{proposition}
+    Suppose $\Gamma$ is a consistent set of $L$-formulas and $\Gamma\not\vdash\phi$, then $\Gamma\cup\{(\neg\phi)\}$ is consistent.
+    \begin{proof}
+        Assum for a contradiction there exists some $L$-formula $\psi$ such that \[
+        \Gamma\cup\{(\neg\phi)\} \vdash \psi, \ (\neg\psi)
+        \] by passing the second statement through the deduction formula we get $\Gamma\vdash ((\neg\phi)\rightarrow(\neg\psi))$, we then use (A3) to get $\Gamma\vdash (\psi\rightarrow\phi)$, we can now use the first statement to get $\Gamma\cup\{(\neg\phi)\} \vdash \phi$. Note that for any $L$-formula $\chi$, the formula $(((\neg\chi)\rightarrow\chi)\rightarrow\chi)$ is a theorem of $L$, so we get $\Gamma\vdash \phi$, which contradicts the assumption, thus $\Gamma\cup\{(\neg\psi)\}$ is consistent.
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}[Lindenbaum lemma]
+    Suppose $\Gamma$ is a consistent set of $L$-formulas. Then there is a set of $L$-formulas $\Gamma^*\supset\Gamma$ which is consistent and complete.
+    \begin{proof}
+        The set of $L$-formulas is countable, so we can list them as $\phi_0,\phi_1,\phi_2,\ldots$ and inductively define a chain of sets of formulas: \[
+        \Gamma_0\subseteq \Gamma_1\subseteq \cdots, \qquad \Gamma_0=\Gamma, \qquad \Gamma_{n+1} = \begin{cases}
+            \Gamma_n & \text{if } \Gamma_n\vdash\phi_n\\
+            \Gamma_n\cup\{(\neg\phi_n)\} & \text{if } \Gamma_n\not\vdash\phi_n
+        \end{cases}
+        \] Now by induction with the previous proposition, each of the $\Gamma_i$ is consistent. We let \[
+        \Gamma^* = \bigcup_{i\in\bN}\Gamma^i
+        \] and claim $\Gamma^*$ is consistent. If $\Gamma^*\vdash\phi, (\neg\phi)$, then as deduction have finite length, there exists some $n$ with $\Gamma_n\vdash\phi,(\neg\phi)$, a contradiction. To show $\Gamma^*$ is complete, suppose $\chi$ is such that $\Gamma^*\not\vdash\chi$, there is some $n$ with $\phi_n=\chi$ and so $\Gamma_n\not\vdash\chi$, thus $(\neg\chi)\in\Gamma_{n+1}$, and therefore $\Gamma^*\vdash(\neg\chi)$.
+    \end{proof}
+\end{proposition}
+
+\begin{lemma}
+    Suppose $\Gamma^*$ is a complete, consistent set of $L$-formulas. Then there is a valuation $v$ such that, for every $L$-formula $\phi$, $v(\phi)=T$ iff $\Gamma^*\vdash\phi$.
+    \begin{proof}
+        As $\Gamma^*$ is complete, we know for every propositional variable $p_i$, either $\Gamma^*\vdash p_i$ or $\Gamma^*\vdash(\neg p_i)$. Let $v$ be the unique valuation such that $v(p_i)=T$ iff $\Gamma^*\vdash p_i$. We will no do induction on the length of a formula $\phi$, to show $v$ satisfies our desired property, in the base case this is by definition. For the inductive step, there are two possible cases.
+
+        Case 1: $\phi$ is $(\neg\psi)$ for some $\psi$. Here, $v(\phi)=T$ iff $v(\psi)=F$ iff $\Gamma^*\not\vdash\psi$ iff $\Gamma^*\vdash(\neg\psi)$ iff $\Gamma^*\vdash\phi$.
+
+        Case 2: $\phi$ is $(\psi\rightarrow\chi$). Here, $v(\phi)=F$ iff $v(\psi)=T$ and $v(\chi)=F$ iff $\Gamma^*\vdash\psi$ and $\Gamma^*\not\vdash\chi$. If $\Gamma^*\vdash\phi$ then we could do modus ponens to get $\Gamma^*\vdash\chi$ which contradicts consistency. If $\Gamma^*\not\vdash\phi$ then $\Gamma^*\not\vdash\chi$, otherwise by (A1) we get $\vdash(\chi\rightarrow(\psi\rightarrow\chi))$; similarly if $\Gamma^*\vdash(\neg\psi)$, then by the problem sheet we know $\vdash((\neg\psi)\rightarrow(\psi\rightarrow\chi))$, thus by the inductive hypothesis $v(\chi)=F$ and $v((\neg\psi))=F$, thus $v(\phi)=F$.
+    \end{proof}
+\end{lemma}
+
+\begin{corollary}
+    Suppose $\Gamma$ is a consistent set of $L$-formulas, then there is a valuation $v$ with $v(\Gamma)=T$.
+\end{corollary}
+
+\begin{corollary}
+    Suppose $\Delta$ is a set of $L$-formulas which is consistent and $\Delta\not\vdash\phi$, then there is a valuation with $v(\Delta)=T$ and $v(\phi)=F$.
+\end{corollary}
+
+\begin{theorem}[Generalised completeness of $L$]
+    If $\Delta$ is a consistent set of $L$-formulas, and $\phi$ is an $L$-formula such that for every valuation $v$ with $v(\Delta)=T$, we have $v(\phi)=T$, then $\Delta\vdash\phi$.
+    \begin{proof}
+        This is the contrapositive of the previosu corrolary.
+    \end{proof}
+\end{theorem}
+
+\begin{corollary}[Completeness of $L$]
+    If the $L$-formula $\phi$ is a tautology, then $\vdash\phi$.
+\end{corollary}
+
+\begin{theorem}[Compactness theorem for $L$]
+    Suppose $\Gamma$ is a set of $L$-formulas, then tfae:\begin{enumerate}
+        \item There is a valuation $v$ with $v(\Gamma)=T$
+        \item For every finite subset $\Sigma\subseteq \Gamma$, there is a valuation $w$ with $w(\Sigma)=T$.
+    \end{enumerate}
+    \begin{proof}[Proof sketch]
+        (1) definitely implies (2), so suppose (1) doesn't hold. By the first corrolary, $\Gamma$ isn't consistent. As deductions are finite, there is a finite subset $\Sigma\subseteq \Gamma$ which is also inconsistent, then by the generalised soundness theorem, the desired valuation of (2) cannot exist.
+    \end{proof}
+\end{theorem}
+
+\section{First-order logic}
+
+\subsection{Structures}
+
+\begin{definition}
+    Suppose $A$ is a set and $n\geq 1$: an \textbf{$n$-ary relation} on $A$ is a subset $\overline{R}\subseteq A^n$; an \textbf{$n$-ary function} on $A$ is a function $\overline{f}:A^n\rightarrow A$.
+\end{definition}
+
+Some examples are: equality and orders as $2$-ary relationships, various binary operations as $2$-ary functions, subsets as $1$-ary relations. In future for $\overline{R}\subseteq A^n$ and $(a_1,\ldots,a_n)\in A^n$ we write $\overline{R}(a_1,\ldots,a_n)$ for $(a_1,\ldots,a_n)\in\overline{R}$.
+
+\begin{definition}
+    A \textbf{first-order structure} $\cA$ consists of: \begin{itemize}
+        \item a nonemtpy set $A$, called the \textbf{domain} of $\cA$;
+        \item a set $\{\overline{R}_i \mid i\in I\}$ of \textbf{relations} on $A$, $\overline{R}_i\subseteq A^{n_i}$ for $i\in I$;
+        \item a set $\{\overline{f}_j \mid j\in J\}$ of \textbf{functions} $\overline{f}_j:A^{m_j}\rightarrow A$ for $j\in J$;
+        \item a set $\{\overline{c}_k \mid k\in K\}\subseteq A$ of \textbf{constants}.
+    \end{itemize}
+    The \textbf{indexing sets} $I,J,K$ can be empty, and are normally subsets of $\bN$. The information: \[
+    (n_i\mid i\in I) \qquad (m_j\mid j\in J) \qquad K
+    \] is called the \textbf{signature} of $\cA$. We will often write \[
+    \cA = \abr{A;(\overline{R}_i \mid i\in I), (\overline{f}_j \mid j\in J), (\overline{c}_k \mid k\in K)}
+    \]
+\end{definition}
+
+Now for some more fleshed out examples: \begin{itemize}
+    \item Any ordered set $A$ (e.g. $\bN,\bZ,\bQ,\bR$) can be a first order structure with $I=\{1\}$, $J=K=\emptyset$ and $\overline{R}_1(a_1,a_2)$ to mean $a_1<a_2$.
+    \item Any group $G$ with a binary relation $\overline{R}$ for equality, a binary function $\overline{m}$ for multiplication, a unary function $\overline{i}$ for inversion, and the constant element $\overline{e}$.
+    \item Any ring $R$ with a binary relation $\overline{R}$ for equality, two binary functions $\overline{m}$ and $\overline{e}$ for multiplication and addition respectively, the unary function $\overline{n}$ for negation, and the constants $\overline{0}$ and $\overline{1}$.
+    \item Peano arithmetic $\abr{\bN;\overline{R},\overline{m},\overline{a},\overline{s},\overline{0}}$ where $\overline{R},\overline{m},\overline{a},\overline{0}$ are as in a ring, and $\overline{s}$ is the successor function $\overline{s}(n)=n+1$.
+    \item Graphs with two binary relations $\overline{R}$ for equality and $\overline{E}$ for adjacency.
+\end{itemize}
+
+\begin{definition}
+    A \textbf{first-order language} $\cL$ has an alphabet of symbols:
+    \begin{center}
+    \begin{tabular}{ll}
+        variables & $x_0, x_1,\ldots$ \\
+        connectives & $\neg,\rightarrow$ \\
+        punctuation & $(,)$ \\
+        \textbf{quantifier} & $\forall$ \\
+        \textbf{relation symbols} & $R_i$ for $i\in I$ \\
+        \textbf{function symbols} & $f_j$ for $j\in J$ \\
+        \textbf{constant symbols} & $c_k$ for $k\in K$
+    \end{tabular}
+    \end{center} where $I,J,K$ are indexing sets, which could be empty. Each symbol $R_i$ or $f_j$ comes equipped with an arity $n_i$ or $m_j$ respectively, and the signature of $\cL$ can be defined as with structures.
+
+    An \textbf{$\cL$-structure} is a structure $\cA$ with the same signature as $\cL$, there is a correspondence between relation, function, and constant symbols of $\cL$ with the actual relations, functions, and constants of $\cA$ such that arities agree. This correspondence is called an \textbf{interpretation} of $\cL$.
+\end{definition}
+
+In our previous examples, we have given the first-order languages of groups, rings, etc where the actual mathematical objects are exactly the $\cL$-structure for these languages.
+
+\begin{definition}
+    A \textbf{term} of $\cL$ is defined as follows:\begin{itemize}
+        \item any variable is a term;
+        \item any constant symbol is a term;
+        \item if $f$ is an $m$-ary function symbol of $\cL$ and $t_1,\ldots,t_m$ are terms, then $f(t_1,\ldots,t_m)$ is also a term;
+        \item all terms arise in this way.
+    \end{itemize}
+
+    An \textbf{atomic formula} of $\cL$ is of the form $R(t_1,\ldots,t_n)$ where $R$ is an $n$-ary relation symbol of $\cL$ and $t_1,\ldots,t_n$ are terms.
+
+    An \textbf{$\cL$-formula} is defined as follows: \begin{itemize}
+        \item an atomic formula is an $\cL$-formula;
+        \item If $\phi$ and $\psi$ are $\cL$-formulas, then $(\neg\phi)$, $(\phi\rightarrow\psi)$, and $(\forall x)\phi$ are all $\cL$-formulas, where $x$ is any variable;
+        \item every $\cL$-formula arises in this way.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}
+    With the same notation as above, if $\cA$ is an $\cL$-structure, a \textbf{valuation} in $\cA$ is a function $v$ from the set of terms of $\cL$ to $A$ such that for all $k\in K$, $v(c_k)=\overline{c}_k$; and for all terms $t_1,\ldots,t_m$ and $m$-ary function symbols $f$, $v(f(t_1,\ldots,t_m)) = \overline{f}(v(t_1),\ldots,v(t_m))$.
+\end{definition}
+
+\begin{lemma}
+    Suppose $\cA$ is an $\cL$-structure and $a_0,a_1,\ldots\in A$, then there is a unique valuation $v$ in $\cA$ with $v(x_l)=a_l$ for all $l\in\bN$.
+
+    \begin{proof}
+        By induction on the length of the terms, if we make $v$ satisfy everything, then we can build $v$ for all of the terms.
+    \end{proof}
+\end{lemma}
+
+\begin{definition}
+    Suppose $\cA$ is an $\cL$-structure, and $x_l$ is a variable. If $v,w$ are valuations in $\cA$ such that for all $m\neq l$, $v(x_m)=w(x_m)$, then we say $v$ and $w$ are \textbf{$x_l$-equivalent}.
+\end{definition}
+
+\begin{definition}
+    Suppose $\cA$ is an $\cL$-structure, and $v$ is a valuation in $\cA$, then for all $\cL$-formulas $\phi$, define recursively $v$ \textbf{satisfues} $\phi$, written $v[\phi]=T$, in $\cA$ if: \begin{itemize}
+        \item if $R$ is an $n$-ary relation symbol and $t_1,\ldots,t_n$ are terms of $\cL$, then $v$ satisfies $R(t_1,\ldots,t_n)$ iff $\overline{R}(v(t_1),\ldots,v(t_n))$ holds in $\cA$;
+        \item if $\phi$ and $\psi$ are $\cL$-formulas and we know if $v$ satisfies these, then: \begin{itemize}
+            \item $v$ satisfies $(\neg\phi)$ in $\cA$ iff $v$ does not satisfy $\phi$ in $\cA$,
+            \item $v$ does not satisfy $(\phi\rightarrow\psi)$ in $\cA$ iff $v$ satisfies $\phi$ in $\cA$ but $v$ doesn't satisfy $\psi$ in $\cA$,
+            \item $v$ satisfies $(\forall x_l)\phi$ in $\cA$ iff for all valuations $w$ in $\cA$ such that $w$ is $x_l$-equivalent to $v$, then $w$ satisfies $\phi$ in $\cA$.
+        \end{itemize}
+    \end{itemize}
+    If every valuation in $\cA$ satisfies the $\cL$-formula $\phi$ we say $\phi$ is \textbf{true} in $\cA$ or $\cA$ is a \textbf{model} of $\phi$ and write $\cA\models\phi$. If $\cA\models\phi$ for every $\cL$-structure $\cA$, we say $\phi$ is \textbf{logically valid} and write $\models\phi$.
+\end{definition}
+
+Logically valid formulas are clearly the tautologies of first-order languages. While there is an algorithm, by truth tables, to determine if any propositional formula is a tautology, G\"odel's incompleteness theorem tells us there is no such algorithm for a general $\cL$-formula.
+
+\begin{definition}
+    Suppose $\phi$ and $\psi$ are $\cL$-formulas, then we will use the notation $(\exists x)\phi$ for $(\neg(\forall x)(\neg\phi))$ and $(\phi\vee\psi)$ for $((\neg\phi)\rightarrow\psi)$ and the other propositional logic symbols.
+\end{definition}
+
+\begin{lemma}
+    Suppose $\cA$ is an $\cL$-structure and $\phi$ is an $\cL$-formula. Let $v$ be a valuation in $\cA$, then $v$ satisfues $(\exists x_1)\phi$ in $\cA$ iff there is a valuation $w$, which is $x_1$-equivalent ot $v$, such that $w$ satisfies $\phi$.
+    \begin{proof}
+        Suppose $v$ satisfies $(\neg(\forall x_1)(\neg\phi))$, then $v$ does not satisfy $(\forall x_1)(\neg\phi)$. So there is a valuation $w$, $x_1$-euquivalent to $v$, such that $w$ does not satisfy $(\neg \phi)$. Such a valuation $w$ satisfies $\phi$.
+    \end{proof}
+\end{lemma}
+
+\begin{definition}
+    Suppose $\chi$ is an $\cL$-formula involving the propositional variables $p_1,\ldots,p_n$. Suppose $\cL$ is a first-order language and $\phi_1,\ldots,\phi_n$ are $\cL$-formulas. A \textbf{substitution instance} of $\chi$ is obtained by replacing each $p_i$ in $\chi$ by $\phi_i$, call the resulting $\cL$-formula $\theta$.
+\end{definition}
+
+\begin{theorem}
+    With the above notation, we have the following:\begin{enumerate}
+        \item $\theta$ is an $\cL$-formula;
+        \item Suppose $v$ is a valuation in an $\cL$-structure $\cA$, and $w$ is the propositional valuation with $w(p_i)=v[\phi_i]$ for all $i$, then $v[\theta]=w(\chi)$;
+        \item if $\chi$ is a tautology, then $\theta$ is logically valid.
+    \end{enumerate}
+    \begin{proof}
+        We omit the proof of (1), as (3) follows from (2), proving (2) is all that remains, and this follows exactly from induction on the length of $\chi$.
+    \end{proof}
+\end{theorem}
+
+There are many logically valid formulas which don't arise in this way.
+
+\subsection{Bound and free variables}
+
+\begin{definition}
+    suppose $\phi$ and $\psi$ are $\cL$-formulas and $(\forall x_i)\phi$ occurs as a subformula of $\psi$, then we say\begin{itemize}
+        \item $\phi$ is in the \textbf{scope} of the quantifier $(\forall x_i)$. An occurence of a variable $x_j$ in $\psi$ is \textbf{bound} if it is in the scope of a quantifier $(\forall x_j)$ in $\psi$.
+        \item Otherwise, it is a \textbf{free} occurence of $x_j$, variables have a free occurrence in $\psi$ are called the \textbf{free variables} of $\psi$.
+        \item A formula with no free variables is called a \textbf{closed formula} or a \textbf{sentence} of $\cL$.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}
+    If $\psi$ is an $\cL$-formula with free variabels amongst $x_1,\ldots,x_n$, then we may write $\psi(x_1,\ldots,x_n)$ for $\phi$. If $t_1,\ldots,t_n$ are terms, then by $\psi(t_1,\ldots,t_n)$ we mean the $\cL$-formula obtained by replacing each \textbf{free} occurence of $x_i$ in $\psi$ by $t_i$.
+\end{definition}
+
+\begin{proposition}
+    Suppose $\phi$ is a closed $\cL$-formula and $\cA$ is an $\cL$-structure, then either $A\vDash\phi$ or $\cA\vDash(\neg\phi)$. More generally, if $\phi$ has free variables amongs $x_1,\ldots,x_n$ and $v,w$ are valuations in $\cA$ with $v(x_i)=w(x_i)$ for all $i$, then $v[\phi]=T \iff w[\phi]=T$.
+    \begin{proof}
+        Note that the first statement follows from the generalisation with $n=0$. We will do induction on the number of connectives and quantifiers in $\phi$.
+
+        For the base case $\phi$ is atomic, so we let $\phi = R(t_1,\ldots,t_m)$ where there $t_j$ are terms. The $t_j$ only involve variables amongst $x_1,\ldots,x_n$, now as $v$ and $w$ agree on all these, we will have \[
+        v[R(t_1,\ldots,x_n)]=T\iff \overline{R}(v(t_1),\ldots,v(t_m))\iff \overline{R}(w(t_1),\ldots,w(t_m))\iff w[R(t_1,\ldots,x_n)]=T
+        \]
+
+        For the inductive step, $\phi$ is either $(\neg\psi)$, $(\psi\rightarrow\chi)$ or $(\forall x_i)\psi$, the first two cases are left as exercises, we will do the third. If $v[\phi]=F$, then were is a valuation $v'$ which is $x_i$-equivalent to $v$ with $v'[\psi]=F$. Let $w'$ be the valuation $x_i$-equivalent to $w$ with $w'(x_i)=v'(x_i)$, then $v'$ and $w'$ agree on the free variables $x_1,\ldots,x_n$ of $\psi$, so by the inductive hypothesis we get $v'[\psi]=w'[\psi]$. So if $w'[\psi]=F$, and thus $w[\phi]=F$.
+    \end{proof}
+\end{proposition}
+
+If $\cA$ is an $\cL$-structure and $\psi(x_1,\ldots,x_n)$ is an $\cL$-formula, with $a_1,\ldots, a_n\in A$, the domain of $\cA$, then we write $\cA\vDash \psi(a_1,\ldots,a_n)$ to mean $v[\psi]=T$ for every valutation $v$ in $\cA$ with $v(x_i)=a_i$ for all $i$.
+
+\subsection{Substituting terms for variables}
+
+\begin{definition}
+    Let $\phi$ be an $\cL$-formula, $x_i$ a variable, and $t$ an $\cL$-term, we say $t$ is \textbf{free for $x_i$ in $\phi$} if there is no variable $x_j$ in $t$ such that $x_i$ has a free occurrence within the scope of a quantifier $(\forall x_j)$ in $\phi$.
+\end{definition}
+
+\begin{theorem}
+    Suppose $\phi(x_1)$ is an $\cL$-formula, possible with other free variables, and let $t$ be a term free for $x_1$ in $\phi$, then $\vDash((\forall x_1)\phi(x_1)\rightarrow\phi(t))$.
+    \begin{proof}
+        As per usual, we will go by induction on the number of connectives and quantifiers in $\phi$.
+
+        For the base case, $\phi$ is an atomic formula $R(u_1,\ldots,u_m)$. Let $u_i^*$ be the result of substituting $t$ for $x_1$ in $u_i$. Then by induction on the length of the terms, each $u_i^*$ is a term, and $v'(u_i)=v(u_i^*)$
+    \end{proof}
+\end{theorem}
+
+\newpage
+
+\subsection{Comparing structures}
+
+\subsection{The formal system $K_\cL$}
 
 \subsection{G\"odel's completeness theorem}
 
-\subsection{The compactness theorem}
+\subsection{Equality}
 
-\subsection{Loewenhein-Skolem theorem}
+\subsection{Models}
 
 \section{Set theory}
 
-\subsection{Zermelo Fraenkel axioms}
+\subsection{Cardinality}
+
+\subsection{Zermelo-Fraenkel axioms}
+
+\subsection{Well orderings}
 
 \subsection{Ordinals}
 
-\subsection{Cardinality}
+\subsection{Transfinite induction and recursion}
 
-\subsection{The axiom of choice}
+\section{Axiom of choice}
+
+\subsection{Cardinals and their arithmetic}
+
+\subsection{Zorn's lemma}
+
+
 
 \end{document}

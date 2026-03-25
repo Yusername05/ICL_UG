@@ -12,4 +12,178 @@ Scribed by Yu Coughlin}
 
 \tableofcontents
 
+\section{Representations}
+
+\begin{definition}
+    A \textbf{representation} of a group $G$ is a pair $(V,\rho)$ where $V$ is a vector space and $\rho:G\rightarrow GL(V)$ is a group homomorphism. So group action $G\curvearrowright V$ by invertible linear transformations. Much like with group actions, a representation is called \textbf{faithful} if $\rho$ is injective.
+\end{definition}
+
+\begin{definition}
+    For a group $G$, a homomorphism of representations $T:(V,\rho)\rightarrow(V',\rho')$ is a linear map $T:V\rightarrow V'$ such that for all $T\circ\rho(g)=\rho'(g)\circ T$ for all $g\in G$.
+\end{definition}
+
+If we think about this categorically, then the category of $k$-representations of a group $G$ is $\textbf{Vect}_k^G$.
+
+From now on, unless specified otherwise, all representations will be of a finite group $G$ on a finite dimensional complex vector space. This lets us identify $GL(V)$ with $GL_n(\bC)$, the normal dictionary between linear maps and matrices from linear algebra applies everywhere.
+
+\begin{lemma}
+    Two finite-dimensional representations $(V,\rho)$ and $(V',\rho')$ are isomorphic iff $\dim(V)=\dim(V')$ and there exists bases $B$ and $B'$ respectively such that there exists some $P\in GL_n(\bC)$ such that \[
+    [\rho'(g)]_{B'} = P^{-1}[\rho(g)]_BP
+    \] for all $g\in G$. In this case, the \textbf{matrix representations} are called \textbf{equivalent}.
+\end{lemma}
+
+We can now consider a few examples of representations.
+
+For any group $G$, we can consider the one-dimensional representation $\rho(g)=\id_\bC$ for all $g$, this is called the \textbf{trivial respresentation}.
+
+If $\zeta$ is a $n$th root of unit, then $C_n=\abr{g}$ has a one-dimensional representation by multiplication by $\rho(g^k)(z)=\zeta^k z$ for all $k\in\bZ$, when $n=1$ this recovers the trivial respresentation.
+
+Let $G=S_n$, and let each $\sigma\in S_n$ act as the corresponding matrix of a basis $B$, i.e. $\rho(\sigma)(b_i)=b_{\sigma(i)}$ for all $b_i\in B$.
+
+If $G=S_n$, then there is a one-dimensional represpresentation with $\rho(g)=(\sign(g))$. This is equal to applying the determinant to the premutation respresentation.
+
+Let $G=D_{2n}$, this has natural two-dimensional representation on $\bR^2$ sending each $g$ to the associated transformation.
+
+For any group action $G\curvearrowright X$ on a set $X$, there is an associated action of $G$ on $\bC[X]$, when we take $X=G$, and the action is by left multiplication, then the action of $G$ on the $\bC$-algebra $\bC[G]$ is called the \textbf{regular representation}. For any representation $(V,\rho)$, the natrual map: \[
+    \phi: \Hom_G(\bC[G],V)\rightarrow V \qquad \phi(T) = T(e)
+\] is a $G$-linear isomorphism, with inverse $\phi^{-1}(v)(g)=\rho(g)v$.
+
+\subsection{Subrepresentations}
+
+\begin{definition}
+    A \textbf{suprepresentation} of a representation $(V,\rho)$ is a subspace $W\leq V$ such that $\rho(g)(W)\subseteq W$ for all $g\in G$, we also call $W$ a $G$-invariant subspace. Subrepresentations are called \textbf{proper} and \textbf{nonzero} if $W$ satisfies the respective condition from linear algebra.
+\end{definition}
+
+When $W$ is finite dimensional, as $\rho(g)\vert_W\in GL(W)$ is a bijectiction, we in fact have $\rho(g)(W)=W$. When $W$ is infinite dimensional this need not be true, only when $\rho(g)(W)\subseteq W$ \textit{for all} $g\in G$ do we get $\rho(g)(W)=W$ for all $g\in G$.
+
+\begin{definition}
+    A representation $(V,\rho)$ is \textbf{irreducible} (or \textbf{simple}) if it is nonzero, and it does not admit any proper nonzero subrepresentations. Otherwise, it is called \textbf{reducible}.
+\end{definition}
+
+\begin{proposition}
+    If $G$ is a finite group with $(V,\rho)$ an irreducible representation, then $V$ is finite dimensional.
+    \begin{proof}
+        Let $v\in V$ be nonzero, and write $W$ for the span of the $\rho(g)(v)$ for all $g\in G$, then this is a subrepresentation of $V$, as for all $h\in G$:\[
+            \rho(h)\sum_{g\in G}a_g\rho(g)v = \sum_{g\in G}a_g\rho(hg)v\in W
+        \] for all $a_g\in \bC$. As $v$ is nonzero, so is $W$, so by irreducibility of $(V,\rho)$, $V=W$, finite dimensional.
+    \end{proof}
+\end{proposition}
+
+For an alternate proof, consider the map $\bC[G]\rightarrow V$ induced by some nonzero $v\in V$, the image of this is a finite dimensional non-zero subrepresentation.
+
+\begin{proposition}
+    If $T:(V,\rho)\rightarrow(V',\rho')$ is a homomorphism of representations, then $\ker(T)$ and $\im(T)$ are subrepresentations of $V$ and $V'$ respectively.
+    \begin{proof}
+        $T(v)=0\implies T(gv)=g(Tv)=0$ for all $g\in G$, $gT(v)=T(gv)\in\im(T)$ for all $g\in G$.
+    \end{proof}
+\end{proposition}
+
+\begin{definition}
+    A \textbf{quotient representation} of a repressentation $(V,\rho_V)$ by a subrepresentation $(W,\rho_W)$ is the vector space $V/W$ with action $\rho(g)(v+W)=\rho(g)v + W$.
+\end{definition}
+
+\begin{proposition}
+    For $T:(V,\rho)\rightarrow(V',\rho')$ is a homomorphism of representations, there is an isomorphism of representations: \[
+        (V,\rho)/\ker(T) \cong \im(T)
+    \]\begin{proof}
+        We just have to show the map from the first isomorphism theorem $\overline{T}$ is $G$-linear. For all $g\in G$ and $v\in V$:\[
+            \overline{T}\circ\rho(g)(v+\ker(T)) = T\circ\rho(g)(v) = \rho(g)T(v) = \rho(g)\overline{T}(v+\ker(T))\qedhere
+        \]
+    \end{proof}
+\end{proposition}
+
+Recall the following fact from linear algebra:
+
+\begin{lemma}
+    For $T\in\End(V)$ with $T^2=T$, there is the direct sum decomposition $V=\ker(T)\oplus\im(T)$.
+    \begin{proof}
+        Send $v\in V$ to $(v-T(v),T(v))$, this is immediately linear and bijective.
+    \end{proof}
+\end{lemma}
+
+In this case, we call $T$ a \textbf{projection operator}.
+
+\begin{corollary}
+    If $T\in\End(V)$ is a $G$-linear projection operator, then the direct sum of the previous lemma is a direct sum of subrepresentations.
+\end{corollary}
+
+\begin{definition}
+    A nonzero representation is \textbf{decomposible} if it can be written as a direct sum of  two proper nonzero subrepresentations, it is called \textbf{indecomposable} otherwise.
+
+    A representation that is a direct sum of irreducible subrepresentations is called \textbf{semisimple}.
+\end{definition}
+
+Indecomposable representations are semisimple iff they are irreducible. There are still examples of indecomposable but not irreducible representations:
+
+Let $G=\bZ$ and consider the two-dimensional representation: \[
+\rho(n) = \begin{pmatrix}
+    1 & n \\ 0 & 1
+\end{pmatrix}
+\] This has the $x$-axis as a subrepresentation, but this is the only common one-dimensional eigen-space of $\rho(G)$, so there is not a full decomposition into irreducible subrepresentations.
+
+\subsection{Maschke's theorem}
+
+\begin{definition}
+    For $(V,\rho)$ a representation, and $W\leq V$ a subrepresentation, a \textbf{complementary subrepresentation} is a subrepresentation $U\leq V$ such that $V=W\oplus U$.
+\end{definition}
+
+\begin{theorem}[Maschke]
+    Let $(V,\rho)$ be a finite dimensional representation of a finite group $G$. For any subrepresentation $W\leq V$, there exists a complementary representation.
+    \begin{proof}
+        We want to construct a projection operator with $W$ as its image. By linear algebra, we can find a $U$ such that $V=W\oplus U$, and the map $T(v)=T(w+u)=w$ is a good candidate. Unfortunately, this isn't necessarily $G$-linear, so we have to modify it, have $\tilde{T}:V\rightarrow V$ define as: \[
+        \tilde{T} = \abs{G}^{-1}\sum_{g\in G}\rho(g)\circ T\circ\rho(g)^{-1}
+        \] we first have to show this linear map is $G$-linear, for all $h\in G$ consider: \[
+        \tilde{T}\circ\rho(h) = \abs{G}^{-1}\sum_{g\in G}\rho(g)\circ T\circ\rho(g)^{-1} \rho(h) = \abs{G}^{-1}\mkern-22mu\sum_{g'=h^{-1}g\in G}\mkern-18mu\rho(h)\rho(g')\circ T\circ\rho(g')^{-1} = \rho(h)\circ\tilde{T}
+        \] so $T'$ is $G$-linear. To prove it is a projection operator we must show $\tilde{T}\vert_W=\id$, for all $w\in W$: \[
+        \tilde{T}(w) = \abs{G}^{-1}\sum_{g\in G}\rho(g)\circ T\circ\rho(g)^{-1}(w) = \abs{G}^{-1}\sum_{g\in G}\rho(g)\rho(g)^{-1}(w) = \abs{G}^{-1}\sum_{g\in G}w = w
+        \] Finally, we must show $\im(\tilde{T})=W$, by the previous statement we know $\in(\tilde{T})\subseteq W$, but as $T$ is a projection operator on $W$ and $W$ is $G$-invariant, we also have $W\subseteq \im(\tilde{T})$.
+    \end{proof}
+\end{theorem}
+
+We can now do induction on the dimension of the irreducible subspace we consider to get:
+
+\begin{corollary}
+    Any finite dimensional representation of a finite group can be written as a direct sum of irreducible subrepresentations.~i.e.~$V$ is semisimple.
+\end{corollary}
+
+\begin{corollary}
+    Finitie dimensional indecomposable representations of finite groups are irreducible.
+\end{corollary}
+
+This doesn't actually require the vector space to be finite dimensional. Note, we haven't said anything about this decomposition being unique, there are examples where unqiueness does and doesn't hold:
+
+If $G=1$, then  representations are the same as vector spaces, so the only irreducible representation of $G$ is $\bC$. For any bigger representation, the decomposition of is exactly the decomposition of the vector space, which is exactly a basis.
+
+Let $A=GL_n(\bC)$ be diagonal, with distinct diagonal entries which are $m$th roots of unity for some $m\geq n$. Then consider the $n$-dimensional representation of $C_m=\abr{g}$ with $\rho(g)=A$. Then I claim the decomposition into subrepresentations is exactly $\bC^n = \bC e_1 \oplus \cdots \oplus \bC e_n$.
+
+Let $G=C_3 = \{1,g,g^2\}$, and $\bC[G]$ be the regular representation, then multiplication by $g$ has matrix: \[
+\begin{pmatrix}
+    0 & 0 & 1 \\
+    1 & 0 & 0 \\
+    0 & 1 & 0
+\end{pmatrix} = \frac{1}{3}\begin{pmatrix}
+    1 & \zeta^2 & \zeta \\
+    1 & \zeta & \zeta^2 \\
+    1 & 1 & 1
+\end{pmatrix}\begin{pmatrix}
+    1 & 0 & 0 \\
+    0 & \zeta & 0 \\
+    0 & 0 & \zeta^2
+\end{pmatrix}P^{-1}
+\] so we are in teh case of the previous example, and so this representation splits as the sum of three one-dimensional representations. This example can be generalise to any $C_n$, natrually
+
+\subsection{Schur's lemma}
+
+\begin{theorem}[Schur's lemma]
+    Let $(V,\rho_V)$ and $(W,\rho_W)$ be irreducible representations of $G$:\begin{enumerate}
+        \item[(i)] If $T:V\rightarrow W$ is a $G$-linera map, then either $T$ is an isomorphism or the zero map.
+        \item[(ii)] Suppose $V$ is finite-dimensional, if $T:V\rightarrow V$ is $G$-linear, then $T=\lambda I$ for some $\lambda\in\bC$.
+    \end{enumerate}
+    \begin{proof}
+        (i) Apply the first isomrophism theorem, and consider the possibilities for $\ker(T)$ and $\im(T)$
+
+        (ii) By linear algebra, every nonzero $T$ is a nonzero eigenvector $v$ such that $T(v)=\lambda v$, now $T-\lambda I$ is a non-injective map, so by the previous part $T=\lambda I$.
+    \end{proof}
+\end{theorem}
+
 \end{document}

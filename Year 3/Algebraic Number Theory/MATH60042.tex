@@ -12,4 +12,941 @@ Scribed by Yu Coughlin}
 
 \tableofcontents
 
+\section{Number fields}
+
+Throughout the lectures, the content of last terms Galois theory is not assumed. I will assume this in these notes, so lots will be missing from the original lectures. The main goal of this module is to understand the failure of unique factorisation in quadratic number fields.
+
+\begin{definition}
+    A \textbf{number field} is as finite-degree field extension of $\bQ$.
+\end{definition}
+
+\begin{definition}
+    For $\alpha \in K$ a number field, multiplication by $\alpha$ is a $\bQ$-linear map, define the \textbf{norm} and \textbf{trace} of $\alpha$ to be the determinant and trace of this linear map respectively. Write $N_K(\alpha)$ and $\tr_K(\alpha$).
+\end{definition}
+
+From the basic properties of traces and determinants we know for all $\alpha,\beta\in K$: \[
+\tr_K(\alpha+\beta) = \tr_K(\alpha) + \tr_K(\beta) \qquad N_K(\alpha\beta) = N_K(\alpha)N_K(\beta)
+\] i.e $\tr_K$ in an additive group homomorphism and $N_K$ is a monoid homomorphism.
+
+The most approachable examples of number fields are those of dimension 2, called \textbf{quadratic fields}, for $d\in \bQ^\times$ we make the choice of $\arg(\sqrt{d})$ to be $0$ in the real case, and $\pi$ for the imaginary. We will generally make the assumption that $d$ is squarefree.
+
+A basis for $\bQ(\sqrt{d})$ is $\{1,\sqrt{d}\}$, so for any $\alpha=a+b\sqrt{d}\in \bQ(\sqrt{d})$, multiplication by $\alpha$ has matrix: \[
+    \begin{pmatrix}
+        a & db \\ b & a
+    \end{pmatrix}
+\] hence $\tr(\alpha)=2a$ and $N(\alpha) = a^2-db^2$.
+
+Observe the only field automorphism of $\bQ(\sqrt{d})$ is $\sqrt{d}\mapsto-\sqrt{d}$, which we write as $\alpha\mapsto\overline{\alpha}$, and we have: \[
+    \tr_K(\alpha) = \alpha+\overline{\alpha} \qquad N_K(\alpha) = \alpha\overline{\alpha}
+\]
+
+\begin{proposition}
+    Let $\alpha\in \bC$ be a nonzero algebraic number with monic minimal polynomial: \[
+    m_\alpha(x) = x^n + a_{n-1}x^{n-1} + \cdots + a_1x +a_0
+    \] then we cran write the trace and norm as: \[
+    \tr_{\bQ(\alpha)}(\alpha) = -a_{n-1} \qquad N_{\bQ(\alpha)}(\alpha) = (-1)^na_0
+    \]\begin{proof}
+        We know $\bQ(\alpha)$ has $\{1,\alpha,\ldots,\alpha^{n-1}\}$ as a $\bQ$-basis, w.r.t.~this basis mlutiplication by $\alpha$ has matrix: \[
+        \begin{pmatrix}
+            0 & 0 & \cdots & 0 & -a_0 \\
+            1 & 0 & \cdots & 0 & -a_1 \\
+            0 & 1 & \cdots & 0 & -a_2 \\
+            \vdots & \vdots & \ddots & \vdots & \vdots \\
+            0 & 0 & \cdots & 1 & -a_{n-1}
+        \end{pmatrix}
+        \] which is the companion matrix of $m_\alpha$, which has $m_\alpha$ as its characteristic polynomial.
+    \end{proof}
+\end{proposition}
+
+If we can factorise $m_\alpha$ as $(x-\alpha_1)(x-\alpha_2)\cdots(x-\alpha_n)$ then we can rewrite our formulas as: \[
+\tr_{\bQ(\alpha)} = \alpha_1 + \alpha_2 + \cdots + \alpha_n \qquad N_{\bQ(\alpha)}(\alpha) = \alpha_1\alpha_2\cdots\alpha_n
+\]
+
+To generalise this to arbitrary number fields recall this fact from Galois theory.
+
+\begin{lemma}
+    For $\alpha$ a nonzero algebra number with monic minimal polynomial $m_\alpha$ of degree $n$: \[
+        [\bQ(\alpha):\bQ] = \abs{\Emb(\bQ(\alpha),\bC)} = \{\text{roots of $m_\alpha$ in $\bC$}\} = n
+    \]
+\end{lemma}
+
+For a number field $K$ write $\Sigma_K$ for $\Emb(K,\bC)$, we can now rewrite our trace and norm formulas: \[
+\tr_{\bQ(\alpha)}(\alpha) = \sum_{\tau\in\Sigma_{\bQ(\alpha)}}\tau(\alpha) \qquad N_{\bQ(\alpha)}(\alpha) = \prod_{\tau\in\Sigma_{\bQ(\alpha)}}\tau(\alpha)
+\]
+
+We now want to generalise this formula to arbitrary elements of arbitrary number fields
+
+\begin{proposition}
+    Let $\bQ\subset L \subset K$ be a tower of number fields, then for all $\alpha\in L$: \[
+    \tr_K(\alpha) = [K:L]\tr_L(\alpha) \qquad N_K(\alpha) = N_L(\alpha)^{[K:L]}
+    \]\begin{proof}
+        Following the proof of the tower law: let $A=\{a_1,\ldots,a_n\}$ be a $\bQ$-basis for $L$ and $B=\{b_1,\ldots,b_m\}$ be a $L$-basis for $K$, let $\cdot\alpha:L\rightarrow L$ have matrix $M$ w.r.t.~$A$, then w.r.t.~the $\bQ$-basis for $K$: \[
+        \{a_ib_j \mid 1\leq i \leq n, \ 1 \leq j \leq m\}
+        \] $\cdot\alpha:K\rightarrow K$ will be $\diag(A,\ldots,A)$ which has trace $[K:L]\tr_L(\alpha)$ and determinant $N_L(\alpha)^{[K:L]}$.
+    \end{proof}
+\end{proposition}
+
+By taking $L=\bQ(\alpha)$, we have our desired formula. For example $\sqrt[3]{2}$ in the splitting field of $X^3-2$ has norm and trace:\vspace{-12pt}\begin{gather*}
+\tr_K(\sqrt[3]{2}) = 2\tr_{\bQ(\sqrt[3]{2})}(\sqrt[3]{2}) = 2(\sqrt[3]{2} + \omega \sqrt[3]{2} + \omega^2\sqrt[3]{2}) = 0 \\
+N_K(\sqrt[3]{2}) = N_{\bQ(\sqrt[3]{2})}(\sqrt[3]{2})^2 = (\sqrt[3]{2}\cdot \omega\sqrt[3]{2} \cdot \omega^2\sqrt[3]{2})^2 = 4
+\end{gather*}
+
+\subsection{Algebraic integers}
+
+\begin{definition}
+    An element $\alpha\in\bC$ is called an \textbf{algebraic integer} if there exists a monic polynomial $f(x)\in\bZ[x]$ such that $f(\alpha)=0$.
+\end{definition}
+
+\begin{proposition}
+    Let $\alpha\in\bC$ be a nonzero algebraic number with minimal monic polynomial $m_\alpha\in\bQ[x]$, then $\alpha$ is an algebraic integer iff $m_\alpha\in\bZ[x]$.
+    \begin{proof}
+        If $m_\alpha\in\bZ[x]$ then $\alpha$ is obviously an algebraic integer. Instead suppose $\alpha$ is an algebraic integer, then there exists some $f\in\bZ[x]$ such that $f(\alpha)=0$, by minimality we have $m_\alpha\mid f$ in $\bQ[x]$, but by the Gauss lemma we must have $m_\alpha\in\bZ[x]$.
+    \end{proof}
+\end{proposition}
+
+\begin{lemma}[Gauss lemma]
+    Let $g,h\in\bQ[x]$ be monic polynomials such that $gh\in\bZ[x]$, then $g,h\in\bZ[x]$.
+    \begin{proof}
+        We can find $a,b\in\bZ$ such that the content of $af$ and $bg$ are both $1$. If $a=b=1$, then we have $g,h\in\bZ[x]$ as claimed. If not, then for all prime factors $p\mid ab$, consider $abgh$ in $(\bZ/p\bZ)[x]$ an integral domain, this must be zero, but by assumption $ag$ and $bh$ can't be zero due to their content.
+    \end{proof}
+\end{lemma}
+
+So to check that a number is an algebraic integer we just have to find its minimal monic polynomial. This lets us easily determine exactly which $\alpha\in\bQ$ are algebraic integers, just the actual integers.
+
+In the quadratic field $\bQ(\sqrt{d})$, every $\alpha\notin\bQ$ has degree $2$, so we know has minimal polynomial \[
+0=\alpha^2 - (\alpha+\overline{\alpha})\alpha + \alpha\overline{\alpha} = \alpha^2 - \tr(\alpha)\alpha + N(\alpha)
+\] and thus $\alpha$ is an algebraic integer iff $\tr(\alpha),N(\alpha)\in\bZ$. We can do some arithmetic to compute: \[
+\cO_d = \begin{cases}
+    \{a+b\sqrt{d} \mid a,b\in\bZ\} & d\not\equiv 1 \ (\text{mod }4)\\
+    \left\{\frac{a'+b'\sqrt{d}}{2}\ \middle|\ a',b'\in\bZ, \ a'\equiv b' \ (\text{mod } 2)\right\}& d\equiv 1 \ (\text{mod }4)
+\end{cases}
+\] and so when $d\not\equiv 1$ (mod $4$) we have $\cO_d=\bZ[\sqrt{d}]$, and otherwise $\cO_d=\bZ[\frac{1+\sqrt{d}}{2}]$. These are both rings, and we should expect this to be true in the general case.
+
+\begin{proposition}
+    For $\alpha\in\bC$ tfae:\begin{enumerate}
+        \item $\alpha$ is an algebraic integer,
+        \item $\bZ[\alpha]$ is finitely generated as an abelian group under addition,
+        \item there exists a nonzero, finitely generated subgroup $M<\bC$ such that $\alpha M\subseteq M$.
+    \end{enumerate}
+    \begin{proof}
+        ($1\Rightarrow 2$) suppose $\alpha$ has monic minimal polynomial $m_\alpha(x)=x^n+a_{n-1}x^{n-1}+\cdots+a_0\in\bZ[x]$, then $1,\ldots,\alpha^{n-1}$ generate $\bZ[\alpha]$ under addition, by induction on the highest power of $\alpha$ in the element.
+
+        ($2\Rightarrow 3$) We may take $M=\bZ[\alpha]$.
+
+        ($3\Rightarrow 1$) Let $M$ be generated by $m_1,\ldots,m_n$, as $\alpha M\subseteq M$, for each $m_j$ we can write \[
+        \alpha m_j = \sum_{i=1}^n a_{ij}m_i
+        \] for $a_{ij}\in \bZ$ which we consider as a matrix $A=(a_{ij})\in M_n(\bZ)$. Let $p:\bZ^n\rightarrow M$ be the surjective ring homomorphism associated to the generating set $\{m_1,\ldots,m_n\}$, then for each $f\in\bZ[x]$ and $v\in\bZ^n$ we have $f(\alpha)p(v)=p(f(A)v)$. In particular if we let $f$ be the characteristic polynomial $\chi_A\in\bZ[x]$ of $A$, we have $\chi_A(\alpha)p(v)=p(\chi_A(A)(v))=p(0)=0$, wlog we may take $p(v)\neq 0$, thus $\chi_A(\alpha)=0$ and thus $\alpha$ is an algebraic integer.
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}
+    If $\alpha$ and $\beta$ are algebraic integers, then so are $\alpha+\beta$ and $\alpha\beta$.
+    \begin{proof}
+        Consider the ring $\bZ[\alpha,\beta]$, this is clearly generated by the $\alpha^i\beta^j$ for $i,j\geq 0$. Suppose $\alpha$ and $\beta$ have minimal polynomials of degree $n$ and $m$ respectively, then as above we see $\bZ[\alpha,\beta]$ is generated by the finitely many elements $\alpha^i\beta^j$ for $0\leq i\leq n$ and $0\leq j \leq m$. Thus every element of $\bZ[\alpha,\beta]$ is an algebraic integer, this includes $\alpha+\beta$ and $\alpha\beta$.
+    \end{proof}
+\end{proposition}
+
+\begin{definition}
+    For a number field $K$, denote the set of algebraic integers in $K$ by $\cO_K$, by the previous proposition this is a ring, called the \textbf{ring of integers} of $K$.
+\end{definition}
+
+\begin{proposition}
+    Let $K$ be a number field with $\alpha\in\cO_K$, then $\tr_K(\alpha),N_K(\alpha)\in\bZ$.
+    \begin{proof}
+        We already have the formulas for the trace and norm over $K$ in terms of it over $\bQ(\alpha)$, these are both coefficients in the itneger-coefficient monic minimal polynomial of $\alpha$.
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}
+    Under the same conditions, $\alpha\in\cO_K^\times$ iff $N_K(\alpha)\in\bZ^\times$.
+    \begin{proof}
+        The ($\Rightarrow$) comes from the immediate fact that monoid homomorphisms preserve units, the other direction is called reflection of units.
+
+        Suppose $N_K(\alpha)=\pm 1$, then we can write: \[
+        \pm 1 = N_K(\alpha) = \prod_{\tau\in\Sigma_{\bQ(\alpha)}}\tau(\alpha)
+        \] one of the possible $\tau$s is $\id_K$, so let: \[
+        \beta = \pm\prod_{\id\neq\tau\in\Sigma_{\bQ(\alpha)}}\tau(\alpha)
+        \] so $\alpha\beta=1$. As $\beta$ is the product of algebraic integers $\tau(\alpha)$ it is also an algebraic integer, hence $\alpha\in\cO_K^\times$.
+    \end{proof}
+\end{proposition}
+
+\subsection{Generating the ring of integers}
+
+\begin{lemma}
+    Any subgroup of a free abelian gropu of rank $n$ is a free abelian gropu of rank $m\leq n$.
+    \begin{proof}
+        Do induction on $n$, the base case is obivous. Let $p:\bZ^n\rightarrow\bZ$ be the projection map onto the first coordinate. If $p(M)=0$, then $M\leq\ker(p)\cong\bZ^{n-1}$, in which case we are done, by induction. Assume $p(M)\neq 0$, then $p(M)=r\bZ$ for some $r\in \bZ$, choose $m\in M$ such that $p(m)=r$, I now claim: \[
+        M = (\bZ\cdot m)\times (M\cap \ker(p))
+        \] first note in the intersection $p(mk)=kr\neq 0$ for $0\neq k\in\bZ$, thus the intersection is trivial. Secondly, for all $v\in M$, have $p(v)=rk$ for some $k\in \bZ$, then $v = km + (v-km)$, and $p(v-km)=0$, thus $M$ is the above direct product, which by induction is a free abelian group.
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    Let $\alpha_1,\ldots,\alpha_n\in K$ be a $\bQ$-basis for $K$, and form the matrix $A = (\tr_K(\alpha_i\alpha_j))$, then $\det(A)\neq 0$.
+    \begin{proof}
+        We will show the linear transformation $\bQ^n\rightarrow \bQ^n$ defined by $A$ is injective. Suppose $v=(c_1,\ldots,c_n)\in\ker(A)$, then expanding the matrix multiplication we get: \[
+        Av = \begin{pmatrix}
+            \tr_K(\alpha_1\alpha_1)c_1 + \cdots + \tr_K(\alpha_n\alpha_1)c_n \\
+            \vdots \\
+            \tr_K(\alpha_1\alpha_n)c_1 + \cdots + \tr_K(\alpha_n\alpha_n)c_n \\
+        \end{pmatrix} = \begin{pmatrix}
+            \tr_K(\alpha_1\alpha_1c_1 + \cdots + \alpha_n\alpha_1 c_n) \\
+            \vdots \\
+            \tr_K(\alpha_1\alpha_nc_1 + \cdots + \alpha_n\alpha_n c_n) \\
+        \end{pmatrix}  = \begin{pmatrix}
+            \tr_K(\alpha \alpha_1) \\
+            \vdots \\
+            \tr_K(\alpha \alpha_n)
+        \end{pmatrix} = 0
+        \] for $\alpha=c_1\alpha_1 + \cdots + c_n\alpha_n\in K$, so for all $\beta \in K$ we have $\tr(\alpha\beta)=0$, if $v$ is nonzero, then so is $\alpha$, thus we can consider $0=\tr(\alpha\alpha^{-1}) = \tr(1)=1$ a contradiction, thus $v$ is $0$ and $A$ is nonsingular.
+    \end{proof}
+\end{lemma}
+
+
+\begin{theorem}
+    Let $K$ be a number field, then $\cO_K$ is an additive free abelian group of rank $[K:\bQ]$.\begin{proof}
+        Let $\alpha_1,\ldots,\alpha_n\in\cO_K$ be any set of $n=[K:\bQ]$ elements which form a basis of $K$ as a $\bQ$-vector space. Note we can turn an arbitrary basis into an integral one just by multiplying by constants to clear denominators. We now want to bound the denominators for algebraic integers written in terms of this basis, in particular we must find a $d\in \bZ_{>0}$ with \[
+        \cO_K \subseteq \bZ\frac{\alpha_1}{d} \oplus \bZ\frac{\alpha_2}{d} \oplus \cdots \oplus \bZ\frac{\alpha_n}{d} \cong \bZ^n
+        \] giving us $\cO_K$ a free abelian group of rank $\leq n$, we will therefore also have: \[
+        \bZ^n \cong \bZ\alpha_1 \oplus \bZ\alpha_2 \oplus \cdots \oplus \bZ\alpha_n \subseteq \cO_K
+        \] so the rank of $\cO_K$ is at least $n$, thus exactly $n$.
+
+        For $\alpha\in \cO_K$ write $\alpha = c_1\alpha_1 + \cdots c_n\alpha_n$ for $c_i\in\bQ$, following the notation of the previous lemma we can form the linear system: \[
+        A \begin{pmatrix}
+            c_1\\
+            \vdots\\
+            c_n
+        \end{pmatrix} = \begin{pmatrix}
+            \tr(\alpha\alpha_1)\\
+            \vdots\\
+            \tr(\alpha\alpha_n)
+        \end{pmatrix}
+        \] as $A$ admits and inverse $A^{-1}\in M_n(\bQ)$, we can find an integer $d>0$ such that $dA^{-1}\in M_n(\bZ)$, and get: \[
+        \begin{pmatrix}
+            c_1\\
+            \vdots\\
+            c_n
+        \end{pmatrix} = d^{-1}(dA^{-1})\begin{pmatrix}
+            \tr(\alpha\alpha_1)\\
+            \vdots\\
+            \tr(\alpha\alpha_n)
+        \end{pmatrix}\qedhere
+        \]
+    \end{proof}
+\end{theorem}
+The particular values of $d$ in this proof should be of interest, we know that by considering the adjugate matrix we'll get $\det(A)A^{-1}\in M_n(\bZ)$. This fact can be generalised to arbitrary commutative rings.
+
+\begin{proposition}
+    For $R$ a commutative ring and $A\in M_n(R)$, let $\text{adj}(A)$ be the adjugate matrix of $A$ (the matrix of signed determinants of minors), then we have $\text{adj}(A)A = A\text{adj}(A) = \det(A)I$.
+\end{proposition}
+
+\begin{corollary}
+    For $A\in M_n(R)$ we get $A\in M_n(R)^\times$ iff $\det(A)\in R^\times$.
+\end{corollary}
+
+We can obviously divide the adjugate matrix by the greatest common divisors of its entries, this is revealing when we consider the Smith normal form of $A$, which we shall do properly later.
+
+\subsection{Discriminants}
+
+\begin{definition}
+    Let $K$ be a number field of degree $n$, then the \textbf{discriminant} of $\alpha_1,\ldots,\alpha_n\in K$ is \[
+    \disc(\alpha_1,\ldots,\alpha_n) = \det((\tr_K(\alpha_i\alpha_j))_{1\leq i,j\leq n})\in \bQ
+    \]
+\end{definition}
+
+For example, in the quadratic field $K=\bQ(\sqrt{d})$ the discriminant of the basis $\{1,\sqrt{d}\}$ is $4d$ while $\{1,\frac{1+\sqrt{d}}{2}\}$ is $d$. From the previous lemmas who know that if $\alpha_1,\ldots,\alpha_n$ for a $\bQ$-basis for $K$, then $\disc(\alpha_1,\ldots,\alpha_n)\neq 0$; and if $\alpha_1,\ldots,\alpha_n\in\cO_K$ then $\disc(\alpha_1,\ldots,\alpha_n)\in\bZ$.
+
+\begin{lemma}
+    Suppose $\alpha_1,\ldots,\alpha_n\in K$ and $\beta_1,\ldots,\beta_n\in K$ are related by \[
+    \begin{pmatrix}
+        \beta_1 \\
+        \vdots \\
+        \beta_n
+    \end{pmatrix} = S \begin{pmatrix}
+        \alpha_1 \\ 
+        \vdots \\ 
+        \alpha_n
+    \end{pmatrix}
+    \] for some $S\in M_n(\bQ)$. Then writing $A=(\tr_K(\alpha_i\alpha_j))$ and $B=(\tr_K(\beta_i\beta_j))$ we have $B=SAS^\top$, and hence $\disc(\beta_1,\ldots,\beta_n) = \det(S)^2\disc(\alpha_1,\ldots,\alpha_n)$.
+    \begin{proof}
+        Trust me that this is just expanding out the change of basis formula.
+    \end{proof}
+\end{lemma}
+
+\begin{corollary}
+    Let $M<K$ be a free abelian subgroup of rank $n$, then if all the $\alpha_i,\beta_j\in M$ for two $\bZ$-bases, then $\disc(\alpha_1,\ldots,\alpha_n)=\disc(\beta_1,\ldots,\beta_n)$.
+\end{corollary}
+
+\begin{definition}
+    For $M< K$ a free abelian subgroup of rank $n$, define $\disc(M)=\disc(\alpha_1,\ldots,\alpha_n)$ for some $\bZ$-basis of $M$. Define the \textbf{discriminant} of $K$ to be $D_K=\disc(\cO_K)\in\bZ$.
+\end{definition}
+
+We know for quadratic number fields \[
+D_{\bQ(\sqrt{d})} = \begin{cases}
+    4d & d\not\equiv 1 \text{ (mod $4$)}\\
+    d & d\equiv 1 \text{ (mod $4$)}
+\end{cases}
+\]
+
+The discriminant is a very important invariant that crops up all the time, we're going to use it for computing the rings of integers of number fields. First recall the strong structure theorem for finitely generated abelian groups.
+
+\begin{theorem}
+    Let $N$ be a free $\bZ$-module of rank $n$ with $M\leq N$ a subgroup. If $N\neq 0$, then there exists a $\bZ$-basis $\{e_1,\ldots,e_n\}$ of $N$ and $a_1,\ldots,a_1\in\bZ\setminus\{0\}$ with $q\leq n$ such that $\{a_1e_1,\ldots a_qe_q\}$ is a $\bZ$-basis of $M$ and $a_1\mid a_2\mid \cdots \mid a_q$.
+\end{theorem}
+
+\begin{proposition}
+    Suppose $M\leq N \leq K$ are free abelian groups of rank $n$ inside $K$, then \[
+    \disc(M) = [N:M]^2\disc(N)
+    \]\begin{proof}
+        Using the basis from the structure theorem and the previous lemma applied to the diagonal matrix of the $a_i$s we have \[
+        \dist(M) = \disc(a_1e_1,\ldots,a_ne_n) = (a_1\cdots a_n)^2\disc(e_1,\ldots,e_n) = (d_1\cdots d_n)^2\disc(N)
+        \] and on the other hand \[
+        N/M \cong \frac{\bZ\oplus \bZ \oplus \cdots \oplus \bZ}{a_1\bZ \oplus a_2\bZ \oplus \cdots \oplus a_n\bZ} \cong (\bZ/a_1\bZ) \oplus \cdots \oplus (\bZ/a_n\bZ)\qedhere
+        \]
+    \end{proof}
+\end{proposition}
+
+This is a good test to see if a certain possible sets of generators for the algebraic integers in fact generate everything.
+
+\begin{corollary}
+    Suppose $M\subseteq \cO_K$ is a free abelian subgroup of rank $n$, then we have the following: \begin{itemize}
+        \item $D_K\mid\disc(M)$,
+        \item if $p$ is a prime such that $p\mid[\cO_K:M]$, then $p^2\mid\disc(M)$,
+        \item if $\disc(M)$ is squarefree then $\cO_K=M$ and $D_K = \disc(M)$. 
+    \end{itemize}
+\end{corollary}
+
+This can shed some light on our computation of $\cO_d$, the two possibilities are: $[\cO_d:\bZ[\sqrt{d}]]=1$, so $\cO_K=\bZ[\sqrt{d}]$ and $D_K=4d$; the other case has $[\cO_K:\bZ[\sqrt{d}]]=2$ and $D_K=d$, so $\cO_K\subseteq\frac{1}{2}\bZ[\sqrt{d}]$, and just by checking the minimal polynomials we see $\cO_K=\bZ[\frac{1+\sqrt{d}}{2}]$.
+
+\begin{proposition}
+    For $K$ a number field with $\Sigma_K=\{\tau_1,\ldots,\tau_n\}$, them for all $\alpha_1,\ldots,\alpha_n\in K$ we have \[
+    \disc(\alpha_1,\ldots,\alpha_n) = \det(\tau_i(\alpha_j))^2
+    \]\begin{proof}
+        We have $\disc(\alpha_1,\ldots,\alpha_n)=\det((\tr_K(\alpha_i\alpha_j)))$, and for each $i,j$ \[
+        tr_K(\alpha_i\alpha_j) = \sum_k\tau_k(\alpha_i\alpha_j) = \sum_k\tau_k(\alpha_i)\tau_k(\alpha_j) = [(\tau_i(\alpha))^\top(\tau_i(\alpha))]_{ij}
+        \] now taking determinants gives us the result.
+    \end{proof}
+\end{proposition}
+
+Because we are \textbf{choosing} an ordering $\tau_1,\ldots,\tau_n$, the value $\det(\tau_i(\alpha_j))$ is only defined up sign, so the only meaningful thing we can currently write is $\abs{\det(\tau_i(\alpha_j))}=\sqrt{\abs{D_K}}$, this quantity does have lots of important later.
+
+\begin{proposition}
+    If $K=\bQ(\alpha)$ for some algebraic number $\alpha$ with minimal polynomial\[
+    m_\alpha=(x-\alpha_1)(x-\alpha_2)\cdots(x-\alpha_n)
+    \] for $\alpha_1=\alpha,\alpha_2,\ldots,\alpha_n$ the conjugates of $\alpha$, then we have \[
+    \disc(1,\alpha,\ldots,\alpha^{n-1}) = (-1)^\frac{n(n-1)}{2}N_{\bQ(\alpha)}(m'_\alpha(\alpha))
+    \]\begin{proof}
+        Firstly, using the previous proposition and that there exists an enumeration $\Sigma_{\bQ(\alpha)}=\{\tau_1,\ldots,\tau_n\}$ such that $\tau_i(\alpha)=\alpha_i$, our formula for the discriminant is the determinant of the Vandermonde matrix \[
+        \disc(1,\alpha,\ldots,\alpha^{n-1}) = \prod_{1\leq i < j \leq n}(\alpha_i-\alpha_j)^2
+        \] We now reorganise the RHS: \[
+        N_{\bQ(\alpha)}(m'_\alpha(\alpha)) = \prod_{i=1}^n\tau_i(m'_\alpha(\alpha)) = \prod_{i=1}^nm'_\alpha(\alpha_i) = \prod_{i=1}^n\pr{\prod_{1\leq j\leq n, j\neq i}(\alpha_i-\alpha_j)} = (-1)^\frac{n(n-1)}{2}\hspace{-5pt} \prod_{1\leq i< j\leq n}(\alpha_i-\alpha_j)^2\qedhere
+        \]
+    \end{proof}
+\end{proposition}
+
+\section{Unique factorisation}
+
+\subsection{Recapping some algebra}
+
+Throuhgout, assume $R$ is an integral domain.
+
+\begin{definition}
+    A nonzero, non-unit $\pi\in R$ is \textbf{irreducible} if $\pi=ab$ implies either $a$ or $b$ is a unit; and is \textbf{prime} if $\pi\mid ab$ implies $\pi\mid a$ or $\pi\mid b$.
+\end{definition}
+
+\begin{lemma}
+    Primes are irreducible.
+\end{lemma}
+
+In $\cO_{-5}$, we have the norm, which is a monoid homomorphism which reflects units. We can easily show that such a homomorphism also reflects irreducibles and that\[
+6 = 2\cdot 3 = (1+\sqrt{-5})(1-\sqrt{-5})
+\] are two representations as the product of irreducibles, as they have norms $4,9,6,6$ respectively, and there are no $N(a+b\sqrt{-5})=a^2+5b^2=2,3$. However, none of them are prime.
+
+\begin{definition}
+    R is called a \textbf{unique factorisation domain} (UFD) if for all nonzero $a\in R$, we can write $a=u\pi_1\cdots\pi_r$ for $u\in R^\times $ and all $\pi_i\in R$ irreducible; and this expression is unique up to reordering and associates.
+\end{definition}
+
+While the uniqueness property is normally the failure we are interested in, in non-Noetherian rings like $\overline{\bZ}$ the set of algebraic integers, there are no irreducible elements as we can always take arbitrarily large roots.
+
+\begin{proposition}
+    If $R$ is a UFD, then irreducible elements are prime.
+    \begin{proof}
+        Suppose $\pi$ is irreducible and $\pi\mid ab$, writing this equation out in terms of the factorisation into irreducibles, one of the factorisation for $a$ or $b$ must contain this $\pi$, thus $\pi$ is prime.
+    \end{proof}
+\end{proposition}
+
+\begin{definition}
+    $R$ is called \textbf{integrally closed} if for any monic polynomial $f\in R[x]$ and any $\alpha\in \Frac(R)$ with $f(\alpha)=0$, we have $\alpha\in R$.
+\end{definition}
+
+Note that for a number field $K$, $\Frac(\cO_K)=K$.
+
+\begin{proposition}
+    Let $K$ be a number field, then $\cO_K$ is integrally closed.
+    \begin{proof}
+        Suppose $f=x^n + a_{n-1}x^{n-1} + \cdots + a_0\in\cO_K[x]$ is monic with $\alpha\in K$ a root, in the ring $\bZ[a_0,\ldots,a_{n-1},\alpha]$, we can form a finite basis by using $f$ to reduce the power of $\alpha$ and the $\bZ[x]$ minimal polynomials of each of the $a_i$ to reduce their power. Thus this ring is finitely generated, and thus all its elements, namely $\alpha$, are algebraic integers.
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}
+    Let $R$ be a UFD, then $R$ is integrally closed.
+    \begin{proof}
+        Let $f\in R[x]$ be monic with $\frac{a}{b}\in\Frac(R)$ a root of $f$ in lowest terms (we can do this as $R$ is a UFD). If $b$ is a unit then we are done, otherwise choose a prime $\pi$ with $\pi\mid b$, let $f$ be written as above, then we have $0=b^nf(\frac{a}{b}) = a^n + a_{n-1}ba^{n-1} + \cdots + a_0b^n$, so $\pi\mid a^n$, and thus as $R$ is a UFD, $\pi\mid a$, contradiction our root being in lowest terms.
+    \end{proof}
+\end{proposition}
+
+\begin{corollary}
+    Let $K$ be a numberfield with $\cO\subsetneq \cO_K$ a subring such that $\Frac(\cO)=K$, then $\cO$ is not integrally closed, and hence $\cO$ is not a UFD.
+\end{corollary}
+
+When $d\equiv 1$ (mod 4), the ring $\bZ[\sqrt{d}]\subsetneq\cO_d$ is never a UFD.
+
+In the integers, if $a\mid bc$ and $\gcd(b,c)=1$, then $a=\gcd(a,b)\gcd(a,c)$, we can view what this equation should mean for \[
+2\cdot 3 = (1+\sqrt{-5})(1-\sqrt{-5})
+\] we can consider $(1+\sqrt{-5})\mid2\cdot 3$ in terms of ideals and see: \[
+(2,1+\sqrt{-5})(3,1+\sqrt{-5}) = (6,2(1+\sqrt{-5}),3(1+\sqrt{-5}),(1+\sqrt{-5})^2)=(1+\sqrt{-5})
+\] we can write this slightly more systematically as: \begin{gather*}
+    \fp_2 = (2,1+\sqrt{-5}) = (2,1-\sqrt{-5}) = (1+\sqrt{-5},1-\sqrt{-5}) \\
+    \fp_3 = (3,1+\sqrt{-5}) \qquad \overline{\fp}_3 = (3,1-\sqrt{-5})
+\end{gather*} and we have the formulas: \[
+(2) = \fp_2^2 \qquad (3) = \fp_3\overline{\fp}_3 \qquad (1+\sqrt{-5}) = \fp_2\fp_3 \qquad (1-\sqrt{-5})=\fp_2\overline{\fp}_3 \qquad (6) = \fp_2^2\fp_3\overline{\fp}_3
+\] which is the sort of nice factorisation into primes we would expect, just this requires us to think about ideals instead of elements.
+
+\begin{proposition}
+    An ideal $p\unlhd R$ is prime iff the quotient ring $R/I$ is an integral domain.
+\end{proposition}
+
+It is a relatively doable exercise to check each of the ideals above are in fact prime, $\cO_{-5}/\fp_3\cong\bF_3$.
+
+\begin{definition}
+    Let $K$ be a number field, we call $\cO_K$ \textbf{norm Euclidean} if $\abs{N_K}:\cO_K\rightarrow\bN$ make $\cO_K$ an Euclidean domain.
+\end{definition}
+
+\begin{lemma}
+    $\cO_K$ is norm Euclidean iff for all $\alpha\in K$ there exists $\beta\in \cO_K$ with $\abs{N_K(\alpha-\beta)}<1$.
+    \begin{proof}
+        Given $a,b\in\cO_K$ with $b\neq 0$, take $\alpha=\frac{a}{b}$ and choose some $\beta\in\cO_K$ such that $\abs{N_K(\alpha-\beta)}<1$. Take $q=\beta$ and $r=a-bq=b(\alpha-\beta)$, now using the multiplicativity of the norm: \[
+        \abs{N_K(r)} = \abs{N_K(b)}\abs{N_K(\alpha-\beta)} < \abs{N_K(b)}
+        \] making $\cO_K$ norm Euclidean.
+
+        Conversely, given $\alpha\in K$, write $\alpha=\frac{a}{b}$ for $a,b\in\cO_K$, then using the Euclidean property we find $q,r\in\cO_K$ with $a=qb+r$ and $\abs{N_K(r)}<\abs{N_K(b)}$, we now divide by $b$ to get \[
+        \abs{N_K(\alpha-q)} = \abs{N_K(b^{-1}(a-qb))} = \abs{N_K(b)}^{-1}\abs{N_K(r)}<1\qedhere
+        \]
+    \end{proof}
+\end{lemma}
+
+\begin{theorem}
+    For $d<0$ square free, tfae: \begin{enumerate}
+        \item $\cO_d$ is norm Euclidean,
+        \item $\cO_d$ is Euclidean,
+        \item $d=-1,-2,-3,-7,-11$.
+    \end{enumerate}
+    \begin{proof}[Proof Sketch]
+        We show 1 and 3 should be equivalent, 2 and 3 being equivalent is left to the problem sheet. Consider $\cO_{d}\subset \bC$ as a lattice, for $\beta\in\cO_d$ the equation $\abs{N(\alpha-\beta)}<1$ defines a circle of radius $1$ around $\beta$, so we are asking if these circles of radius $1$ about points of $\cO_d$ cover all of $\bC$. 
+    \end{proof}
+\end{theorem}
+
+TODO:finish this, you should probably do the relevant problem sheet first tho
+
+\begin{theorem}
+    The rings $\cO_{-19},\cO_{-43},\cO_{-67},\cO_{-163}$ are PIDs.
+\end{theorem}
+
+We will be able to do this computation with class groups later. This shows that Euclidean domains as a method for showing certain rings are PIDs is quite limitted, in the real quadratic case, our previously manageable questions about coverings by circles, become about covering with hyperbolas which is much harder. We do still know for which $d>0$ $\cO_d$ is norm Euclidean, but this list is much longer and much harder to compute. We also have the strange example of $\bZ[\sqrt{14}]$: this is a PID, it is not norm Euclidean, but it is Euclidean. The last of these results has been proved very recently and is very hard.
+
+\subsection{Dedekind domains}
+
+\begin{definition}
+    Let $R$ be an integral domain, $R$ is called a \textbf{Dedekin domain} if it satisfies the following: \begin{enumerate}
+        \item $R$ is integrally closed,
+        \item $R$ has Krull dimension $\leq 1$ (all nonzero prime ideals are maximal),
+        \item $R$ is Noetherian.
+    \end{enumerate}
+\end{definition}
+\noindent Recall the three equivalent criterions for a Noetherian ring: \begin{itemize}
+    \item all ascending chains of ideals eventually terminate (ACC),
+    \item all nonempty sets of ideals have a maximal element,
+    \item all ideals are finitely generated.
+\end{itemize}
+
+We want to show the ring of integers of a number field is a Dedekin domain.
+
+\begin{lemma}
+    Let $I\unlhd \cO_K$ ber a nonzero ideal, then $I$ has finite index in $\cO_K$.
+    \begin{proof}
+        Pick $0\neq\alpha\in I$, then we already know $(N_K(\alpha))\subseteq (\alpha) \subseteq I$ giving us the bound \[[\cO_K:I]\leq[\cO_K:(N_K(\alpha))]\] as $\cO_K$ is a finitely generated free abelian group, for any integer $N$, we know \[
+        [\cO_K:(N)] = [\bZ^n:N\bZ^n] = \abs{N}^n
+        \] and as the norm of an algebraic integer is always an integer, we are done.
+    \end{proof}
+\end{lemma}
+
+\begin{proposition}
+    Let $K$ be a number field, then $\cO_K$ is a Dedekind domain.
+    \begin{proof}
+        We already know $\cO_K$ is integrally closed. Let $\fp\unlhd\cO_K$ be a nonzero prime ideal, by the previous lemma we know $\cO_K/\fp$ is a finite integral domain, thus a field, hence $\fp$ is maximal. Finally, to check $\cO_K$ is Noetherian, say we having an ascending chain of ideals $I_1\subseteq I_2\subseteq I_3 \subseteq \cdots$, then we can apply the previous lemma to get the innequality  \[
+        \infty > [\cO_K:I_1] \geq [\cO_K:I_2] \geq [\cO_K:I_3]\geq \cdots \geq 0
+        \] so there is eventually some $n$ where $[\cO_K:I_m] = [\cO_K:I_n]$ for all $m\geq n$, and hence $I_m=I_n$.
+    \end{proof}
+\end{proposition}
+
+We have a good idea of some integral domains that aren't Dedekin domains: \begin{enumerate}
+    \item proper subrings of rings of integers aren't integrally closed, so can't be Dedekind,
+    \item rings like $\bZ[x]$ and $\bC[x,y]$ have both have Krull dimension $\geq 2$ as they have prime ideals $(x)\subsetneq (2,x)$ ad $(x)\subseteq (x,y)$,
+    \item non-neotherian rings like the set of algebraic integers we already mentioned.
+\end{enumerate}
+
+\begin{proposition}
+    Let $R$ be a PID, then $R$ is a Dedekind domain.
+    \begin{proof}
+        PIDs are UFDs and hence integrally closed. Prime ideals in PIDs will each be generated by a single irreducible element, proper prime ideals will have these as factor thus won't be irreducible so won't be prime. PIDs are Noetherian as principle ideals are in fact finitely generated.
+    \end{proof}
+\end{proposition}
+
+Another large class of Dedekind domains is the coordinate rings of smooth affine algebraic curves: \begin{enumerate}
+    \item affine varieties with integrally closed coordinate rings are normal, for curves being normal and being smooth coincide,
+    \item curves are 1-dimensional so have Krull dimension $1$,
+    \item quotients of polynomial rings will always be Noetherian.
+\end{enumerate}
+
+We can take the coordinate ring of singular curves like $\bC[x,y]/(y^2-x^3)$ or surfaces like $\bC[x,y,z]/(x^2+y^2+z^2)$, to find more integral domains which aren't Dedekind.
+
+\subsection{Factorisation into prime ideals}
+
+Throughout, assume $R$ is a Dedekind domain.
+
+\begin{lemma}
+    Let $I\unlhd R$ be a nonzero ideal, and let $\alpha\in\Frac(R)$ satisfy $\alpha I\subseteq I$, then $\alpha\in R$.
+    \begin{proof}
+        As $R$ is Noetherian, we can write $I=(a_1,\ldots,a_n)$ and consider the matrix of the linear map of multiplication by $\alpha$ w.r.t.~the set $\{a_1,\ldots,a_n\}$, call this $A=(c_{ij})\in M_n(R)$. Let $\chi_A\in R[x]$ be the characteristic polynomial, then by the Cayley-Hamilton theorem $\chi_A(\alpha)I = \chi_A(A)I = 0$, and hence $\chi_A(\alpha)=0$. As $\chi_A\in R[x]$ is monic, and $R$ is integrally closed, we have $\alpha\in R$.
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    Let $I\unlhd R$ be a nonzero ideal, then there are nonzero prime ideals $\fp_1,\ldots,\fp_r\unlhd R$, not necessarily distinct, such that $\fp_1\cdots\fp_r\subseteq I$.
+    \begin{proof}
+        Let $S$ be the set of nonzero ideals of $R$ for which this property is false, if $S$ is empty then we are done. If $S$ is nonemtpy, then as $R$ is Noetherian we can choose a maximal element $I\in S$. I must not be prime, hence we can find $a,b\in R$ with $ab\in I$ and $a,b\not\in I$. Thus $I\subsetneq I+(a), I+(b)$ and so we can find prime ideals $\fp_1,\ldots,\fp_r$ and $\fq_1,\ldots\fq_s$ with $\fp_1\cdots\fp_r\subseteq I+(a)$ and $\fq_1\cdots\fq_s\subseteq I+(b)$, but then \[
+        \fp_1\cdots\fp_r\fq_1\cdots\fq_s \subseteq (I+(a))(I+(b))\subseteq I
+        \] a contradiction, thus $S$ is empty.
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    Let $I\lhd R$ be a proper, nonzero ideal, then there exists $\alpha\in \Frac(R)\setminus R$ such that $\alpha I \subseteq R$.
+    \begin{proof}
+        Pick $0\neq a\in I$, by applying the preious lemma to $(a)$ we find prime ideals $\fp_1,\ldots,\fp_r\subseteq (a)$, and in fact we choose $r$ to be minimal, we can also find a maximal ideal $\fm\supseteq I$ giving the inclusions: \[
+        \fp_1\cdots\fp_r \subseteq (a) \subseteq I \subseteq \fm
+        \] as $\fm$ is prime, and we've found a product of ideals contained within it, there must be some $i$ such that $\fp_i\subseteq \fm$, as $R$ has dimension 1, $\fp_1$ must also be maximal, hence $\fp_i=\fm$. Now by the minimality of $r$, we know $\fp_2\cdots\fp_n\not\subset (a)$, so we can pick some $b\in\fp_2\cdots\fp_n\setminus(a)$ and get: \[
+        bI \subseteq \fp_1\subset \fp_1\cdots\fp_r\subseteq (a)
+        \] thus $\frac{b}{a}I\subseteq R$, with $\frac{b}{a}\not\in R$ as $b\not\in (a)$.
+    \end{proof}
+\end{lemma}
+
+\begin{proposition}
+    Let $R$ be a Dedekin domain, with $I\unlhd R$ a nonzero ideal, and $0\neq a\in I$, then there exists an ideal $J\unlhd R$ such that $IJ=(a)$.
+    \begin{proof}
+        Let $J= \{b\in R \mid bI\subseteq (a)\}$, we claim $J$ is obviously an ideal, and $IJ\subseteq (a)$. Now assume, for a contradiction, $IJ\subsetneq (a)$, then $K=\frac{1}{a}IJ\subsetneq R$ is a nozero proper ideal of $R$, so we apply our previous lemma to find $x\in\Frac(R)\setminus R$ with $xK\subseteq R$ and henced $xIJ\subseteq (a)$.
+
+        We now observe $aJ\subseteq IJ$ and hence $J\subseteq \frac{1}{a}IJ=K$, hence $xJ\subseteq xK \subseteq R$, and claim that in fact $xJ\subseteq J$. If $b\in J$, then $xb\in R$, but $xbI\subseteq xJI \subseteq (a)$ hence by definition $xb\in J$, thus $xJ\subseteq J$ and we can apply our first lemma to see $x\in R$, a contradiction.
+    \end{proof}
+\end{proposition}
+
+TODO: read this whole thing more
+
+\begin{corollary}
+    If $I,J,K\unlhd R$ are nonzero ideals and $IJ=IK$, then $J=K$.\begin{proof}
+        Find $I'$ such that $I'I=(a)$, then we have $aJ=aK$, hence $J=K$.
+    \end{proof}
+\end{corollary}
+
+\begin{corollary}
+    If $I,J\unlhd R$ are nonzero ideals, then $I\subseteq J$ iff there exists an ideal $K\unlhd R$ with $I=JK$.
+    \begin{proof}
+        The ($\Leftarrow$) direction is obvious as $I=JK\subseteq J$. For the other direction, suppose $I\subseteq J$, and find an ideal $J'$ such that $JJ'=(a)$ for some nonzero $a\in J$. We now have $IJ'\subseteq JJ' = (a)$, so $K=\frac{1}{a}IJ'\subseteq R$ an ideal; and $JK = \frac{1}{a}IJJ'=\frac{1}{a}I(a)=I$.
+    \end{proof}
+\end{corollary}
+
+\begin{theorem}
+    Let $R$ be a Dedekind domain. Any nonzero ideal $I\unlhd R$ may be written as \[
+    I = \fp_1\cdots\fp_r
+    \] where each $\fp_i\unlhd R$ are prime ideals. This expression is unique up to permuting the factors.
+    \begin{proof}
+        First we prove every ideal can be written as such a product. Let $S$ be the set of ideal of $R$ which are no the product of prime ideals. If $S$ is empty, then we are done. Suppose $S$ is non-empty, then as $R$ is Noetherian we pick a maximal element $I\in S$ and a maximal ideal $\fm$ with $I\subseteq \fm$. We know there exists some ideal $J\unlhd R$ such that $I=\fm J\subseteq J$. If $I=J$ then $\fp=R$ a contradiction, thus $I\subsetneq J$. By maximality of $I$, we can write $J=\fp_1\cdots\fp_r$ a product of prime ideals and thus $I=\fp J = \fp\fp_1\cdots\fp_r$.
+
+        Now we prove uniqueness. Suppose $\fp_1\cdots\fp_r=\fq_1\cdots\fq_s$ are products of nonzero prime ideals. We do induction on $r$. We have \[
+        \fq_1\cdots\fq_s = \fp_1\cdots\fp_r\subseteq \fp_1
+        \] thus $\fq_i\subseteq\fp_1$ for some $i$, wlog let this be $1$. As $\fq_1$ is maximal, we must have $\fq_1=\fp_1$, now by cancellation we have $\fp_2\cdots\fp_r=\fq_2\cdots\fq_s$ and we are done.
+    \end{proof}
+\end{theorem}
+
+\subsection{Class groups}
+
+\begin{definition}
+    Let $R$ be a Dedekin domain, the \textbf{class group} $\Cl(R)$ is the set of nonzero ideals of $R$, module the equivalent relation $I\sim J$ iff there exists $\alpha\in\Frac(R)^\times$ with $\alpha I=J$. This is equipped with teh binary operation of ideal multiplication.
+\end{definition}
+
+\begin{proposition}
+    This is actually a group.
+    \begin{proof}
+        This is obviously well-defined, commutative and associative. The class of principal ideals is the identity as $[R][I]=[RI]=[I]$, we have already proved the existence of inverses in the previous subsection.
+    \end{proof}
+\end{proposition}
+
+In $\bZ[\sqrt{-5}]$ we have already seen the class group has the relations \[
+[\fp_2]^2 = [\fp_3][\overline{\fp}_3] = [\fp_2][\fp_3] = [\fp_2][\overline{\fp}_3] = 1
+\] so all of these ideals are equal and have order 2. It turns out that $\Cl(\bZ[\sqrt{-5}])=\{1,[\fp_2]\}$ is actually all of the class group, we'll show this later.
+
+\begin{proposition}
+    For $R$ a Dedekin domain, tfae \begin{enumerate}
+        \item $\Cl(R)=1$,
+        \item $R$ is a PID,
+        \item $R$ is a UFD.
+    \end{enumerate}
+    \begin{proof}
+        $(1\Leftrightarrow 2)$ is obvious, we already know $(2\Rightarrow 3)$, so we just have to show $(3\Rightarrow 2)$. Suppose $R$ is also a UFD and $\fp\subseteq R$ is a nonzero prime ideal. Let $0\neq a\in \fp$, we write $a=u\pi_1\cdots\pi_r$ for $u\in R^\times$ and $\pi\in R$ irreducible hence prime. Since $\fp$ is prime we have $u\not\in\fp$ and $\pi_i\in\fp$ for some $i$, this gives the inclusion of $(\pi_i)\subseteq \fp$ of prime ideals. As $R$ has dimension 1, we must have $(\pi_i)=\fp$, so all prime ideals are principal. We now write any general ideal as the product of a prime ideals and not the product of principal ideals is principal.
+    \end{proof}
+\end{proposition}
+
+So the class group of a Dedekind domain measure the failure of unique factorisation.
+
+\begin{proposition}
+    For $R$ a Dedekind domain, with $I,J\unlhd R$ nonzero ideals with $I=\fp_1^{a_1}\fp_2^{a_2}\cdots \fp_r^{a_r}$ and $J=\fp_1^{b_1}\fp_2^{b_2}\cdots \fp_r^{b_r}$ their factorisation into nonzero distinct prime ideals, then we have the following: \begin{enumerate}
+        \item $I\subseteq J$ iff $a_i\geq b_i$ for all $i$;
+        \item $IJ=\fp_1^{a_1+b_1}\cdots \fp_r^{a_r+b_r}$;
+        \item $I+J=\fp_1^{\min(a_1,b_1)}\cdots \fp_r^{\min(a_r,b_r)}$;
+        \item $I\cup J=\fp_1^{\max(a_1,b_1)}\cdots \fp_r^{\max(a_r,b_r)}$;
+    \end{enumerate}
+    \begin{proof}
+        2 should be clear. By the previous proposition, $I\subseteq J$ iff there exists an ideal $K\unlhd R$ with $I=JK$, we can then use part 2 and consider the exponents of all the $\fp_i$ in $K$ to see the claim.
+
+        For the next two parts just follow your nose, and everything will work.
+    \end{proof}
+\end{proposition}
+
+\subsection{Chinese remainder theorem}
+
+This should be familiar from countless previous modules.
+
+\begin{proposition}[CRT]
+    For $R$ a commutative ring and $I,J\unlhd R$ ideals, if $I+J=R$, then $I\cap J=IJ$ and there is an isomorphism of rings:\vspace{-12pt} \begin{gather*}
+        R/IJ \rightarrow R/I\times R/J\\
+        a + IJ \mapsto (a+I, a+J)
+    \end{gather*}
+    \begin{proof}
+        First observe \vspace{-12pt}\[
+        IJ \subseteq I\cap J =  (I\cap J)(I+J) = (I\cap J)I + (I\cap J)J \subseteq IJ
+        \] and now if $a,b\in R$ with $(a+I,a+J)=(b+I,b+J)$ then $a-b\in I,J$ so also $I\cap J=IJ$, hence $a+IJ=b+IJ$, now if $x\in I$ and $y\in J$ with $x+y=1$ then $ay+bx$ is mapped to $(a+I,b+J)$.
+    \end{proof}
+\end{proposition}
+
+\begin{corollary}
+    If $I_1,\ldots,I_r\unlhd R$ are dieals such that $I_i+I_j=R$ for all $i\neq j$, then $I_1\cap \cdots \cap I_r = I_1\cdots I_r$ and there is an isomorphism \vspace{-12pt}\begin{gather*}
+        R/(I_1\cdots I_r) \rightarrow R/I_1 \times \cdots R/I_r \\
+        a + (I_1\cdots I_r) \mapsto (a+I_1,\ldots,a+I_r)
+    \end{gather*}
+    \begin{proof}
+        We do induction on $r$, with $I_1+I_2\cdots I_r = (I_1+I_2)\cdots(I_1+I_r)=R$ thus $I_1I_2\cdots I_r = I_1 \cap I_2\cdots I_r$. And similarly with $R/I_1\cdots I_r \rightarrow R/I_1\times R/I_2\cdots I_r \rightarrow R/I_1\times \cdots \times R/I_r$.
+    \end{proof}
+\end{corollary}
+
+For Dedekind domains, this reduces the problem of congruences modulo an arbitrary ideal to just solving simultaneous congruences modulo powers of prime ideals.
+
+\begin{proposition}
+    For $R$ a Dedekind domain with $I\unlhd R$ nonzero and $0\neq a \in I$, there exists $b\in I$ with $I=(a,b)$.\begin{proof}
+        Let $I=\fp_1^{a_1}\cdots \fp_r^{a_r}$, and $(a)=\fp_1^{b_1}\cdots \fp_r^{b_r}\fq_1^{c_1}\cdots\fq_s^{c_s}$ where the $\fp_i$ and $\fq_j$ are all didstinct nonzero prime ideals of $R$ and $b_i\geq a_i$ for all $i$, as $(a)\subseteq I$. By uniqueness of the factorisation, we know for each $i$ we have $\fp_i^{a_i}\subsetneq \fp_i^{a_i+1}$, so pick nonzero $x_i\in\fp_i^{a_i}\setminus\fp_i^{a_i+1}$ and $y_j\in R\setminus \fq_j$, now use CRT with $\fp_1^{a_1+1},\ldots,\fp_r^{a_r+1},\fq_1,\ldots,\fq_s$ to find $b\in R$ with $b\cong x_i$ (mod $\fp_i^{a_i+1})$ and $b\cong y_j$ (mod $\fq_j$) for all $i,j$, we'll now show this $b$ satisfies the claim.
+
+        The factorisation of $(b)$ into prime ideals will be $\fp_1^{a_1}\cdots \fp_r^{a_r}\fr_1^{d_1}\cdots\fr_t^{d_t}$ for some new prime ideals $\fr_1,\ldots,\fr_t$ distinct from the $\fp_i$ and $\fq_j$, we can now use our formula for the factorisation of $(a,b)=(a)+(b)=I$.
+    \end{proof}
+\end{proposition}
+
+If we have such an $a$, we can always find a $b$ which is `disjoin enough' from $a$ such that their gcd generates the whole ideal.
+
+\section{Splitting of primes}
+
+We want to work on finding explicit descriptions of the factorisation into prime ideals in $\cO_K$.
+
+\begin{lemma}
+    Let $K$ be a number field with $\fp\unlhd \cO_K$ a nonzero prime ideal, then there is a unique prime $p$ with $p\in\fp$.\begin{proof}
+        If there exist multiple $p,q\in\fp$ then we can take their gcd and get $1$, so the prime is definitely unique. We know for $0\neq \alpha\in \fp$, $N_K(\alpha)\in \fp$ so there will be some integer $n$ with $n\in\fp$, we can now write $n$ as a product of primes and use the fact that $\fp$ is prime to find one of these primes lying in $\fp$.
+    \end{proof}
+\end{lemma}
+
+\begin{proposition}
+    Let $p$ be a prime number and suppose $p\cO_k=\fp_1^{a_1}\cdots \fp_r^{a_r}$ is the factorisation of $(p)$ into distinct prime ideals in $\cO_K$, then $\fp_1,\ldots,\fp_r$ are precisely the prime ideals which lie over $p$.\begin{proof}
+        Immediate from our algebra of prime ideals in Dedekind domains.
+    \end{proof}
+\end{proposition}
+
+So to find all of the prime ideals in $\cO_K$ we just have to factor the ideals $(2),(3),(5),\ldots$ into prime ideals. The factorisation of $(p)$ is called the \textbf{splitting of $p$ in $\cO_K$}. This doesn't seem much better as this is still an infinite procedure, but we will eventually find an upper bound for the primes we need to check.
+
+Let's do this computation for $\bZ[i]$, this is Euclidean hence a PID, thus is $\fp$ is a prime ideal lying over $p$ we'll have $\fp=(\pi)$ with $\pi\mid p$, so $N(\pi)\mid p^2$. So we're looking for elements with norm $p$ or $p^2$, as $N(x+iy)=x^2+y^2$ is congruent to $0,1,2$ mod $4$, if $p\equiv 3$ (mod $4$) such a $\pi$ can't exist and so $(p)$ will be principal.
+
+Also in $\cO_{-5}$, which isn't a PID, we can't use the same criterion as $2,3,7=x^2+5y^2$ have no solutions, even though these prime ideals all split, all we can do is conclude the factors aren't principal. For something like $11$, if there exists prime $\fp\subsetneq (11)$, then $[\cO_{-5}:\fp]\mid [\cO_{-5}:(11)]=121$, so $\cO_{-5}/\fp\cong\bF_{11}$, so we can find $a\in \bZ$ with $\sqrt{-5}+\fp = a+\fp$, thus $a^2\equiv -5$ (mod 11), but this has no solutions. For different $p$s this gives $a\pm\sqrt{-5}\in\fp$ which gives us good guesses for elements in the following factorisations:\[
+\begin{array}{c|cc}
+    & \bZ[i] & \cO_{-5} \\ \hline 
+    (2) & (1+i)(1-i)=(1+i)^2 & (2,1+\sqrt{-5})^2\\
+    (3) & (3) & (3,1+\sqrt{-5})(3,1-\sqrt{-5})\\
+    (5) & (2+i)(2-i) & (\sqrt{-5})^2 \\
+    (7) & (7) & (7,3+\sqrt{-5})(7,3-\sqrt{-5})\\
+    (11) & (11) & (11) \\
+    (13) & (3+2i)(3-2i) & (13)
+\end{array}
+\]
+
+\begin{definition}
+    For $K$ a number field and $\fp\unlhd \cO_K$ a nonzero prime ideal lying over $p$: \begin{enumerate}
+        \item the \textbf{ramification index} $e(\fp)$ of $\fp$ is the multiplicity with which $\fp$ occures inthe factorisation of $p$ into prime ideal in $\cO_K$;
+        \item the \textbf{inertial degree} $f(\fp)$ of $\fp$ is the degree of $\cO_K/\fp$ as an $\bF_p$ vector space, so $[\cO_K:\fp]=p^{f(p)}$.
+    \end{enumerate}
+    For $I\unlhd \cO_K$ a nonzero ideal, we write $N_K(I):=[\cO_K:I] = \# \cO_K/I$ called the \textbf{norm} of $I$, by an earlier result we know this is finite.
+\end{definition}
+
+\begin{proposition}
+    If $I$ and $J$ are nonzero ideals, then $N_K(IJ)=N_K(I)N_K(J)$.\begin{proof}
+        It suffices to prove for distinct nonzero primes $\fp_1,\ldots,\fp_r$, we have \[N_K(\fp_1^{a_1}\cdots\fp_r^{a_r})=N_K(\fp_1)^{a_1}\cdots N_K(\fp_r)^{a_r}\] By CRT, we get $\cO_K/\fp_1^{a_1}\cdots\fp_r^{a_r}\cong \cO_K/\fp_1^{a_1}\times\cdots\times\cO_K/\fp_r^{a_r}$, where taking cardinalities now gives us $N_K(\fp_1^{a_1}\cdots\fp_r^{a_r})=N_K({\fp_1^{a_1}})\cdots N_K({\fp_r^{a_r}})$. So what remains is just to prove for a nonzero prime $\fp\unlhd \cO_K$, $N_K({\fp^k})=N_K({\fp})^k$, we will do this by induction on $k$. We use an immediate corollary of Lagrange's theorem on the inclusion of abelian groups $\fp^{k+1}\subseteq \fp^k\subseteq \cO_K$ to get \[
+        N_K({\fp^{k+1}})=[\cO_K:\fp^{k+1}] = [\cO_K:\fp^k][\fp^k:\fp^{k+1}] = N_K({\fp^k})[\fp^k:\fp^{k+1}]
+        \] so it suffices to show $[\fp^{k+1}:\fp^k]=N_K({\fp})$, by the algebra of prime ideal in a Dedekind domain, we may pick $b\in\fp^{k+1}\setminus\fp^k$, and I now claim the map: \begin{gather*}
+            \cO_K/\fp \rightarrow \fp^k/\fp^{k+1}\\
+            a + \fp \mapsto ab + \fp^{k+1}
+        \end{gather*} is an isomorphism of abelian groups. It is well defined, as for $a\in\fp$, $ab\in\fp^{k+1}$. It is injective, as if we choose $a\not\in\fp$, then since $\fp\unlhd\cO_K$ is maximal, $(a)+\fp=\cO_K$, so there exists $x\in\cO_K$ and $y\in\fp$ with $ax+y=1$, now if $ab\in\fp^{k+1}$, then $b=(ax+y)b = abx + by\in\fp^{k+1}$ contradicting our choice of $b$. It is also surjective, we find the ideal $I$ coprime to $\fp$ such that $(b)=\fp^kI$, thus $(b)+\fp^{k+1}=\fp^k$, and so for $x\in\fp^k$ we can find $a\in\cO_K$ and $y\in\fp^{k+1}$ such that $x=ab+y$.
+    \end{proof}
+\end{proposition}
+
+\begin{theorem}
+    Let $K$ be a number field and $p$ be a prime, then \[
+    \sum_{\fp\ni p}e(\fp)f(\fp)=[K:\bQ]
+    \]\begin{proof}
+        Let $(p)=\fp_1^{e(\fp_1)}\cdots \fp_r^{e(\fp_r)}$ be the factorisation of $p$, then we have \[
+        p^{[K:\bQ]} = N_K((p)) = N_K(\fp_1^{e(\fp_1)}\cdots \fp_r^{e(\fp_r)}) = N_K(\fp_1)^{e_1}\cdots N_K(\fp_r)^{e_r} = p^{e(\fp_1)f(\fp_1)\cdots e(\fp_r)f(\fp_r)}\qedhere
+        \]
+    \end{proof}
+\end{theorem}
+
+And the explanation for the notation
+
+\begin{lemma}
+    For $A\in M_n(\bZ)$ a nonsingular matrix, $[\bZ^n:A\bZ^n]=\abs{\det(A)}$.\begin{proof}
+        TODO:
+    \end{proof}
+\end{lemma}
+
+\begin{proposition}
+    For $K$ a number field and $0\neq\alpha\in\cO_K$, we have $N_K((\alpha))=\abs{N_K(\alpha)}$.
+    \begin{proof}
+        By the previous lemma with $A$ the matrix of multiplication by $\alpha$ w.r.t.~some integral basis of $\cO_K$, we have $N_K(\alpha)=\det(A)=[\cO_K:\alpha\cO_K]=\abs{N_K((\alpha))}$.
+    \end{proof}
+\end{proposition}
+
+\subsection{Splitting in quadratic number fields}
+
+In $K=\bQ(\sqrt{d})$ there are three ways the factorisation of $(p)$ can play out:\begin{enumerate}
+    \item if $(p)=\fp_1\fp_2$ for distinct prime ideals $\fp_1,\fp_2$, then $e(\fp_i)=f(\fp_i)=1$ and we say $p$ \textbf{splits} in $\cO_d$;
+    \item if $(p)=\fp^2$, then $e(\fp)=2$ and $f(\fp)=1$ and we say $p$ \textbf{ramifies} in $\cO_d$;
+    \item if $(p)=\fp$ is prime, we have $e(\fp)=1$ and $f(\fp)=2$ and we say $p$ is \textbf{inert} in $\cO_d$.
+\end{enumerate}
+
+Then the previous theorem is just the collection of statements $1\cdot 1 + 1\cdot 1 = 2$, $2\cdot 1 = 2$ and $1\cdot 2 = 2$, all of which look true. We actually have a much shorter alternate proof \[
+N_K((\alpha))^2 = N_K((\alpha))N_K((\overline{\alpha})) = N_K((\alpha\overline{\alpha})) = \abs{N_K(\alpha)}^2
+\]
+
+\begin{theorem}
+    Let $d\neq0,1$ be a squarefree integer with $p$ and odd prime, then $(p)$ factors in $\cO_d$ as follows \begin{itemize}
+        \item if $p\mid d$, then $p$ ramified in $\cO_d$ with $(p)=(p,\sqrt{d})^2$;
+        \item if $p\nmid d$ and there exists some $a\in \bZ$ with $a^2\equiv d$ (mod $p$), then $p$ splits in $\cO_d$ and $(p)=(p,a+\sqrt{d})(p,a-\sqrt{d})$;
+        \item if $p\nmid d$ and no such $a$ exists, then $p$ is inert in $\cO_d$.
+    \end{itemize}
+    \begin{proof}
+        First we check each of the resulting factorisations: \begin{itemize}
+            \item if $p\mid d$, then $(p,\sqrt{d})^2=(p^2,p\sqrt{d},d)\subseteq (p)$, as $d$ is squarefree we  also have $gcd(p^2,d)=p$;
+            \item if $p\nmid d$ and we have $a^2\equiv d$ (mod $p$), then \[
+            (p,a+\sqrt{d})(p,a-\sqrt{d}) = (p^2,p(a+\sqrt{d}),p(a-\sqrt{d}),a^2-d)\subseteq (p)
+            \] and the LHS contains $2pa = p(a+\sqrt{d}) + p(1-\sqrt{d})$, and so also contains $p=\gcd(2pa,p^2)$ as $p\nmid a$ and $p^2\equiv d \not\equiv 0$ (mod $p$).
+        \end{itemize}
+        And now we show all of these factors are actually prime: \begin{itemize}
+            \item if $p\mid d$, then $p^2=N_K((p))=N_K((p,\sqrt{d}))^2$ and hence $N_K((p,\sqrt{d}))=p$ and $(p,\sqrt{d})$ is prime;
+            \item if $p\nmid d$ and $a^2\equiv d$ (mod $p$), then $\overline{(p,a+\sqrt{d})}=(p,a-\sqrt{d})$ so these ideals have the same norms, and the product of their norms ioos $p^2$, if they weren't actually distinct then they would contain $\gcd(2a,p)=1$, which contradicts their norm of $p$;
+            \item finally, if $p\nmid d$ and no such $a$ exists, we are just checking $(p)$ is prime, if it wasn't we would get $(p)\subsetneq \fp$ prime, and so $N_K(\fp)=p$ and $\cO_d/\fp\cong\bF_p$ in which $(\sqrt{d}+\fp)^2=d+\fp$, i.e.~we can always find an $a\in\bF_p$ with $a^2=d$, contradicting our assumption.\qedhere
+        \end{itemize}
+    \end{proof}
+\end{theorem}
+
+This can be better stated with a tool from elementary number theory.
+
+\begin{definition}
+    For $p$ and odd prime and $m\in\bZ$ with $p\nmid m$, we say $m$ is a \textbf{quadratic residue} if there exists some $a\in\bZ$ with $a^2\equiv m$ (mod $p$). We can represent this as a multiplicative monoid homomorphism $\bZ\rightarrow \{-1,1,0\}=\bZ/3\bZ$ called the \textbf{Legendre symbol}: \[
+    \pr{\frac{m}{p}} = \begin{cases}
+        1 & \text{if $m$ is a quadratic residue mod $p$} \\
+        -1 & \text{if $m$ is a quadratic nonresidue mod $p$} \\
+        0 & \text{if $p\mid m$}
+    \end{cases}
+    \] The proof that $\pr{\frac{m}{p}}\pr{\frac{n}{p}}=\pr{\frac{mn}{p}}$ is an exercise.
+\end{definition}
+
+\begin{theorem}
+    For $d\neq 0,1$ a square free integer, $2$ factors in $\cO_d$ in the following ways:\begin{itemize}
+        \item If $d\not\equiv 1$ (mod $4$) then $2$ ramifies in $\cO_d$ in one of two ways: \begin{itemize}
+            \item if $2\mid d$, then $(2)=(2,\sqrt{d})^2$;
+            \item if $d\equiv 3$ (mod $4$) then $(2)=(2,1+\sqrt{d})^2$.
+        \end{itemize}
+        \item If $d\equiv 1$ (mod $4$) then there are two possibilites: \begin{itemize}
+            \item if $d\equiv 1$ (mod $8$), then $2$ splits in $\cO_d$ as $(2)=(2,\frac{1+\sqrt{d}}{2})(2,\frac{1-\sqrt{d}}{2})$;
+            \item if $d\equiv 5$ (mod $8$) then $2$ is inert in $\cO_d$.
+        \end{itemize}
+    \end{itemize}
+    \begin{proof}
+        The proof is very similar to that of the previous theorem, except for the final case you should consider what $\frac{1+\sqrt{d}}{2}$ satisfying its integer polynomial means in the quotient.
+    \end{proof}
+\end{theorem}
+
+\begin{corollary}
+    A prime $p$ ramifies in $\cO_d$ iff $p\mid D_{\bQ(\sqrt{d})}$.
+\end{corollary}
+
+So only finitely many primes ramify in quadratic number fields. And being either split or inert have a roughly equal chance of happening. This can be phrased properly with some analytic number theory and measure theory.
+
+From our proofs when $p$ is inert, we notice that the factorisation of $(p)$ in $\cO_d$ is related to the minimal polynomial of non-integer generator of this ring of integers. We can formalise this statment.
+
+\begin{proposition}
+    For $\alpha\in\bC$ a nonzero algebraic integer with minimal monic polynomial $m_\alpha$, there is an isomorphism of rings $\bZ[\alpha]\cong \bZ[x]/(m_\alpha)$.
+    \begin{proof}
+        We have used the rational version of this extensively throughout this course and Galois theory, the proof here will be very similar, and just involves a bit of pedantry about our leading coefficients.
+
+        There is a surjective homomorphism $\phi:\bZ[x]\rightarrow \bZ[\alpha]$ by $f\mapsto f(\alpha)$. Now suppose we have $f\in\bZ[x]$ with $f(\alpha)=0$, we willl do induction on $\deg(f)$, where the base case is $\deg(f)<\deg(m_\alpha)$. If $f=ax^n+\cdots$ for $n\geq\deg(m_\alpha)$, then write $f=ax^{n-\deg(m_\alpha)}m_\alpha+g$ for $\deg(g)<n$. Then plugging in $\alpha$ we see $g(\alpha)=0$ and by induction $g\in(m_\alpha)$.
+    \end{proof}
+\end{proposition}
+
+Now, suppose $d\not\equiv 1$ (mod 4), so $\cO_d=\bZ[\sqrt{d}]$, we get a new perspective \[
+\cO_d/(p)\cong \bZ[x]/(p,x^2-d)\cong \bF_p[x]/(x^2-d) \cong \begin{cases}
+    \bF_p\times \bF_p & \text{if $x^2-d=(x-a)(x-b)$ in $\bF_p[x]$} \\
+    \bF_p[x]/((x-a)^2) & \text{if $x^2-d=(x-a)^2$ in $\bF_p[x]$} \\
+    \bF_{p^2} & \text{if $x^2-d$ is irreducible in $\bF_p[x]$}
+\end{cases}
+\] which looks exactly like a description of $\cO_d/(p)$ based on the factorisation of $(p)$ in $\cO_d$. Note that $x-a$ is nilpotent in $\bF_p[x]/((x-a)^2)$ so this ring isn't isomorphic to either of the others. So the factorisation of $(p)$ in $\cO_d$ is fully controlled by the splitting of $x^2-d$ in $\bF_p[x]$.
+
+The next section will be devoted to a vast generalisation of this statement.
+
+\subsection{Dedekind's factorisation criteria}
+
+\begin{lemma}
+    For $K=\bQ(\alpha)$ a number field, if $p\nmid [\cO_K:\bZ[\alpha]]$, then the map \begin{gather*}
+        \bZ[\alpha]/(p)\rightarrow \cO_K/(p)\\
+        x + p\bZ[\alpha]\mapsto x+p\cO_K
+    \end{gather*} is an isomorphism.\begin{proof}
+        This is a homomorphims between rings of finite order $p^{[K:\bQ]}$, so we can just show it's surjective. We also know there exists $a,b\in\bZ$ such that $a[\cO_K:\bZ[\alpha]]+bp=1$. So for all $x+p\cO_K\in\cO_K/(p)$, we can write \[
+        x+p\cO_K = x(a[\cO_K:\bZ[\alpha]]+bp)+p\cO_K = xa[\cO_K:\bZ[\alpha]]+p\cO_K
+        \] where, by Lagrange's theorem, $xa[\cO_K:\bZ[\alpha]]\in\bZ[\alpha]$.
+    \end{proof}
+\end{lemma}
+
+\begin{theorem}
+    With the above assumptions, if the minimal polynomial of $\alpha$ is $f$, and if $f=g_1^{e_1}\cdots g_r^{e_r}$ is the factorisation of $f$ into pairwise distinct, monic, irreducibles in $\bF_p[x]$, then in $\cO_K$, $(p)=\fp_1^{e_1}\cdots \fp_r^{e_r}$, where $\fp_i=(p,g_i(\alpha))$ for all $i$ are pairwise distinct prime ideals of $\cO_K$. Moreover, $f(\fp_i)=\deg(g_i)$.\begin{proof}
+        Combining the previous lemma and proposition, we have \[
+        \bF_p[x]/(f) \cong \bZ[x]/(p,f) \cong \bZ[\alpha]/(p)\cong \cO_K/(p)
+        \]and thus \[
+        \cO_K/(p,g_i(\alpha))\cong\bZ[\alpha]/(p,g_i(\alpha))f\cong \bF_p[x]/(f,g_i)=\bF_p[x]/(g_i)
+        \] where the final term is a field, hence $(p,g_i(\alpha))$ is a prime ideal of $\cO_K$. Now to show none of the ideals are equal \[
+        \cO_K/(p,g_i,g_j) \cong \bF_p[x]/(g_i,g_j)=0
+        \] for $g_i,g_j$ distinct irreducible polynomials. Now to show the ideals are equal, first note we have \[
+        \fp_1^{e_1}\cdots \fp_r^{e_r} \subseteq (p,g_1^{e_1}(\alpha)\cdots g_r^{e_r}(\alpha)) = (p,f(\alpha)+pk)=(p)
+        \] and, by taking norms, we have $N_K(\fp_1^{e_1}\cdots \fp_r^{e_r})=p^{\deg(f)}=p^{[K:\bQ]}=N_K((p))$, so we get an equality.
+    \end{proof}
+\end{theorem}
+We should ask how restrictive actually is the condition $p\nmid [\cO_K:\bZ[\alpha]]$? If we've found some $\alpha$ with $\disc_K(\bZ[\alpha])$ squarefree, then we knwo $\cO_K=\bZ[\alpha]$, so this criteria will work for all primes. If we don't actually konw what $\cO_K$ is, then we still have the formula $\disc(\bZ[\alpha])=[\cO_K:\bZ[\alpha]]^2D_K$, so the $p\mid[\cO_K:\bZ[\alpha]]$ will also satisfy $p^2\mid\disc(\bZ[\alpha])$, which is much easier to calculate.
+
+\begin{definition}
+    We say a prime $P$ \textbf{ramifies} in $K$ if the unique factorisation of $(p)$ into prime ideal of $\cO_K$ contains a repeated factor. Equivalents, there is a prime ideal $\fp$ lying over $P$ with $e(\fp)>1$.
+\end{definition}
+
+We won't give a proof of this generalisation of an earlier corollary about quadratic number fields.
+
+\begin{theorem}
+    Let $K$ be a number field, then $p$ ramifies in $K$ iff $p\mid D_K$.
+\end{theorem}
+
+From which we get the same corollary.
+
+\begin{corollary}
+    Only finitely many primes ramify in $K$.
+\end{corollary}
+
+If we are prepared to use the primitive element theorem, then we can actually prove this corollary with the following lemma.
+
+\begin{lemma}
+    Let $f\in\bZ[x]$ be an irreducible monic polynomial. Then for all by finitely many primes $p$, $f\in\bF_p[x]$ has no repeated irreducible factors.
+    \begin{proof}
+        If $k$ is a field and $g\in k[x]$ has a repeated factor $h$, then we know $h\mid g'$, so if $(g,g')=k[x]$, then $g$ cannot have a repeated factor. 
+
+        Now, our $f$ and $f'$ are coprime in $\bQ[x]$, as $f$ is irreducible and $f'$ is nonzero with lower degree than $f$, hence we can find polynomials $a,b\in\bQ[x]$ such that $af+bf'=1$, by clearing the denominators with some $d>0$ we have the equation $d=(da)f+(db)f'$ in $\bZ[x]$. We now reduce this mod $p$ for our result.
+    \end{proof}
+\end{lemma}
+
+We'll also give this rough sketch that $p$ ramifies in $K$ implies $p\mid D_K$. If $(p)=\fp^2\fp_2\cdots\fp_r$ is a ramified prime, then we can pick some $x\in\fp\fp_2\cdots\fp_r\setminus(p)$ with $x^2\in(p)$, hence $x+(p)\in\cO_K/(p)$ is nilpotent. In fact, $p$ ramifies iff $\cO_K/(p)$ is non-reduced.
+
+Now, from linear algebra, a matrix $A\in M_n(k)$ is nilpotent if $A^r=0$ for some $r$, in which case all the eigenvalues are $0$, and $\tr(A)=0$. Consequently, if $A\in M_n(\bZ)$ is a matrix whose reduction mod $P$ is nilpotent, then $\tr(A)\equiv 0$ (mod $p$).
+
+If we pick an integral basis $\alpha_1,\ldots,\alpha_n$ for $\cO_K$, and consider the reduction $\overline{\alpha_1},\ldots,\overline{\alpha_n}\in\cO_K/(p)$, this  will be an $\bF_p$-basis for $\cO_K/(p)$. Choose $x\in\cO_K/(p)$ nilpotent, we can replace one of the $\overline{\alpha_i}$ with $x$ and lift this basis back to $\cO_K$\footnote{Technically, we can't \textbf{just} do this, the reduction map $M_n(\bZ)^\times\rightarrow M_n(\bF_p)^\times$ isn't surjective for $p>3$, so our basis won't always have an exact lift. Ultimately, if we are willing to rescale our first element, then we can find a lift, so this sketch still works.} so, wlog, $\alpha_1$ is nilpotent mod $p$. The same is then true of $\alpha_1\alpha_i$ for all $i$, and hence $p\mid D_K=\det(\tr(\alpha_i\alpha_j))$ by expanding along the first row/column.
+
+\subsection{Eisenstein things}
+
+From Galois theory recall Eisenstein's condition, I'll call polynomials which satsify Eistenstein's condition for $p$ \textbf{Eisenstein at $p$}.
+
+\begin{proposition}
+    If $K=\bQ(\alpha)$ is a number field, with the minimal polynomial $m_\alpha$ of $\alpha$ Eisenstein at $p$, then $p\nmid [\cO_K:\bZ[\alpha]]$. Furthermore, $(p)=(p,\alpha)^{[K:\bQ]}$.
+    \begin{proof}
+        Have $m_\alpha(x)=x^n+a_{n-1}x^{n-1}+\cdots+a_0$, if $p\mid [\cO_K:\bZ[\alpha]]$, then there exists some $x\in\cO_K\setminus \bZ[\alpha]$ with $px\in\bZ[\alpha]$, so we write: \vspace{-12pt}\[
+        x = \frac{c_0}{p} + \frac{c_1}{p}\alpha + \cdots + \frac{c_{n-1}}{p}\alpha^{n-1}\in\cO_K
+        \] with $c_0,\ldots,c_{n-1}\in\bZ$ and not all $c_i\in p\bZ$. Let $i\geq 0$ be the smallest index for which $c_i\not\in p\bZ$, then \[
+        \frac{c_i}{p}\alpha^i + \cdots + \frac{c_{n-1}}{p}\alpha^{n-1}\in \cO_K \implies \frac{c_i}{p}\alpha^{n-1} + \frac{\alpha^n}{p}(c_{i+1}+c_{i+2}\alpha + \cdots + c_{n-1}\alpha^{n-i-2})\in\cO_K
+        \] But, from the minimal polynomial, $\alpha^n\in p\cO_K$, so $\frac{c_i}{p}\alpha^{n-1}\in\cO_K$. This element will have norm \[
+        N_K\pr{\frac{c_i}{p}\alpha^{n-1}} = \pm\frac{c_i^n}{p^n}a_0^{n-1}\in\bZ
+        \] and thus, as $p\nmid c_i$, we have $p\mid a_0$, so $m_\alpha$ isn't Eisenstein at $p$. The last statement is a direct consequence of Dedekind's criteria as $f\equiv x^n$ (mod $p$).
+    \end{proof}
+\end{proposition}
+
+\begin{definition}
+    We say a prime $p$ is \textbf{totally ramified} in a number field $K$ if there exists a single prime $\fp\unlhd \cO_K$ such that $(p)=\fp^{[K:\bQ]}$.
+\end{definition}
+
+This gives us another strategy for computing rings of integers: if we find some $\bZ[\alpha]\subseteq \cO_K$ and a prime $p^2\mid\disc(\bZ[\alpha])$, we check $m_\alpha$ is Eisenstein at $p$, if we do this for all such $p$ then we know $\cO_K=\bZ[\alpha]$. Of course, if there are primes which aren't totally ramified in $K$ we'll have to use a different method. And choosing good $\alpha$s for each $p$ is still challenging.
+
+A good application of this method is for the Cyclotomic fields $\bQ[\zeta_p]$ where $\zeta_p=e^{2\pi i/p}$ for $p$ an odd prime. The minimal polynomial of $\zeta_p$ is the cyclotomic polynomial $\Phi_p(x) = \frac{x^p-1}{x-1}$ and the minimal polynomial of $\zeta_p-1$ is $x^{p-1}+px(\cdots) + p$ which is Eisenstein at $p$.
+
+\begin{proposition}
+    For $K=\bQ(\zeta_p)$, we have $\cO_K=\bZ[\zeta_p]$, $D_K=(-1)^{p-1}p^{p-2}$, and $(p)=(\zeta_p-1)^{p-1}$ totally ramified.
+    \begin{proof}
+        We start with the discriminant of $\bZ[\zeta_p]$, first differentiate $x^p-1=(x-1)\Phi_p(x)$ to get $\Phi_p(x)+(x-1)\Phi'_p(x)=px^{p-1}$, plugging in $\zeta_p$ we get $\Phi'_p(\zeta_p) = \frac{p\zeta_p^{-1}}{\zeta_p-1}$. We can now write the discriminant \[
+            \disc(\bZ[\zeta_p]) = (-1)^{\frac{(p-1)(p-2)}{2}}N_K(\Phi_p'(\zeta_p)) = (-1)^\frac{p-1}{2}N_K(p)\frac{N_K(\zeta_p^{-1})}{N_K(\zeta_p-1)} = (-1)^\frac{p-1}{2}p^{n-1}\frac{1}{p} = (-1)^\frac{p-1}{2}p^{p-2}
+        \] and now by the previous proposition $\cO_K=\bZ[\zeta_p]$, and we have our formula for $D_K$. We also get $(p)=(p,\zeta_p-1)^{p-1}$, but $\zeta_p-1\mid N_K(\zeta_p-1)=p$, so $(p,\zeta_p-1)=(p)$.
+    \end{proof}
+\end{proposition}
+
+\begin{theorem}
+    For $p\neq q$ prime, if $f$ is the order of $q$ in $(\bZ/p\bZ)^\times$, and $r=\frac{p-1}{f}$, then $(q)=\fq_1\cdots\fq_r$ a product of distinct prime ideals in $\bZ[\zeta_p]$ with $f(\fq_i)=f$ for all $i$.\begin{proof}
+        We can write \[
+        p = -p(x^p-1)+x(x^p-1)'
+        \] and so $x^p-q$ and hence $\Phi_p$ don't have any repeated factors mod $q$. Thus we have a factorisation $\overline{\Phi}_p(x)=g_1\cdots g_s$ into distinct irreducible factors, we just have to show $\deg(g_i)=f$.
+
+        Consider the finite field $\bF=\bF_q[x]/(g_i)$ which has cardinality $q^{\deg(g_i)}$. So for all $a\in\bF^\times$, we'll have $a^{q^{\deg(g_i)}}=1$. $\bF$ also contains the element $a=x+(g_i)$ which satsifies $g_i$, and hence also $\overline{\Phi}_p$, so $a^p=1$, and thus $p\mid q^{\deg(g_i)}-1$. Now, as $q^{\deg(g_i)}\equiv 1$ (mod $p$), we have $f\mid \deg(g_i)$.
+
+        In the other direction, consider the subfield $\bF'=\{b\in\bF\mid b^{q^f}=b\}$ which contains $a$ and thus must be all of $\bF$. And so $\abs{\bF}\leq q^f$, thus $\deg(g_i)\leq f$ therefor $\deg(g_i)=f$. Our value for $r$ now just comes from counting, and the rest is a consequence of Dedekind's criteria.
+    \end{proof}
+\end{theorem}
+
+\subsection{Quadratic reciprocity}
+
+\section{Finiteness of the class group}
+
+\subsection{Minkowski's theorem}
+
+\subsection{Minkowski's bound}
+
+\subsection{Computing some class groups}
+
+\subsection{Primes $x^2+ny^2$}
+
+\subsection{Mordell's equation}
+
+\section{Units in rings of integers}
+
+\subsection{Dirichilet's unit theorem}
+
 \end{document}
