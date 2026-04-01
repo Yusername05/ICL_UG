@@ -1,0 +1,415 @@
+\documentclass{article}
+\usepackage{../../style/header}
+
+\begin{document}
+
+\subsection{Elementary cardinality}
+
+\begin{definition}
+    The sets $A,B$ are \textbf{equinumerous} (or \textbf{have the same cardinality}) if there exists a bijection $f:A\rightarrow B$, we write this as $A\approx B$.
+\end{definition}
+
+\begin{definition}
+    A set $A$ is \textbf{finite} (resp.~\textbf{countable infinite}) if it is equinumerous with some natural number (resp.~$\bN$), and just \textbf{countable} if it is either of those.
+\end{definition}
+Recall the following basic facts about countable sets from IUM:\begin{itemize}
+    \item Every subset of a countable set is countable;
+    \item a set $A$ is countable iff there exists an injective function $f:A\rightarrow \bN$;
+    \item if $A$ and $B$ are countable then $A\times B$ is countable;
+    \item if $A_0,A_1,\ldots$ are all countable, then their union $\bigcup_n A_n$ is also countable, but this uses the axiom of choice.
+\end{itemize}
+
+\begin{theorem}[Cantor]
+    For all sets $X$, there is no surjective function $f:X\rightarrow \cP(X)$. \begin{proof}
+        Suppose, for a contradiction, there exists such an $f$, then consider the set \[
+        Y = \{y\in X \mid y\not\in f(y)\}
+        \] As $f$ is surjective, there exists a set $z\in X$ with $f(z) = Y$, but now if we assume either $z\in Y$ or $z\not\in Y$ we get a contradiction.
+    \end{proof}
+\end{theorem}
+
+\begin{definition}
+    For sets $A,B$, write $\abs{A}\leq \abs{B}$ if there exists an injective function $f:A\rightarrow B$.
+\end{definition}
+
+We will not develop the concept of cardinality $\abs{A}$ for a while, so for now this symbol will only appear as a relation.
+
+\begin{theorem}[Cantor-Schr\"oder-Bernstein]
+    Suppose $A,B$ are sets and there exists injective functions $f:A\rightarrow B$ and $g:B\rightarrow A$, then $A\approx B$.\begin{proof}
+        First consider the sequence of sets $A_0 := A\setminus g(B)$ and for all $n>0$, $A_n:= (g\circ f)(A_{n-1})$. Then write $A^* := \bigcup_n A_n$ and $B^* = f(A^*)$, these clearly satisfy $g(B^*) = (g\circ f)(A^*)\subseteq A^*$.
+
+        I now claim $g(B\setminus B^*) = A\setminus A^*$. For all $a\in A\setminus A^*$, as $a\not\in A_0$ there must exist a $b\in B$ with $g(b)=a$. If $b\in B^*=f(A^*)$, then $a = g(b)\in (g\circ f)(A^*)\subseteq A^*$ a contraduction, therefore $A\setminus A^*\subseteq g(B\setminus B^*)$. Now for all $b\in B$, if $g(b)\in A^*$, then as $g(b)\not\in A_0$ there must exist some $n>0$ with $g(b)\in A_n$ and thus $g(b) = (g\circ f)(a)$ for some $a\in A_{n-1}$, so $b = f(a)$ for some $a\in A^*$ and thus $b\in f(A^*) = B^*$.
+
+        $g$ now gives a bijection $B\setminus B^*\rightarrow A\setminus A^*$, and as $f$ is a bijection $A^*\rightarrow B^*$ we can form the bijection \[
+        k(a) = \begin{cases}
+            f(a) & \text{if $a\in A^*$} \\
+            g^{-1}(a) & \text{if $a\in A\setminus A^*$}
+        \end{cases}\qedhere
+        \]
+    \end{proof}
+\end{theorem}
+
+\subsection{Zermelo-Fraenkel axioms}
+
+We will express these axioms in a first-order language with equality, which we call $\cL_\in^=$, with a single extra $2$-ary relation symbol $\in$.
+
+\begin{axiom}[Extensionality]
+    $(\forall x)(\forall y)((x=y) \leftrightarrow (\forall z)((z\in x) \leftrightarrow (z\in y)))$
+\end{axiom}
+
+\begin{axiom}[Empty set]
+    $(\exists x)(\forall y)(y\not\in x)$
+\end{axiom}
+
+\begin{axiom}[Pairing]
+    $(\forall x)(\forall y)(\exists z)(\forall w)((w\in z)\leftrightarrow ((w = x) \vee (w = y)))$
+\end{axiom}
+
+By extensionality we know we can write $\emptyset$ to mean the unique empty set in ZF. We can also start to form the natrual numbers $0=\emptyset$, $1=\{\emptyset,\emptyset\} = \{\emptyset\}$, and $2=\{\emptyset,\{\emptyset\}\}$, but we can't yet go any further.
+
+\begin{axiom}[Union]
+    $(\forall A)(\exists B)(\forall x)((x\in B)\leftrightarrow(\exists z)((z\in A)\wedge (x\in z)))$
+\end{axiom}
+
+So if we take $A= \{x,y\}$ then $B = x\cup y$, so we can now form $3 = \{0,1,2\} = \{0,1\}\cup \{2\}$, and thus we can form all the natrual numbers.
+
+We will want to adopt the abreviation $A\subseteq B$ to mean $(\forall x)(x\in B \rightarrow x \in A)$.
+
+\begin{axiom}[Powerset]
+    $(\forall A)(\exists B)(\forall z)((z\in B)\leftrightarrow (z\subseteq A))$
+\end{axiom}
+
+\begin{axiom}[Specification]
+    For all $\cL^=_\in$-formulas $P(x,y_1,\ldots,y_r)$, for some finite number of variables $r$, there exists the axiom $(\forall A)(\forall y_1)\dots (\forall y_r)(\exists B)((x\in B)\leftrightarrow ((x\in A)\wedge P(x,y_1,\ldots,y_r)))$.
+\end{axiom}
+
+This lets us form the intersection, let $C$ be a nonempty set with $A\in C$, then \[
+\bigcap C := \{x\in A \mid (\forall z)((z \in C)\rightarrow (x\in z))
+\] and for sets $A,B$, we can form the product \[
+A\times B := \{w \in \cP(\cP(A\cup B)) \mid (\exists a)(\exists b)((a\in A)\wedge (b\in B)\wedge (w = \{\{a\},\{a,b\}\}))\}
+\] and the set of functions \[
+B^A := \{w \in \cP(A\times B) \mid (\forall a)((\exists x)(a \in x \wedge x \in w) \wedge (\forall y)(\forall z)((a \in y \wedge a \in z)\rightarrow y = z))\}
+\]
+
+\begin{definition}
+    For all sets $a$, define the \textbf{successor} of $a$ to be the set $a^\dagger := a\cup \{a\}$. A set $A$ is \textbf{inductive} if $(\emptyset \in A)\wedge (\forall x)((x\in A)\rightarrow (x^\dagger\in A))$.
+\end{definition}
+
+\begin{axiom}[Infinity]
+    There exists an inductive set.
+\end{axiom}
+
+\begin{definition}
+    We can use specification to form the set of inductive sets, and take their intersection, call this $\omega$.
+\end{definition}
+
+\begin{proposition}
+    $\bN$ is an inductive set, and is $B$ is an inductive set, then $\bN\subseteq B$. If $A\subseteq \bN$ is inductive, then $A = \bN$
+\end{proposition}
+
+This is proof by induction, if $P$ is an $\cL_\in^=$-formula and we let $A = \{x \in \bN \mid P(x)\}$, then if we prove a base case and an inductive step, we get $A = \bN$.
+
+
+\subsection{Well orderings}
+
+\begin{definition}
+    A linear ordering $(A;\leq)$ is a \textbf{well-ordering} if every nonempty subset of $A$ has a least element.
+\end{definition}
+
+\begin{definition}
+    If two linear orders $\cA_1 = (A_1;\leq_1)$ and $\cA_2 = (A_2;\leq_2)$ are isomorphic we call them \textbf{similar} and write $\cA_1\simeq \cA_2$. Furthermore, if $\beta:A_1\rightarrow A_2$ is injective and $\forall a,b\in A_1$ we have $a\leq_1 b \implies \beta(a)\leq_2 \beta(b)$, we say $\beta$ is \textbf{order-preserving}.
+\end{definition}
+
+\begin{definition}
+    Given $\cA_1,\cA_2$ as above the \textbf{reverse lexicographic product} is the linear order $\cA_1\times \cA_2 := (A_1\times A_2,\leq)$ with the ordering $(a_1,a_2)\leq (b_1,b_2)$ iff either $a_2\leq_2 b_2$ or $a_2 = b_2$ and $a_1\leq_1 b_1$. Their \textbf{sum} is the linear order $(A_1\sqcup A_2;\leq)$ where $\leq$ is the union of $\leq_1$, $\leq_2$, and $a_1\leq a_2$ for all $a_1\in A_1$ and $a_2\in A_2$.
+\end{definition}
+
+The key example is $\{0,1\}\times \bN \simeq \bN\not\simeq \bN + \bN \simeq \bN\times\{0,1\} \not\simeq \bN \times \bN$. The proof that the sum and product actually satisfy the linear ordering axioms is left as an exercise.
+
+\begin{lemma}
+    If $\cA_1$ and $\cA_2$ are well-orderings, then so are $\cA_1+\cA_2$ and $\cA_1 \times \cA_2$.
+\end{lemma}
+
+\subsection{Ordinals}
+
+\begin{definition}
+    A set $X$ is called \textbf{transitive} if every element of $X$ is also a subset of $X$.
+
+    A set $\alpha$ is called an \textbf{ordinal} if $\alpha$ is a transitive set and the relation $<$ on $\alpha$ given by $x<y\iff x\in y$ is a strict well ordering.
+\end{definition}
+
+\begin{lemma}
+    If $\alpha$ is an ordinal, then so is $\alpha^\dagger$.
+    \begin{proof}
+        For transitivity, if $\beta\in \alpha^\dagger$ then either $\beta\in\alpha$ or $\beta = \alpha$, either way $\beta\subset \alpha^\dagger$. As the ordering $\in$ makes $\alpha$ the maximal element of $\alpha^\dagger$, this ordering is still strict, and by definition $\alpha\not\in\alpha$, so the ordering remains strict.
+    \end{proof}
+\end{lemma}
+
+So we can do induction to see that all the natural numbers are ordinals.
+
+\begin{lemma}
+    If $\alpha$ is a ordinal and $\beta\in\alpha$, then $\beta$ is an ordinal.\begin{proof}
+        If $y\in x \in \beta \in \alpha$, then as $\in$ is an ordering, so transitive, we get $y\in \beta$, so $\beta$ is transitive and inherets the ordering from $\alpha$, thus is an ordinal.
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    If $\alpha$ and $\beta$ are ordinals, and $\alpha\subset \beta$, then $\alpha \in \beta$.\begin{proof}
+        As $\beta\setminus \alpha$ is nonemtpy, we may choose a minimal element $\gamma$, I now claim $\gamma = \alpha$.
+
+        For all $x\in \gamma$, we have $x\in \beta$ and so by minimality $x\in \alpha$, thus $\gamma\subseteq \alpha$. Now suppose there exists some $y\in \alpha\setminus \gamma$ then in the total ordering on $\beta$ we must have either $y = \gamma$ or $\gamma \in y$, either way $\gamma\in \alpha$ by transitivity.
+    \end{proof}
+\end{lemma}
+
+\begin{definition}
+    If $\alpha$ and $\beta$ are ordinals, write $\alpha < \beta$ for $\alpha \in \beta$.
+\end{definition}
+
+\begin{proposition}
+    Suppose $\alpha$, $\beta$, and $\gamma$ are oridnals, then the following all hold: \begin{enumerate}
+        \item if $\alpha<\beta$ and $\beta,\gamma$, then $\alpha<\gamma$;
+        \item if $\alpha\leq \beta$ and $\beta\leq \alpha$, then $\alpha = \beta$;
+        \item exactly one of $\alpha < \beta$, $\alpha = \beta$, or $\alpha > \beta$ holds;
+        \item if $X$ is a nonemtpy set of ordinals, then $X$ has a least element.
+    \end{enumerate}
+    \begin{proof}
+        (1) is just by transitivity of $\gamma$.
+
+        (2) must hold, otherwise we would have $\alpha\in \beta\in\alpha$ a contradiction.
+
+        (3) We know at most one of these hold, and from the definition we can see $\alpha\cap\beta$ is also an ordinal. If neither hold, $\alpha\not\subseteq \beta$ and $\beta\not\subseteq \alpha$, then $\alpha\cap\beta \subset \alpha$ hence $\alpha\cap\beta \in \alpha$, by doing the same with $\beta$ we get $\alpha\cap \beta \in \alpha\cap \beta$, which is a contradiction.
+
+        (4) Take $\delta \in X$, then the least element of $X$ is the least element of $\delta\cap X\subseteq \delta$.
+    \end{proof}
+\end{proposition}
+
+\begin{corollary}
+    If $X$ is a nonempty set of ordinals, then $\bigcup X$ is an ordinal.\begin{proof}
+        If $y\in z \in \bigcup X$, then there exists some $x\in X$ with $z\in x$, so $y\in x$, and thus $y\in \bigcup X$.
+    \end{proof}
+\end{corollary}
+
+\begin{corollary}
+    $\omega$ is an ordinal.
+\end{corollary}
+
+\begin{definition}
+    If $(A;\leq)$ is a well-ordering, then we call $X\subset A$ an \textbf{initial segment} of $A$ if whenever $y<x\in X$, then $y\in X$, $X$ is proper if $X\neq A$.
+\end{definition}
+
+\begin{lemma}
+    If $(A;\leq)$ is a well order, with $X$ a proper initial segment, then there exists $x\in A$ such that $X = \{a\in A \mid a < x\}$.
+    \begin{proof}
+        Let $x$ be the minimal element of $A\setminus X$, then for all $y < x$ we have $y\in X$. If $z\in X$, then $z\neq x$, so if $z > x$ we must have $x\in X$, a contradiction.
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    If $(A;\leq)$ is a well-ordering, $f:A\rightarrow A$ is order-preserving, and $f(A)$ is an initial segment of $A$, then $f(a) = a$ for all $a\in A$.
+    \begin{proof}
+        Suppose this was not the case, then consider $x$, the least element of the set $\{y \in A \mid f(y) \neq y\}$, then $f$ is the identity on the initial segment $A[x]$, and hence as $f$ is injective and $f(x)\neq x$, we must have $f(x)>x$. But now $x\not\in f[A]$, even though $x$ is order preserving, a contradiction.
+    \end{proof}
+\end{lemma}
+
+\begin{corollary}
+    If $\alpha\neq\beta$ are ordinals, then $\alpha\not\simeq \beta$.
+\end{corollary}
+
+For the next proof we need the next ZF axiom.
+
+\begin{axiom}[Replacement]
+    Suppose $F(x,y,z_1,\ldots, z_r)$ is a property of sets expressible in $\cL^=_\in$ such that, whenever $s_1,\ldots, s_r$ are sets, for every set $a$ there exists a unique set $b$ such that $F(a,b,s_1,\ldots,s_r)$ holds. Then for any set $A$, we can form the set \[
+    B = \{b \mid (\exists a)((a\in A) \wedge F(a,b,s_1,\ldots, s_r))\}
+    \] replacing each $a\in A$ with the unique $b$ such that $F(a,b,s_1,\ldots, s_r)$ holds.
+\end{axiom}
+
+\begin{theorem}
+    If $(A;\leq)$ is a well-ordering, then there exists a unique ordinal $\alpha$ which is similar to $(A;\leq)$.\begin{proof}
+        First, uniqueness is a exactly the previous corollory, as if $\alpha$ and $\beta$ are both similra to $(A,\leq)$, then they are similar to each other, and hence equal.
+
+        For existence, consider the set $X = \{x\in A \mid A[x] \text{ is similar to an ordinal}\}$, then for each $x$ there is a unique ordinal $\alpha_x$ such that $\alpha_x\simeq A[x]$, so we can use replacement to form the set $S = \{\alpha_x \mid x\in X\}$. As $S$ is a set of ordinals, to show it is an ordinal itself, it suffices to show transitivity. If we have $\beta \in \alpha_x \in S$, with $\pi:A[x]\rightarrow \alpha_x$ the similarity, then we let $y = \pi^{-1}(\beta)$ which makes $\pi$ a similar $A[y]\rightarrow \beta$, so $\beta = \alpha_y \in S$. This in fact says $X$ is an initial segment of $A$. Suppose it is proper, then we must have $X = A[z]$ for some $z\in A$, but then $z \in X = A[z]$ a contradiction, so $X=A$ and the map $x\mapsto \alpha_x$ is a similarity between $X$ and $S$.
+    \end{proof}
+\end{theorem}
+
+\subsection{Transfinite induction and recursion}
+
+\begin{theorem}[Transfinite induction]
+    Suppose $P(x)$ is a property of sets such that for all ordinals $\alpha$, if $P(\beta)$ holds for all ordinals $\beta < \alpha$, then $P(\alpha)$ holds; then $P(\gamma)$ holds for all ordinals $\gamma$.
+    \begin{proof}
+        If $\alpha = 0$, then $P(\beta)$ holds vacuously, so $P(0)$ holds. Now consider the set of ordinals $\gamma$ for which $P$ doesn't hold, by assumption this can't have a minimum, and so must be empty.
+    \end{proof}
+\end{theorem}
+
+\begin{theorem}
+    For all infinite ordinals $\alpha$, we have $\alpha\approx \alpha\times\alpha$.\begin{proof}
+        We already know the result holds if $\alpha$ is any countable ordinal, so we may assume $\alpha$ is uncountable, now by transfinite induction we just have to assume for all $\omega\leq \beta < \alpha$, that $\beta \approx \beta \times \beta$ and show $\alpha \approx \alpha \times \alpha$. We may also assume that if $\beta < \alpha$, then $\beta \not\approx \alpha$, from which it follows $\beta^\dagger \not\approx \alpha$. Finally, by Cantor-Schr\"oder-Bernstein we just need to find an injective function $\alpha\times \alpha\rightarrow \alpha$.
+
+        First, suppose we have a well-ordering $\leq$ of $A = \alpha \times \alpha$ such that for all $x\in A$, $|A[x]| < |\alpha|$, then we may find an ordinal $\gamma$ with $\gamma\simeq (A;\leq)$, and call the similarity $f$, then for all $\eta \in \gamma$ as $f$ is a similarity, it gives a bijection $\eta\rightarrow A[f(\eta)]$, so $\eta \approx A[f(\eta)]$ which has cardinality strictly less than $\alpha$, so by trichotomy we have $\eta < \alpha$ equivalently $\eta\in \alpha$, so $\gamma \subseteq \alpha$ and we are done.
+
+        Now, we must produce such a well-ordering on $A$. For all $\lambda < \alpha$ consider the set $A_\lambda := \{(\theta,\zeta) \mid \max(\theta,\zeta) = \lambda\}$ then we define $\leq$ on $A$ by $(\theta,\zeta) \leq (\theta',\zeta')$ iff $\max(\theta,\zeta) < \max(\theta',\zeta)$ or if $\max(\theta,\zeta) = \max(\theta',\zeta')$ and either $\zeta < \zeta'$ or $\zeta = \zeta'$ and $\theta\leq \theta'$, it is left as an exercise to show this is a well-ordering on $A$. Now for $x = (\theta,\zeta)\in A$, if we take $\lambda = \max(\theta,\zeta)$, then $A[x]\subseteq A_{\lambda^\dagger}\subset \lambda^\dagger\times \lambda^\dagger$, and by our initial assumptions, we know $\lambda^\dagger \times \lambda^\dagger \approx \lambda$ which has cardinality strictly less than $\alpha$.
+    \end{proof}
+\end{theorem}
+
+\begin{corollary}
+    If $(A;\leq)$ is an infinite well-ordering, then $A\approx A\times A$.
+    \begin{proof}
+        We may find an ordinal $\alpha$ with $A\approx \alpha \approx \alpha\times \alpha \approx A\times A$.
+    \end{proof}
+\end{corollary}
+
+\begin{corollary}
+    Assuming the axiom of choice, if $A$ is any infinite set, then $A\approx A\times A$.\begin{proof}
+        We will see that the axiom of choice lets us make any set well-ordered.
+    \end{proof}
+\end{corollary}
+
+From the axioms of replacement, we have the notion of an operation $F$ on sets, some property $F(x,y)$ of sets such that for each set $a$ there is a unique set $b$ such that $F(a,b)$ holds.
+
+\begin{theorem}[Transfinite recursion]
+    If $F$ is an operation on sets, then there is an operation $G$ such that for all ordinals $\alpha$, $G(\alpha) = F(G\restriction \alpha)$, where we define $G\restriction \alpha:\alpha \rightarrow \{G(\beta) \mid \beta <\alpha\}$. If $G'$ is another operation such that $G'(\alpha) = F(G'\restriction \alpha)$ for all ordinals $\alpha$, then $G(\alpha) = G'(\alpha)$ for all oridnals $\alpha$.
+    \begin{proof}
+        Non-examinable.
+    \end{proof}
+\end{theorem}
+
+We can use this to prove a version of the Lindenbaum lemma which doesn't assume $\cL$ is countable.
+
+\begin{proposition}
+    Suppose $\cL$ is a first-order language whose alphabet of symbols $A$ is well-ordered, then if $\Sigma$ is a closed set of $\cL$-formulas, we can find a complete consisten set $\Sigma^*\supseteq \Sigma$ of closed $\cL$-formulas.
+    \begin{proof}
+        As $A$ is well-ordered, we can also well order the set of finite sequences in $A$ which we call $S$. Hence we get a well-ordering on any subset of $S$, in particular the set of closed $\cL$-formulas. This set of closed $\cL$-formulas is now similar to some ordinal $\lambda$ and index our set of $\cL$-formulas as $\{\phi_\alpha \mid \alpha < \lambda\}$.
+
+        Now, for each ordinal $\alpha$, define the a consistem set $G(\alpha)\supseteq \Sigma$ of closed $\cL$-formulas by transfinite induction as follows: \[
+        G(\alpha) = \begin{cases}
+            \displaystyle\Sigma \cup \bigcup_{\beta < \alpha}G(\beta) \cup \{\phi_\alpha\} & \text{if $\alpha < \lambda$ and }\displaystyle\Sigma \cup \bigcup_{\beta < \alpha}G(\beta)\vdash \phi_\alpha \\
+            \displaystyle \Sigma \cup \bigcup_{\beta < \alpha} G(\beta) \cup \{(\neg\phi_{\alpha})\} & \text{if $\alpha <\lambda$ and } \displaystyle\Sigma \cup \bigcup_{\beta < \alpha}G(\beta)\nvdash \phi_\alpha\\
+            \Sigma \cup \bigcup_{\beta < \lambda} G(\beta) & \text{if $\alpha \geq \lambda$}
+        \end{cases}
+        \]now with the argument similar to the countable case, by with transfinite induction, we see for all $\beta < \alpha$, we have $G(\beta) \subseteq G(\alpha)$, and each $G(\alpha)$ is complete. Now if we set $\Sigma^* = G(\lambda)$, this is consistent and complete.
+    \end{proof}
+\end{proposition}
+
+We can use similar arguments to give generalisations of the other parts of the Model existence theorem, which will eventually give us a Completeness and Compactness theorem for any $\cL$ with a well-ordered alphabet.
+
+\begin{axiom}[Regularity]
+    $(\forall x)((x\neq \emptyset) \rightarrow (\exists a)((a\in x) \wedge (a\cap x = \emptyset)))$
+\end{axiom}
+
+We have now stated all nine axioms of Zermelo-Fraenkel set theory.
+
+\subsection{Choice}
+
+\begin{axiom}[Choice]
+    Suppose $A$ is a set of nonempty sets, then there exists a function $f:A\rightarrow \bigcup A$, such that for all $a\in A$, we have $f(a)\in a$.
+\end{axiom}
+
+If $X$ is a non-empty set and $A = \cP(X)\setminus \{\emptyset\}$, then AC gives us a function $f:A\rightarrow X$, such that for each $\emptyset\neq Y \subseteq X$, we have $f(Y)\in Y$.
+
+If my set comes with a well-ordering, then by taking $f(Y)$ to be the minimum element of $Y$, I don't need the axiom of choice, this sort of goes the other way.
+
+\begin{theorem}[Hartog's lemma]
+    For any set $X$, there exists an ordinal $\alpha$ such that there is no injective function $h:\alpha\rightarrow X$.
+    \begin{proof}
+        Consider the set $\cY = \{(Y;\leq_Y) \mid Y \subseteq A, \ \leq_Y\text{ is a well order on $Y$}\}$, then we use the axiom of replacement to form $S$ by replacing each $(Y;\leq_Y)$ with an ordinal similar to it. Then $S$ is in fact the set of ordinals which admit an injection into $X$, then let $\sigma = \bigcup S$, an ordinal, and now for all $\beta \in S$, we have $\sigma^\dagger > \beta$, so $\sigma^\dagger\not\in S$.
+    \end{proof}
+\end{theorem}
+
+\begin{theorem}
+    Suppose $X$ is a non-empty set, and $f:\cP(X)\setminus\{\emptyset\} \rightarrow X$ is a choice function, then there is a well-ordering $\leq$ on $X$.
+    \begin{proof}
+        Let $q$ be some set with $q\not\in X$, and consider $\tilde{X} = X\cup \{q\}$, using transfinite recursion, there is an operation $G$ by for all ordinals $\gamma$: \[
+        G(\gamma) = \begin{cases}
+            f(X\setminus \{G(\beta) \mid \beta , \gamma\}) & \text{if $X\setminus\{G(\beta) \mid \beta < \gamma\}\neq \emptyset$} \\
+            q & \text{otherwise}
+        \end{cases}
+        \] if  $q\not\in \im(G\restriction \gamma)$ for some $\gamma$, then $G\restriction \gamma$ is an injective function $\gamma\rightarrow X$, now by Hartog's lemma, there is some ordinal $\alpha$ with $G(\alpha) = q$, if we take the least such $\alpha$, then $G\restriction \alpha : \alpha \rightarrow X$ is a bijection, and this defines a well-ordering on $X$.
+    \end{proof}
+\end{theorem}
+
+\begin{axiom}[Well ordering principle]
+    For all sets $A$, there is a well-ordering on $A$.
+\end{axiom}
+
+\begin{corollary}[ZF]
+    The well ordering principle is equivalent to the axiom of choice.
+    \begin{proof}
+        The axiom of choice gives a choice function of every set, which gives a well-ordering as above. If a set is well-ordered, then we may take the minimum element choice function we defined earlier.
+    \end{proof}
+\end{corollary}
+
+\begin{corollary}[ZFC]
+    For all sets $A$, there exists an ordinal with $A\approx \alpha$.
+\end{corollary}
+
+\begin{corollary}[ZFC]
+    For all sets $A$ and $B$, either $\abs{A}\leq \abs{B}$ or $\abs{B}\leq \abs{A}$.
+\end{corollary}
+
+\begin{corollary}[ZFC]
+    If $A$ is any infinite set, then $A\times A \approx A$.
+\end{corollary}
+
+\begin{lemma}[ZFC]
+    Suppose $A$ and $B$ are non-empty sets, then there is an injective function $A\rightarrow B$ iff there is a surjection $B\rightarrow A$.
+\end{lemma}
+
+\subsection{Cardinals}
+
+\begin{definition}
+    An ordinal $\alpha$ is called a \textbf{cardinal} if for all $\beta <\alpha$, $\alpha\not\approx \beta$.
+\end{definition}
+
+From the problem sheets we know all finite ordinals and $\omega$ are cardinals, if $\omega$ is an ifnite ordinal, then $\omega^\dagger$ isn't a cardinal, the set of countable ordinals is a cardinal, and every set $A$ is equinumerous to a unique cardinal $\alpha$.
+
+\begin{definition}
+    The $\alpha$ above is called the \textbf{cardinality} of $A$, and we write $\abs{A} = \alpha$.
+\end{definition}
+
+So if we accept the axiom of choice, we get a much shorter proof of Cantor-Schr\"oder-Berstein just by comparing cardinalities.
+
+\begin{definition}
+    We define the sequence of \textbf{aleph} cardinals by transfinite recursion as follows. For all ordinals $\alpha$, $\aleph_\alpha$ is a cardinal. $\aleph_0 = \omega$, and $\aleph_\alpha$ is the least cardinal which is greater than $\aleph_\beta$ for all ordinal $\beta < \alpha$. The existence of these is guaranteed by Cantor's theorem.
+\end{definition}
+
+\begin{definition}[Cardinal arithmetic]
+    If $A$ and $B$ are disjoint sets with cardinalities $\abs{A} = \kappa$ and $\abs{B} = \lambda$, then define $\kappa + \lambda = \abs{A\cup B}$, $\kappa\cdot\lambda = \abs{A\times B}$, and $\kappa^\lambda = \abs{A^B}$.
+\end{definition}
+
+These cardinalities don't depend on the choice of $A$ and $B$.
+
+\begin{theorem}
+    If $\kappa\leq \lambda$ are caridinals with $\lambda$ infinite, then $\kappa + \lambda = \kappa\cdot\lambda = \lambda$. If $2\leq\kappa\leq \lambda$ then $2^\lambda = \kappa^\lambda$.
+    \begin{proof}
+        For the first statement, as $\kappa \leq \lambda$, we have $\kappa \cdot \lambda = \abs{\kappa \times \lambda} \leq \abs{\lambda \times \lambda} = \abs{\lambda} = \lambda$, and we can easily find an injection $\lambda\rightarrow \kappa\times\lambda$. We also have $\lambda \leq \kappa + \lambda \leq \lambda + \lambda \approx 2\cdot \lambda \approx\lambda$. The second part is left as an exercise.
+    \end{proof}
+\end{theorem}
+
+\begin{theorem}
+    Suppose $A$ is an infinite set of cardinality $\lambda$, and each element of $A$ has cardinality at most $\kappa$, then $\abs{\bigcup A}\leq \lambda \cdot \kappa$.\begin{proof}
+        For each $a\in A$, the set $S_a$ of surjective functions $\kappa\rightarrow a$ is non-empty, so by AC there is a function $F:A\rightarrow \bigcup S_a$ with $F(a)\in S_a$. Let $h:\lambda\rightarrow A$ be a  bijection, then define $G:\lambda\times \kappa\rightarrow \bigcup A$ by $G(\alpha,\beta) = F(h(\alpha))(\beta)$, this is surjective and thus $\abs{\bigcup A}\leq \lambda \cdot \kappa$.
+    \end{proof}
+\end{theorem}
+
+From this we can deduce that for any infinite set $A$, the set of finite sequences of elements of $A$ has the same cardinality. And, if $B$ is a $\bQ$-basis for $\bR$, then $\abs{B}=\abs{\bR}$.
+
+\subsection{Zorn's lemma}
+
+\begin{definition}
+    A \textbf{chain} is a subset of a partially ordered set which is linearly ordered.
+\end{definition}
+
+\begin{axiom}[Zorn's lemma]
+    If $(A;\leq)$ is a non-emtpy partially ordered set, in which every chain has a nupper bound, then $A$ has a maximal element.
+\end{axiom}
+
+\begin{theorem}
+    Assuming ZF, Zorn's lemma is equivalent to the axiom of choice.
+    \begin{proof}
+        (AC$\Rightarrow$ZL) Given a poset $(A;\leq)$ satisfying the hypothesis of Zorn's lemma, let $f:\cP(A)\setminus\{\emptyset\}\rightarrow A$ be a choice function, and suppose, for a contradiction, that $A$ has no maximal element. Let $C\subseteq A$ be a chain, then by assumption there exists some $y\in A$ with $C\leq y$, and so there exists some $z\in A$ with $z>y$, so $C\subsetneq C\cup \{z\}$ is another chain, and we now use transfinite recursion to define an operation $G$ such that for all ordinals $\beta < \alpha$, $G(\alpha)\in A$ and $G(\beta) < G(\alpha)$. For this we let \[
+        G(\alpha) = f(\{z\in A \mid z > G(\beta) \text{ for all }\beta < \alpha\})
+        \] which gives for every $\alpha$ an injection $G\restriction \alpha:\alpha\rightarrow A$, which contradicts Hartog's lemma.
+
+        The other direction of the proof is left as an exercise.
+    \end{proof}
+\end{theorem}
+
+\end{document}

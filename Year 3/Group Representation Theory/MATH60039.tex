@@ -15,7 +15,7 @@ Scribed by Yu Coughlin}
 \section{Representations}
 
 \begin{definition}
-    A \textbf{representation} of a group $G$ is a pair $(V,\rho)$ where $V$ is a vector space and $\rho:G\rightarrow GL(V)$ is a group homomorphism. So group action $G\curvearrowright V$ by invertible linear transformations. Much like with group actions, a representation is called \textbf{faithful} if $\rho$ is injective.
+    A \textbf{representation} of a group $G$ is a pair $(V,\rho)$ where $V$ is a vector space and $\rho:G\rightarrow GL(V)$ is a group homomorphism. So a left group action $G\curvearrowright V$ by invertible linear transformations. Much like with group actions, a representation is called \textbf{faithful} if $\rho$ is injective.
 \end{definition}
 
 \begin{definition}
@@ -185,5 +185,315 @@ Let $G=C_3 = \{1,g,g^2\}$, and $\bC[G]$ be the regular representation, then mult
         (ii) By linear algebra, every nonzero $T$ is a nonzero eigenvector $v$ such that $T(v)=\lambda v$, now $T-\lambda I$ is a non-injective map, so by the previous part $T=\lambda I$.
     \end{proof}
 \end{theorem}
+
+The rotation representation of $C_n$ on $\bC^2$, where the generator is a counter-clockwise rotation by $2\pi/n$, as every rotation is $G$-linear and these aren't always scalar multiples of the identity. When we consider this on $\bR^2$ our matrices no longer have real eigenvalues for $n\geq 3$ so there are no real $1$D subspaces.
+
+\subsection{Representations of abelian groups}
+
+\begin{proposition}
+    If $G$ is an arbitrary abelian group $G$, then every finite-dimensional irreducible representations of $G$ is one-dimensional.
+    \begin{proof}
+        Let $(V,\rho_V)$ be the representations, then for all $g\in G$, $\rho_V(g)$ is $G$-linear and so a multiple of identity matrix, any 1D subspace is now a subrepresentation.
+    \end{proof}
+\end{proposition}
+
+From the proof we should realise $g\in G$ arbitrary is central iff $\rho(g)$ is a scalar matrix for all irreducible representations $\rho$. We need $G$ to be finite to get the converse as we need Maschke's theorem to go from $\rho(g)$ $G$-linear on all irreducible representations to all representations.
+
+If, in the proposition, $V$ isn't finite, then consider the action of $\bC(x)^\times$ on $\bC(x)$ by multiplication, then $V$ is irreducible and infinite-dimensional and $G$ is abelian.
+
+\begin{corollary}
+    For $G=C_n$ there are exactly $n$ irreducible representations given by $\rho_i(g) = \zeta_n^i$.
+\end{corollary}
+
+So the irreducible representation of $C_n$ on $\bC^2$ from earlier can be seen as $\rho_1\oplus \rho_{-1}$. We will generalise this to the representation of the product of groups later.
+
+All 1D representations of a finite group $G$ is conjugate to a homomorphism $\rho:G\rightarrow \bC^\times$, which factors through $G/[G,G]$, so by our discussion of products the number of 1D representations is $\abs{G/[G,G]}$, we can actually use this to deduce the size of the abelianisation of certain groups, $S_n$ and $D_{2n}$ are the easiest ones to start.
+
+\subsection{Homomorphisms}
+
+\begin{definition}
+    If $V$ and $W$ are representations of $G$ over $k$, then $\Hom_G(V,W)$ is the vector space of $G$-linear maps $V\rightarrow W$, write $\End_G(V)$ for $\Hom_G(V,V)$.
+\end{definition}
+
+If $V$ and $W$ are irreducible, Schur's lemma can now be equivalently stated as\[
+\dim\Hom_G(V,W) = \begin{cases}
+    1 & \text{if $V\cong W$}\\
+    0 & \text{otherwise}
+\end{cases}
+\]
+
+\begin{definition}
+    If $(V,\rho_V)$ and $(W,\rho_W)$ are representations of $G$, then the map \[\rho_{\Hom(V,W)}(g)(\phi) = \rho_W(g)\circ\phi\circ \rho_V(g)^{-1}\]
+    is a representation. Write $V^G = \{v\in V \mid \forall g \in G, \ \rho_V(g)(v) = v\}$ for the $G$-invariant subspace of the representation.
+\end{definition}
+
+\begin{proposition}
+    $\Hom_G(V,W) = \Hom(V,W)^G$.\begin{proof}
+        $T\in \Hom_G(V,W)$ iff $\forall g\in G$, $T\rho_V(g) = \rho_W(g)T$ iff $T = \rho_W(g) T \rho_V(g) = \rho_{\Hom(V,W)}(g)(T)$, iff $T \in \Hom(V,W)^G$.
+    \end{proof}
+\end{proposition}
+
+The proof of Maschke's theorem was forming a projection operator $V\rightarrow V^G$.
+
+\subsection{Decompositions}
+
+By Maschke's theorem, if $G$ is a finite group and $(V,\rho)$ is a finite-dimensional representation. We can write $V\cong V_1^{r_1}\oplus \cdots \oplus V_m^{r_m}$ as a direct sum of irreducible subrepresentations where the $V_i$ are pairwise nonisomorphic.
+
+\begin{proposition}
+    $r_i = \dim\Hom_G(V_i,V) = \dim\Hom_G(V,V_i)$.\begin{proof}
+        As $\Hom$ commutes with $\oplus$, we just divide up into subrepresentations and use our new form of Schur's lemma.
+    \end{proof}
+\end{proposition}
+
+\begin{corollary}
+    The decomposition of $V$ into irreducible are unique up to isomorphism of the $V_i$s.\begin{proof}
+        Each irreducible representation $V_i$, up to isomorphism, occurs exactly $r_i$ times in $V$.
+    \end{proof}
+\end{corollary}
+
+\begin{corollary}
+    Given such a decompositions, we have $\dim\End_G(V) = r_1^2 + \cdots r_m^2$.
+\end{corollary}
+
+Now remembering the formula $\Hom_G(\bC[G],V)\cong V$, we get
+
+\begin{corollary}
+    If $V$ has the above decomposition, then  we have the two statements\[
+    \bC[G] \cong V_1^{\dim V_1}\oplus \cdots \oplus V_m^{\dim V_m} \implies \abs{G} = \sum_{i=1}^m (\dim V_i)^2
+    \]
+\end{corollary}
+
+We can use this arithmetic to reliably find all the irreducible representations of a finite group. We call such a set of all irreducible nonisomorphic representations a \textbf{full set}.
+
+\begin{definition}
+    The \textbf{adjoint representation} $(\bC[G],\rho_\text{ad})$ is given by \[
+    \rho_\text{ad}(g)\pr{\sum_{h\in G}a_hh} = \sum_{h\in H}a_h ghg^{-1}
+    \]
+\end{definition}
+
+\begin{theorem}
+    If $G$ is a finite group and $(V_1,\rho_1),\ldots,(V_m,\rho_m)$ is a full set of irreducible representations, then $m$ is the number of conjugacy classes in $G$.
+    \begin{proof}
+        First consider the linear map $\Phi = (\rho_1,\ldots,\rho_m):\bC[G]\rightarrow \End(V_1)\oplus \cdots \oplus \End(V_m)$, as these have equal dimension we just need to check $\Phi$ is injective. If $f\in \bC[G]$ satisfies $\rho_i(f) = 0$ for all $i$, then by Maschke's theorem, for every finite dimensional representation $(W,\rho_W)$ of $G$---a sum of $V_i$s---will have $\rho_W(f)=0$. If we apply this to $\bC[G]$, then $\rho_{\bC[G]}(f)(1) = f = 0$.
+
+        Now, for all $g,h\in G$, we have $\rho_i(ghg^{-1}) = \rho_{\End(V_i)}(g)\rho_i(h)$, so $\Phi$ is an isomorphism of representations from $(\bC[G],\rho_\text{ad})$.
+
+        Finally, we show that $(\bC[G],\rho_\text{ad})^G$ have a basis $f_1,\ldots, f_{m'}$ where $f_j$ is a sum of all the elements in one of the $m'$ conjugacy classes of $G$, if we have $f=gfg^{-1}\in\bC[G]$, then the coefficients of $f$ across a conjugacy class are all equal, so this set spans, and is obviously LI.
+
+        We can now take the dimension of the induced linear isomorphism \[\bC^{m'}\cong(\bC[G],\rho_\text{ad})^G\cong \bigoplus_{i=1}^m\End_G(V_i)\cong \bC^m\qedhere\]
+    \end{proof}
+\end{theorem}
+
+\subsection{Duals and tensors}
+
+We now for a finite dimensional vector space $V$ there is a noncanonical isomorphism $V\cong V^* := \Hom(V,\bC)$, if $V$ is a representation then by letting $G$ act trivially on $\bC$ we get the dual representation of $V^*$: $\rho_{V^*}(g)(f)(v) := (f\circ\rho_V(g)^{-1})(c)$. On 1D representation show this is just inverting $g$.
+
+\begin{proposition}
+    There is a canonical $G$-linear inclusion $V\hookrightarrow (V^*)^*$ which is an isomorphism if $V$ is finite-dimensional.
+    \begin{proof}
+        We know the linear algebra part, so we just have to check $G$-linearity which looks like \[
+        \rho_{(V^*)^*}(g)(\phi_v)(f) = \phi_v(\rho_{V^*}(g)^{-1}(f)) = \phi_v(f\rho_V(g)) = f(\rho_V(g)(v)) = \phi_{\rho_V(g)(v)}(f)\qedhere
+        \]
+    \end{proof}
+\end{proposition}
+
+\begin{definition}
+    Given vector space $V$, $W$, their \textbf{tensor product} if $V\otimes W$, the quotient of $\bC[V\times W]$ by the subspace spanned by \[
+    a(v,w) - (av,w), \quad a(v,w) - (v,aw), \quad (v+v',w) - (v,w) - (v',w), \quad (v,w+w') - (v,w) - (v,w')
+    \] where we write the image of $(v,w)$ under the quotient as $v\otimes w$.
+\end{definition}
+
+\begin{proposition}
+    Given vector spaces $U,V,W$, every bilinear map $F:V\times W\rightarrow U$ factors through the map $V\times W\rightarrow V\otimes W$.\begin{proof}
+        We get a linear map $\bC[V\times W]\rightarrow U$ by extending $F$, as $F$ is bilinear it is zero on the kernel and by the first isomorphism theorem we have a factorisation.
+    \end{proof}
+\end{proposition}
+
+\begin{corollary}
+    We have the following natrual isomorphisms for arbitrary vector spaces $U,V,W$\begin{gather*}
+        V\otimes W \cong W\otimes V \qquad (v\otimes w) \mapsto (w\otimes v) \\
+        (U\otimes V) \otimes W \cong U \otimes (V\otimes W) \qquad ((u\otimes v) \otimes w) \mapsto (u\otimes (v\otimes w)) \\
+        U \otimes (V\oplus W) \cong (U\oplus V) \otimes (U \oplus W) \qquad u\otimes (v,w) \mapsto (u\otimes v, u\otimes w)\\
+        \Hom(U\otimes V, W) \cong \Hom(U, \Hom(V,W)) \qquad [u\otimes v \mapsto w] \mapsto [u\mapsto [v\mapsto w]]
+    \end{gather*}
+    and an injective linear map \[
+    V^* \otimes W^* \rightarrow (V\otimes W)^* \qquad f\otimes g \mapsto [v\otimes w \mapsto f(v)g(w)]
+    \] which is an isomorphism is $V$ is finite-dimensional.
+\end{corollary}
+
+This says the categorical data $(\textbf{fVect}_\bC,\otimes,\bC,\oplus,0)$ is a categorification of the semiring $(\bN,\times, 1,+,0)$. This should invoke lots of question about what certain canonical and noncanonical isomorphims of vector spaces mean in terms of arithmetic.
+
+\begin{definition}
+    If $(V,\rho_V)$ and $(W,\rho_W)$ are representations, then we can form the \textbf{tensor product representation} \[
+    \rho_{V\otimes W}(g)(v\otimes w) = \rho_V(g)(v)\otimes \rho_W(g)(w)
+    \]
+\end{definition}
+
+We want to know how to construct tensor products of matrices, this is called the \textbf{Kronecker product}. If $M$ and $N$ are $n\times n$ and $m\times m$ complex matrices respectively, then their tensor product is the $mn\times mn$ matrix $(M\otimes N)_{ij,kl} = M_{ik}N_{jl}$ where the $ij$th element of the basis for $\bC^n\otimes \bC^m$ is $e_i\otimes e_j$, so \[
+ (M\otimes N)(e_i\otimes e_j) = \sum_{k=1}^n\sum_{l=1}^m (M_{ik} e_k)\otimes (N_{jl} e_j)
+\]
+
+\begin{definition}
+    If $G$ and $H$ are groups with representations $(V,\rho_V)$ and $(W,\rho_W)$ respectively, we form their \textbf{exernel tensor product} on $V\boxtimes W:= V\otimes W$ with $\rho_{V\boxtimes W}:G\times H\rightarrow GL(V\otimes W)$ by $\rho_{V\boxtimes W}(g,h) = \rho_V(g)\otimes \rho_W(g)$.
+\end{definition}
+
+If $\Delta:G\rightarrow G\times G$ is the diagonal map, then $\rho_{V\otimes W} = \rho_{V\boxtimes W}\circ \Delta$.
+
+\begin{proposition}
+    If $G$ and $H$ are finite groups, then the irreducible representations of $G\times H$ are precisely the externel tensor product of irreducible representations of $G$ and $H$ respectively.
+    \begin{proof}
+        First, consider $\End_{G\times H}(V\boxtimes W) = \End(V\boxtimes W)^{G\times H} = \End_G(V\boxtimes W)^H$ and considser the map $\End(W)\rightarrow \End_G(V\boxtimes W)$ by $T\mapsto I\otimes T$, this is clearly $H$-linear and injective, to show it is surjective we can use dimensions: as $G$-representations, $V\boxtimes W \cong V^{\dim W}$, so \[
+        \dim\End_G(V\boxtimes W) = \dim\End_G(V^{\dim W}) = \sum_{\dim W}\dim\Hom_G(V,V^{\dim W}) = (\dim W)^2 = \dim\End(W)
+        \] where by Schur's lemma we now have \[
+        \End_{G\times H}(V\boxtimes W) = \End_G(V\boxtimes W)^H = \End(W)^H = \End_H(W) = \bC
+        \] so $V\boxtimes W$ is in fact irreducible.
+
+        To show these are all the irreducible representations, we can just count \[
+        \abs{G\times H} = \abs{G}\abs{H} = \sum_{i=1}^n(\dim V_i)^2\sum_{j=1}^m(\dim W_j)^2 = \sum_{ij}\dim(V_i\otimes W_j)^2
+        \] where $V_i$ and $W_j$ are the irreducible represenations of $G$ and $H$ respectively.
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}
+    If $V,V'$ and irreducible representations of $G$ and $W,W'$ are irreducible representations of $W$, then $V\boxtimes W \cong V'\boxtimes W'$ iff $V\cong V'$ and $W\cong W'$.\begin{proof}
+        If $V\boxtimes W\cong V'\boxtimes W'$, then by the above argument we have $V^{\dim W}\cong V'^{\dim W'}$, and thus $V\cong V'$ and so $W\cong W'$
+    \end{proof}
+\end{proposition}
+
+These proofs both uses bases, if we give a basis free argument, then we can also loose our assumption that $G$ and $H$ be finite.
+
+\begin{proof}
+    Once again, consider the map $\End(W)\rightarrow \End_G(V\boxtimes W)$, and for each $w\in W$ and $f\in W^*$ consider the $G$-linear composition $V\xrightarrow{I\otimes w} V\otimes W \xrightarrow{T} V\otimes W \xrightarrow{I\otimes f} V$, which must be a multiple of the identity, so for some $v\in V$, there exists a $w'\in W$ such that $T(v\otimes w) = v\otimes w'$. As $V$ is irreducible all other $v'\in V$ are in the $G$-span of $v$, so we can write \[
+    T(v'\otimes w) = T\circ\sum_{g\in G}(a_g\rho(g)\otimes I)(v\otimes w) = \sum_{g\in G}(a_g\rho(g)\otimes I)(v\otimes w') = (v'\otimes w')
+    \] so $T(v'\otimes w) = v'\otimes w'$ is in the image of $\End(W)$, so our map is surjective.
+
+    Now, given an irreducible representation $U$ of $G\times H$, let $V$ be any irreducible $G$-representation isomorphic to a $G$-subrepresentation of $U$, then we have a map $f:V\boxtimes \Hom_G(V,U)\rightarrow U$ by $(v\otimes \phi)\mapsto \phi(v)$ where $\Hom_G(V,U)$ is a $H$-representation. Now as $U$ is irreducible, and $f$ is nonzero, it must be surjective. Let $W'\leq \Hom_G(V,U)$ the largest subspace with $V\boxtimes W'$ in the kernel of $f$, then we have a surjection $V\boxtimes (\Hom_G(V,U)/W')\rightarrow U$ and any irerducible subrepresentation $W\leq \Hom_G(V,U)/W'$, which exists by the assumption of finite dimensionality, the induced $V\boxtimes W\rightarrow U$ must also be nonzero hence surjective.
+
+    So if $U$ is any irreducible representation of $V\boxtimes W$ for $V,W$ irreducible, and we take $V'\boxtimes W'\rightarrow U$ the above surjection, the nonzero composite $V'\boxtimes W'\rightarrow V\boxtimes W$, by the next paragraph, must have $V\cong V'$ and $W\cong W'$, so we can set them equal and the composition becomes $V\boxtimes W\rightarrow V\boxtimes W$ nonzero, so a multiple of the identity with image $U$.
+
+    If $V\boxtimes W\cong V'\boxtimes W'$, then the first paragraph can be generalised to show $\Hom_G(V\boxtimes W,V'\boxtimes W')=\Hom_G(V,V')\otimes \Hom(W,W')$, which by Schur's lemma is nonzeroo iff $V\cong V'$ as $G$-representations, we then do the same for $W\cong W'$.
+\end{proof}
+
+We once again use $W=V=\bC(x)$ a $\bC(x)^\times$-representation as a counterexample, as $\bC(x)\otimes \bC(x)$ isn't irreducible, as the multiplication map $\bC(x)\otimes \bC(x)\rightarrow \bC(x)$ is a surjective representation with $f\otimes 1 - 1\otimes f$ in the kernel for every $f\in \bC(x)$, with $f\otimes 1 - 1\otimes f$ nonzero as it lies outside the kernel of the multiplication map $\bC(x)\otimes \bC(y)\rightarrow \bC(x,y)$.
+
+\section{Characters}
+
+\begin{definition}
+    For $(V,\rho_V)$ a finite-dimensional representation of a group $G$, the \textbf{character} $\chi_{(V,\rho_V)}:G\rightarrow \bC$ is the function $\chi_{(V,\rho_V)}(g) = \tr\rho_V(g)$.
+\end{definition}
+
+We know this is well-defined as the trace of a matrix is invariant under conjugacy. We will now work to show that the character is a full invariant of finite-dimensional representations of finite groups up to isomorphism.
+
+\begin{lemma}
+    Equivalent matrix representations, and isomorphic abstract representations, have the same character.
+\end{lemma}
+
+For all representatiosn $(V,\rho_V)$ of $G$, as $\rho(1)=1$, we have $\chi_V(1) = \dim(V)$, so $\chi_V$ is multiplicative iff $\dim(V)=1$.
+
+\begin{proposition}
+    Every character $\chi_V$ of a group $G$ is constant on conjugacy classes.\begin{proof}
+        For all $g,h\in G$, $\chi_V(h^{-1}gh) = \tr\rho_V(h^{-1}gh) = \tr(\rho_V(h)^{-1}\rho_V(g)\rho_V(h)) = \tr(\rho_V(g)) = \chi_V(g)$.
+    \end{proof}
+\end{proposition}
+
+Functions from groups which are constant on conjugacy classes are called \textbf{class functions}, the set of class functions $f:G\rightarrow \bC$ is a subspace of the vectorspace $\Fun(G,\bC)$, called $\Fun_\text{cl}(G,\bC)$. When $G$ is finite, $\dim\Fun_\text{cl}(G,\bC)$ is the number of conjugacy classes in $G$. If we give $\Fun(G,\bC)$ the adjoint action $(g\cdot f)(h) = f(g^{-1}hg)$, then $\Fun_\text{cl}(G,\bC) = \Fun(G,\bC)^G$.
+
+\begin{proposition}
+    Let $(V,\rho_V)$ be a finite-dimensional representation of $G$, then for all $g\in G$ with finite order, then $\chi_V(g^{-1}) = \overline{\chi_V(g)}$ and $\abs{\chi_V(g)}\leq \dim V$ with identity holding iff $\rho_V(g)$ is a scalar multiple of the identity.\begin{proof}
+        If $g$ has finite order $g^n=e$, then $\rho_V(g)^n = I$, and thus its characteristic polynomial divides $x^n-1$ which has distinct eigenvalues, so $\chi_V(g)$ is a sum of eigenvalues, the two results follow immediately.
+    \end{proof}
+\end{proposition}
+
+\subsection{Characters of sums and products}
+
+\begin{proposition}
+    Let $(V,\rho_V)$ and $(W,\rho_W)$ be finite-dimensional representations of a group $G$, then $\chi_{V\oplus W} = \chi_V+\chi_W$ and $\chi_{V\otimes W} = \chi_V\chi_W$. If, $G$ is also finite, then $\chi_{V^*}=\overline{\chi_V}$ and $\chi_{\Hom(V,W)}=\overline{\chi_V}\chi_W$.\begin{proof}
+        Let $\cB=\{v_1,\ldots,v_m\}$ and $\cC = \{w_1,\ldots, w_n\}$ be bases of $v$ and $W$ respectively, fix $g\in G$, and let $M:=[\rho_V(g)]_\cB$ and $N:=[\rho(g)]_\cC$, so $\chi_V(g)=\tr M$ and $\chi_W(g) = \tr N$.
+
+        Let $\cD = \cB\sqcup \cC$ be a basis for $V\oplus W$, then $[\rho_{V\oplus W}(g)]_\cD$ is the block diagonal $\diag(M,N)$, so $\tr\rho_{V\oplus W}(g) = \tr\rho_V(g) + \tr\rho_W(g)$.
+
+        Now let $\cB\otimes \cC$ be the basis for $V\otimes W$, then $[\rho_{V\otimes W}(g)]_{\cB\otimes \cC} = M\otimes N$, which has trace \[
+        \tr(M\otimes N) = \sum_{i,j}(M\otimes N)_{ij,ij} = \sum_{ij}M_{ii}N_{jj} = \tr(M)\tr(N)
+        \]
+
+        Let $\cE$ be the dual basis $\{f_1,\ldots, f_m\}$ of $\cB$ for $V^*$, then we have already computed $[\rho_{V^*}(g)]_\cE = (M^{-1})^T$, and $\tr(M^{-1})^T = \tr M^{-1} = \tr(\rho_V(g^{-1}))$, we already know $\chi_V(g^{-1}) = \overline{\chi_V(g)}$.
+
+        We know $\Hom(V,W)\cong V^*\otimes W$, so this part is already done.
+    \end{proof}
+\end{proposition}
+
+If we have $G=\bZ$ and $a\in\bC^\times$ and consider the 1D represnetaiont $\rho(m) = a^m$, then $\chi_\rho(-1)=a^{-1}\neq \overline{a}$ in general. So the last two parts actually only require all the elements of $G$ be of finite order.
+
+\subsection{Inner products of characters}
+
+\begin{definition}
+    For two functions $f_1,f_2:G\rightarrow \bC$, their \textbf{inner product} is \[
+    \abr{f_1,f_2} := \frac{1}{\abs{G}}\sum_{g\in G}f_1(g)\overline{f_2(g)}
+    \]
+\end{definition}
+
+\begin{proposition}
+    This is a Hermitian inner product on $\Fun(G,\bC)$.\begin{proof}
+        Sesquilinearity, conjugate-symmetry and positive definiteness can all be read off the definition.
+    \end{proof}
+\end{proposition}
+
+We quickly proof the following seemingly-unrelated lemmata.
+
+\begin{lemma}
+    Let $S:V\rightarrow V$ be a linear projection, then $\dim \im S = \tr S$.\begin{proof}
+        Choose a basis $\cB$ for $V$ specialised to $V = \ker S \oplus \im S$, then $[S]_\cB = \diag(0_{\dim\ker S},I_{\dim\im W})$.
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    If $(V,\rho_V)$ is a representation of a group $G$, then there is an isomorphism of vector spaces $\Hom_G(\bC_\text{triv},V)\cong V^G$, by $\phi\mapsto \phi(1)$.
+    \begin{proof}
+        This map is a linear isomorphism $\Hom(\bC,V)\cong V$, and as $G$ acts trivially on $\bC$, this is $G$-linear, so we can take $G$-invariants and get the result.
+    \end{proof}
+\end{lemma}
+
+\begin{theorem}
+    Let $(V,\rho_V)$ and $(W,\rho_W)$ be finite-dimensional representations of a finite group $G$, then $\abr{\chi_V,\chi_W} = \dim\Hom_G(V,W)$.
+    \begin{proof}
+        First, we do the case where $V = \bC_\text{triv}$, recall the $G$-linear projection $S:W\rightarrow W^G$ by $S = \abs{G}^{-1}\sum_{g\in G}\rho(g)$, then we have\[
+        \abr{\chi_{\bC_\text{triv}},\chi_W} = \frac{1}{\abs{G}}\sum_{g\in G}\overline{\chi_W(g)} = \frac{1}{\abs{G}}\sum_{g\in G}\tr\pr{\overline{\rho_W(g)}} = \tr\frac{1}{\abs{G}}\sum_{g\in S}\overline{\rho_W(g)} = \tr\overline{S} = \overline{\tr S}
+        \] which, by the previous two lemmata, is $\overline{\dim W^G} = \dim W^G = \dim\Hom_G(\bC_\text{triv},W)$.
+
+        We now just observe $\abr{\chi_V,\chi_W} = \abr{\chi_{\bC_\text{triv}},\chi_{\Hom(V,W)}} = \dim\Hom_G(V,W).$
+    \end{proof}
+\end{theorem}
+
+\begin{corollary}
+    If $V$ and $W$ are irreducible representations, then $\abr{\chi_V,\chi_W}=1$ iff $V\cong W$ and is $0$ otherwise. Or, for a full set of irreducible representations $V_i$ of $G$, the $\chi_{V_i}$ form an orthonormal basis for $\Fun_\text{cl}(G,\bC)$.
+\end{corollary}
+
+We can also rephrase all of our statements about dimensions and decompositions from earlier in terms of characters, like \[
+V\cong \bigoplus_{i=1}^m V_i^{\abr{\chi_{V_i},\chi_V}} \quad \chi_V = \sum_{i=1}^n \abr{\chi_{V_i},\chi_V}\chi_{V_i} \quad \abr{\chi_V,\chi_V} = \sum_{i}r_i^2 = \sum_i\abr{\chi_{V_i},\chi_V} = 1 \Leftrightarrow V \text{ irreducible}
+\]
+
+So there are two natural bases for $\Fun_\text{cl}(G,\bC)$, either the Kronecker delta functions on conjugacy classes of $G$, or irreducible characters. These are both orthogonal, but we have to scale the Kronecker delta functions by the size of the class to make them orthonormal.
+
+In the case $G=\bZ/n\bZ$, the relationship between the Kronecker delta basis, and the irreducible characters is exactly the discrete Fourier transform, so for finitei abelian groups we are just taking the direct sum of these transformations. The general correspondence between these two bases for general $G$ can be thought of as a nonabelian generalisation of the Fourier transform.
+
+\subsection{Character tables}
+
+\begin{definition}
+    For a finite group $G$ with $V_1,\ldots,V_m$ a full set of irreducible representation, and $\cC_1,\ldots,\cC_m$ the conjugacy classes with $g_i\in \cC_i$ a representative, the \textbf{character table} of $G$ is the table whose $(i,j)$th entry is $\chi_{V_i}(g_j)$.
+\end{definition}
+
+\subsection{Kernels of representatins}
+
+\subsection{Automorphisms}
+
+\section{Algebras}
+
+\subsection{Modules}
+
+\subsection{Semisimple algebras}
+
+\subsection{Characters}
+
+\subsection{Centers}
 
 \end{document}

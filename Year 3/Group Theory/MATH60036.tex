@@ -67,9 +67,59 @@ This is a stronger condition that being a normal subgroup which only requires in
     If $G$ is a finite group whose order is divisible by a prime $p$, then $G$ contains an element of order $p$
 \end{corollary}
 
-\section{Composition series}
+\newpage
 
-\section{Finite simple groups}
+\subsection{Composition series}
+
+\begin{definition}
+    A proper normal subgroup $N\lhd G$ is called \textbf{maximal} if there are no proper $N\subsetneq M\lhd G$.
+\end{definition}
+
+\begin{lemma}
+    $N$ is a maximal normal subgroup of $G$ iff $G/N$ is simple.\begin{proof}
+        This is by the bijective correspondence between normal subgroups of $G/N$ and normal subgroups of $G$ containing $N$.
+    \end{proof}
+\end{lemma}
+
+\begin{definition}
+    A \textbf{composition series} for a group $G$ is a sequence of maximal subgroups \[
+    G = G_0 \rhd  G_1 \rhd \cdots \rhd G_{r-1} \rhd G_r = 1
+    \] where the simple quotient $G_i/G_{i-1}$ are called the \textbf{composition factors}.
+\end{definition}
+
+\begin{proposition}[Second isomorphism theorem]
+    If $H\leq G$ and $N\unlhd G$, then $H\cap N \unlhd H$, $HN\leq G$, and $HN/N\cong H/(H\cap N)$.
+    \begin{proof}
+        The first two parts are clear, for the third consider the map $\phi:H\rightarrow HN/N$ by $\phi(h) = hN$, this is a surjective homomorphism and the kernel can be checked to be exactly $H\cap N$, the result now comes from the first isomorphism theorem.
+    \end{proof}
+\end{proposition}
+
+\begin{theorem}[Jordan-H\"older]
+    The composition factors of a group are well-defined up to reordering.
+    \begin{proof}
+        Do induction on $\abs{G}$, the base case is trivial. Suppose $G$ has two composition series: \[
+        G \rhd G_1 \rhd G_2 \rhd \cdots \rhd G_r = 1 \qquad G \rhd H_1 \rhd H_2 \rhd \cdots \rhd H_s = 1
+        \] then if $G_1=H_1$, the two remaining series are composition series for a strictly smaller group, so have the same compositions factors, by adding $G/G_1$ we are done.
+
+        Suppose, instead, that $G_1\ncong H_1$, then let $K = G_1\cap H_1\lhd G$ and choose a composition series \[
+        K \rhd K_3 \rhd \cdots \rhd K_t = 1
+        \] I now claim $G_1/K\cong G/H_1$ and $H_1/K\cong G/G_1$, we have $G_1\subset G_1H_1\unlhd G$, so $G_1H_1 = G$ and by the second isomorphism theorem $G/H_1 = G_1H_1/H_1\cong G_1 / (G_1\cap H_1) = G_1/K$. As $G_1/K$ is simple, we have the two composition series for $G_1$ \[
+        G_1 \rhd G_2 \rhd G_3 \rhd \cdots \rhd G_r = 1 \qquad G_1 \rhd K \rhd K_3 \rhd \cdots \rhd K_t = 1
+        \] which, by induction, must have the same length and composition factors, if we do the same for $H_1$, then we can rewrite our initial composition factors as \begin{gather*}
+            \{G/G_1,G_1/G_2,G_2/G_3,\ldots,G_{r-1}\} = \{G/G_1,G_1/K,K/K_3,\ldots, K_{t-1}\} \\ 
+            = \{H_1/K,G/H_1,K/K_3\ldots, K_{t-1}\} = \{G/H_1,H_1/H_2,H_2/H_3,\ldots, H_{s-1}\}\qedhere
+        \end{gather*}
+    \end{proof}
+\end{theorem}
+This `simplifies' the question of finding all finite groups to the follow two questions\begin{enumerate}
+    \item What are the finite simple groups?
+    \item Given groups $N,H$, what are the $G$ such that $G/N\cong H$?
+\end{enumerate}
+These will be motivating questions for the rest of the course.
+
+\subsection{Some finit simple groups}
+
+\newpage
 
 \subsection{Alternating groups}
 
