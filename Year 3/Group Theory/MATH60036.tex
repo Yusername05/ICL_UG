@@ -12,62 +12,398 @@ Scribed by Yu Coughlin}
 
 \tableofcontents
 
-\section{Introduction}
-
-\subsection{Basic constructions}
-
-A recap of some basic notions we will assume familiarity with going forward.
+\section{Finite groups}
 
 \begin{proposition}
-    Let $\phi:G\rightarrow H$ be a group homomorphism, then there is a canonical isomorphism:\[
-    G / \ker(\phi)\cong \im(\phi)
-    \]
+    If $A,B\unlhd G$ are normal subgroups with $A\cap B = 1$ and $G=AB$, then $G\cong A\times B$.
 \end{proposition}
 
-\begin{proposition}
-    Let $N\unlhd G$, then every subgroup of $G/N$ is of the form $G/H$ for some $N\leq H\leq G$.
+\begin{proposition}[Orbit-stabiliser]
+    If a finite group $G$ acts on a set $\Omega$, then for all $\alpha \in \Omega$, the size of the $G$-orbit of $\alpha$ is the size of $G$ divided by the size of the stabiliser.
 \end{proposition}
+
+\begin{corollary}
+    When $G$ acts on itself by conjugation, for all $x\in G$, the size of the conjugacy class $x^G$ is $\abs{G:C_G(x)}$.
+\end{corollary}
+
+\subsection{Conjugacy}
+
+\begin{proposition}
+    In $S_n$, conjugacy classes are sets of permutations with the same cyclic-shape.
+    \begin{proof}
+        If $c = (a_1\ a_2 \ \cdots \ a_k)\in S_n$, then for all $g\in S_n$, we have $gcg^{-1} = (g(a_1) \ g(a_2) \ \cdots \ g(a_k))$. Now write $x\in S_n$ as a product of disjoint cycles, and we get $gxg^{-1}$ has the same cycle shap as $x$.
+    \end{proof}
+\end{proposition}
+
+\begin{corollary}
+    If $x\in S_n$ has cycle chap $(r_1^{a_1},\ldots,r_k^{a_k})$, then $\abs{C_{S_n}(c)} = \prod r_i^{a_i}a_i!$.
+\end{corollary}
+
+\begin{proposition}
+    Let $x\in A_n$, if $C_{S_n}(x)\leq A_n$, then $\abs{x^{A_n}} = \frac{1}{2}\abs{x^{S_n}}$, and $x^{S_n}$ splits as two $A_n$-conjugacy classes; otherwise, $x^{A_n}=x^{S_n}$.
+    \begin{proof}
+        Either $C_{S_n}(x) = C_{A_n}(x)$, or $\abs{C_{A_n}(x)} = \frac{1}{2}\abs{C_{S_n}(x)}$, plug these values into orbit stabiliser.
+    \end{proof}
+\end{proposition}
+
+\begin{corollary}
+    $A_5$ is simple.
+    \begin{proof}
+        The sizes of the conjugacy classes of $A_5$ are thus $1,20,12,12,15$, the only union of these with order dividing $60$ is $1$ and $A_5$.
+    \end{proof}
+\end{corollary}
+
+By year 2 linear algebra we know every $A\in GL_n(k)$ is similar to a unique matrix in RCF, so conjugacy classes are given by these.
+
+\begin{proposition}
+    If $H\leq G$, and $\Omega$ is the set of left cosets, then the map $G\rightarrow \Sym(\Omega)$ by $g\mapsto [xH\mapsto gxH]$ is a transitive action with kernel \[
+    \ker(\pi) = N := \bigcap_{g\in G}gHg^{-1}\unlhd G
+    \]\begin{proof}
+        The first part is immediate from the definitions, and we have $x\in \ker(\pi)$ iff $g^{-1}xg\in H$ for all $g\in G$
+    \end{proof}
+\end{proposition}
+
+\begin{corollary}
+    If $\abs{G:N}=n$, then $\abs{G/N}\leq \im\pi\leq \Sym(\Omega)$ has order $n!$
+\end{corollary}
+
+When we set $H=1$, this recovers Cayley's theorem.
 
 \begin{definition}
-    A subgroup $H\leq G$ is \textit{characteristic} if for all $\phi\in\Aut(K)$, $\phi(H)=H$.
+    If $H\leq G$, then $N_G(H) = \{g\in G \mid gHg^{-1} = H\}$ is called the \textbf{normaliser} of $H$ in $G$.
 \end{definition}
 
-This is a stronger condition that being a normal subgroup which only requires invariance under inner automorphisms. If $G\cong C_2\times C_2$, then $G$ has no characteristic subgroups, as there is an automorphism swapping the two $C_2$ factors, so this is a strictly stronger condition that just being normal.
-
+The number of distinct conjugates of $H\leq G$ is $\abs{G:N_G(H)}$.
 \begin{proposition}
-    If $M,N\leq G$ and $M\char N$, $N\unlhd G$, then $M\unlhd G$.\begin{proof}
-        If $M$ is just normal is $G$ then we don't know it to be invariant under all conjugations, just those from $N$, but now $G$ is close under all automorphisms of $N$, this includes conjugation from elements of $G$, so $M$ is normal.
+    If $H\leq G$, then $N_G(H)\cong C_G(H)$ is isomorphic to a subgroup of $\Aut(H)$.\begin{proof}
+        First isomorphism theorem on $\pi:N_G(H)\rightarrow \Aut(H)$ by $n\mapsto [h\mapsto nhn^{-1}]$.
     \end{proof}
 \end{proposition}
 
 \begin{proposition}
-    The commutator $G':= [G,G]$ is a characteristic subgroup of $G$, and $G/G'$ is abelian. For any normal subgroup $N\unlhd G$, $G/N$ is abelian iff $G'\leq N$
-        \begin{proof}
-        
-        \end{proof}
+    If $H,k\leq G$ finite, then $\abs{HK} = \abs{H}\abs{K}/\abs{H\cap K}$ and if $h\leq N_G(K)$, then $HK\leq G$.
+    \begin{proof}
+        For the first part we count the fibres of the multiplication map $H\times K\rightarrow HK$. The second part is immediate from the definitions.
+    \end{proof}
 \end{proposition}
 
+\subsection{Alternating groups}
+
 \begin{proposition}
-    If $A,B\unlhd G$, $A \cap B = \{1\}$, and $G=AB$, then $G\cong AB$.
+    For $n\geq 3$, every element of $A_n$ can be written as aproduct of $3$-cycles.\begin{proof}
+        Write $x\in A_n$ as a product of an even number of $2$-cycles, $x=t_1t_2\cdots t_{2k}$, if $t_1$ and $t_2$ aren't disjoint, then their product is a $3$-cycle, otherwise, up to relabelling we can write $t_1t_2=(12)(34) = (123)(234)$.
+    \end{proof}
 \end{proposition}
 
 \begin{theorem}
-    If $G$ is a finitely generated abelian group, then there exists a positive interger $m\geq 0$ and prime powers $p_1^{\alpha_1},\ldots,p_n^{\alpha_n}$ such that: \[
-    G \cong \bZ^m \times C_{p_1^{\alpha_1}} \times \cdots \times C_{p_n^{\alpha_n}}
-    \] said $m$ and the $p_i^{\alpha_i}$ are uniquely determined (up to reording of the prime powers) by $G$.
+    For $n\geq 5$, the alternating group $A_n$ is simple.\begin{proof}
+        Do induction on $n$, we already know the base case $n=5$. For $i=1,\ldots,n$ the stabiliser $(A_n)_i\cong A_{n-1}$, so if we have $N\unlhd A_n$, then as $N\cap (A_n)_i\unlhd A_{n-1}$ which, by induction, is simple, either $N\cap (A_n)_i=1$ or $(A_n)_i$.
+
+        If $N\subset (A_n)_i$, then $N$ contains a $3$-cycle, and as the centraliser contains a disjoint transposition in $S_n\setminus A_n$, the $A_n$ orbit or a $3$-cycle equals the $S_n$ orbit which is the whole cycle-shape, so $N$ contains all $3$-cycles, and thus is all of $A_n$.
+
+        If $N\cap (A_n)_i=1$ for all $i$, then for all $1\neq n \in N$, by relabelling we can write either $n=(12)\cdots$ or $n=(123\cdots)\cdots$, both of which don't commute with $t:=(124)$, so $[t,n]=(tnt^{-1})n^{-1}\in N$ is nontrivial, but this is $t(nt^{-1}n)=(123)(2jk)$ which moves at most $5$ elements so is in some stabiliser, a contradiction, so $N=1$.
+    \end{proof}
 \end{theorem}
 
-\subsection{Actions}
+\subsection{Matrix groups}
 
 \begin{proposition}
-    If $G\curvearrowright \Omega$, then for any $\alpha\in \Omega$, the size of the orbit $\alpha^G$ equals $\abs{G:G_\alpha} = |G| / |G_\alpha|$ where $G_\alpha\leq G$ is the stabiliser of $\alpha$ in $G$.
+    If we write $GL_n(q):=GL_n(\bF_q)$, for $q=p^m$ for some prime $p$ and $m\geq 1$, then $\abs{GL_n(q)} = (q^n-1)(q^n-q)\cdots (q^n-q^{n-1})$.
+    \begin{proof}
+        A matrix in $GL_n(q)$ is invertible iff all of its rows are linearly-independent in $\bF_q^n$. If we call the rows $r_1,\ldots,r_n$: there are $\abs{\bF_q^n\setminus 0} = q^n-1$ choices for $r_1$, $\abs{\bF_q^n\setminus \Span(r_1)}=q^n-q$ choices for $r_1$, $\abs{\bF_q^n\setminus\Span(r_1,r_2)} = q^n-q^2$ choices for $r_3$, and so on, until there are $\abs{\bF_q^n\setminus\Span(r_1,\ldots,r_{n-1})} = q^n-q^{n-1}$ choices for $r_n$.
+    \end{proof}
 \end{proposition}
 
-\begin{corollary}[Cauchy's theorem]
-    If $G$ is a finite group whose order is divisible by a prime $p$, then $G$ contains an element of order $p$
+\begin{proposition}
+    $SL_n(q)$ is a normal subgroup of $GL_n(q)$ with order $\abs{GL_n(q)}/(q-1)$.
+    \begin{proof}
+        $SL_n(q)$ is the kernel of $\det:GL_n(q)\rightarrow \bF_q^\times$.
+    \end{proof}
+\end{proposition}
+
+\begin{definition}
+    The \textbf{projective general linear group} $PGL_n(F)$ and \textbf{projective special linear group} $PSL_n(F)$ are \[
+    PGL_n(F) := GL_n(F)/Z(GL_n(F)) \qquad PSL_n(F) := SL_n(F) / Z(SL_n(F))
+    \]
+\end{definition}
+
+It was a problem on the problem sheet to show these centres are \[Z(GL_n(F)) = \{\lambda I_n \mid \lambda \in F^\times\} \qquad Z(SL_n(F)) = \{\lambda I_n \mid \lambda\in \mu_n(F)\}\]
+
+\begin{proposition}
+    If $A=GL_n(F)$ with $\det(A)=\mu$, then there existst $U$ a product of elementary matrices, such that $A = U\diag(1,\ldots,\mu)$.\begin{proof}
+        This is basically just row-reduction from Year 1 linear algebra. If $A=(a_{ij})$, then by adding something to row $2$ we have $a_{21}\neq 0$, and now $a_{21}^{-1}(1-a_{11}r_2)$ to $r_1$ to get $a_{11}=1$, do row reduction to the first row, and repeat by induction, this procedure never changes the determinant as elementary matrices have determinant $1$.
+    \end{proof}
+\end{proposition}
+
+\begin{corollary}
+    For any field $F$ and $n\geq 2$,  $SL_n(F)$ is generated by elementary matrices.
 \end{corollary}
 
-\newpage
+\begin{theorem}
+    For $q > 3$, the group $PSL_2(q)$ is simple.
+    \begin{proof}[First proof]
+        Write $G=SL_2(q)$ with $q>3$, if $Z_{SL}\leq N \unlhd G$, we show $N=G$. We do this in three parts.
+
+        Firstly, if $E_{12}(\lambda)\in N$ for some $\lambda \in \bF_q^\times$, then $N=G$. Write $U_{12} = \{E_{12}(\beta)\mid \beta \in \bF_q\}\cong(\bF_q,+)$. For any $\alpha \in \bF_q^\times$, we have \[
+        \begin{pmatrix}
+            \alpha & 0 \\ 0 & \alpha^{-1}
+        \end{pmatrix}\begin{pmatrix}
+            1 & \lambda \\ 0 & 1
+        \end{pmatrix}\begin{pmatrix}
+            \alpha^{-1} & 0 \\ 0 & \alpha
+        \end{pmatrix} = E_{12}(\lambda\alpha^2)\in N
+        \] and hence $\{E_{12}(\lambda\alpha^2) \mid \alpha\in \bF_q\}\subseteq U_{12}\cap N$. The perfect squares in $\bF_q^\times$ form a subgroup of size $(q-1)/\gcd(2,q-1)$. Ff we include the identity $E_{12}(0)$, then $\abs{U_{12}\cap N} > \frac{1}{2}q$, and hence $U_{12}\leq N$. $N$ will also contain \[
+        \begin{pmatrix}
+            0 & 1 \\ -1 & 0
+        \end{pmatrix}\begin{pmatrix}
+            1 & \lambda \\ 0 & 1
+        \end{pmatrix}\begin{pmatrix}
+            0 & -1 \\ 1 & 0
+        \end{pmatrix} = E_{21}(\lambda)
+        \] and hence $N$ contains all elementary matrices, so $N=SL_2(q)=G$.
+
+        Secondly, if $N$ contains some \[
+        A = \begin{pmatrix}
+            \alpha & 0 \\ \beta & \alpha^{-1}
+        \end{pmatrix}
+        \] for $\alpha\in \bF_q^\times\setminus\{\pm1\}$, then $N=G$. Indeed, as $N\unlhd G$, $N$ contains the commutator $[E_{21}(1),A] = E_{21}(1-\alpha^{-2})$. So, by the previous step, $N=G$.
+
+        Finally, we can assume $N$ contains no element of the form $A$. Let $n\in N\setminus Z_{SL}$. We assume $n$ is not triangularisable, so its minimal polynomial is an irreducible $x^2-\beta x + 1$ for some $\beta \in \bF_q$. By RCF, there exists some $y\in GL_2(q)$ such that \[
+        y^{-1}ny = \begin{pmatrix}
+            0 & -1 \\ 1 & \beta
+        \end{pmatrix}
+        \] and thus if we let $\mu = \det(y)$, and $y=g\diag(1,\mu)$ for $g\in SL_2(q)$, we get \[
+        g^{-1}ng = \begin{pmatrix}
+            1 & 0 \\ 0 & \mu
+        \end{pmatrix}\begin{pmatrix}
+            0 & -1 \\ 1 & \beta
+        \end{pmatrix}\begin{pmatrix}
+            1 & 0 \\ 0 & \mu^{-1}
+        \end{pmatrix} = \begin{pmatrix}
+            0 & -\mu \\ \mu^{-1} & \beta
+        \end{pmatrix} = n'\in N
+        \] and the commutator \[
+        \br{
+            \begin{pmatrix} 
+                \alpha^{-1} & 0 \\ 0 & \alpha 
+            \end{pmatrix},-n'
+        } = \begin{pmatrix}
+            \alpha^{-2} & 0 \\ \mu\beta(\alpha^2-1) & \alpha^2
+        \end{pmatrix} = n''\in N
+        \] This matrix is of the form $A$, unless $\alpha^4=1$. We can always find such an $\alpha$ when $q\neq 5$.
+
+        If $q=5$, then let $\alpha = 2$. Then $(n'')^2$ is a non-identity elementary matrix unless $\beta = 0$, in which case $n$ is diagonalisable, a contradiction.
+    \end{proof}
+\end{theorem}
+
+We can also give a more general proof, and one that better generalises to showing lots of other matrix groups are simple.
+
+\subsection{Iwasawa's lemma}
+
+\begin{definition}
+    The action of a group $G$ on a set $\Omega$ is called \textbf{$2$-transitive} if for all pairs $(x,y),(z,w)\in \Omega^2$, with $x\neq y$ and $z\neq w$, there exists some $g\in G$ with $g(x,y)=(z,w)$.
+\end{definition}
+
+\begin{lemma}
+    The action of $SL_2(F)$ on $\Omega = \{\Span(v) \mid  v \in F^2\setminus 0\}$ by $g\in SL_2(F)$ sending $\Span(v)$ to $\Span(g(v))$ is $2$-transitive, and has kernel $Z=\{\pm I_2\}$.
+    \begin{proof}
+        Given $(\Span(v_1),\Span(v_2))$ and $(\Span(w_1),\Span(w_2))$ two pairs of distinct lines, $v_1,v_2$ and $w_1,w_2$ are both bases for $F^2$. So there exists $g\in GL_2(F)$ sending $v_1\mapsto w_1$ and $v_2\mapsto w_2$. Take $h\in SL_2(F)$ by $v_1\mapsto \det(g)^{-1} w_1$ and $v_2\mapsto w_2$.
+    \end{proof}
+\end{lemma}
+
+\begin{corollary}
+    The induced action of $G=PSL_2(F)$ on $\Omega$ is $2$-transitive.
+\end{corollary}
+
+\begin{theorem}[Iwasawa's lemma]
+    Let $G\leq \Sym(X)$ be a finite 2-transitive permutation group. If $G=G'$, and for all $\alpha \in X$ there exists some abelian $U\unlhd G_\alpha$ such that $\abr{gUg^{-1}\mid g\in G}=G$, then $G$ is simple.
+    \begin{proof}
+        Suppose we have $1\neq N \unlhd G$. Take $1\neq n \in N$, and $\alpha,\beta \in X$ such that $n(\alpha)=\beta\neq \alpha$. By 2-transitivity, for all $\gamma \in X\setminus \alpha$ there exists some $g\in G$ with $g(\alpha,\beta)=(\alpha,\gamma)$. Then $gng^{-1}\in N$ sends $\alpha$ to $\gamma$, thus $N$ is transitive.
+
+        As $N$ is transitive, for any $\alpha \in X$, we have $NG_\alpha =G$ and for all $g\in G$, there exists $n\in N$ with $n(\alpha)=g(\alpha)$, so $n^{-1}g \in G_\alpha$, and thus $g\in NG_\alpha$.
+
+        Let $U\unlhd G_\alpha$ be as in the hypothesis, then as $N\unlhd G$, we get $NU\unlhd NG_\alpha=G$, this thus contains $gUg^{-1}$ for all $g\in G$. By assumption, $NU$ must be all of $G$.
+
+        We now just use the second isomorphism theorem to get $G/N = NU/N \cong U/(U\cap N)$ which is abelian, hence $G=G'\leq N$. Therefore $G=N$.
+    \end{proof}
+\end{theorem}
+
+We can now give another proof that $PSL_2(q)$ is simple.
+
+\begin{proof}[Second proof]
+    Let $e_1,e_2$ be the standard basis of $\bF_q^2$, and $\alpha = \Span(e_1)\in \Omega$. All elements of $G_\alpha$ then must be of the form \[
+    G_\alpha = \left\{ \begin{pmatrix}
+    a & b \\ 0 & a^{-1}
+    \end{pmatrix} \ \middle| \ a\in \bF_q^\times, \ b\in \bF_q\right\}/Z_{SL}
+    \] So if we take \[
+    U = \left\{ \begin{pmatrix}
+        1 & b \\ 0 & 1
+    \end{pmatrix}Z \ \middle| \ b\in \bF_q \right\} \cong (\bF_q,+)
+    \] then $U$ is abelian and $U\unlhd G_\alpha$. We can also take \[
+    \begin{pmatrix}
+        0 & 1 \\ -1 & 0
+    \end{pmatrix}\begin{pmatrix}
+        1 & b \\ 0 & 1
+    \end{pmatrix}\begin{pmatrix}
+        0 & -1 \\ 1 & 0
+    \end{pmatrix} = \begin{pmatrix}
+        1 & 0 \\ b & 1
+    \end{pmatrix}\in U
+    \] so $\abs{gUg^{-1}}$ contains all symmetric matrices and is thus all of $PSL_2(q)$.
+
+    Consider the commutator \[
+    \begin{pmatrix}
+        a & 0 \\ 0 & a^{-1}
+    \end{pmatrix}\begin{pmatrix}
+        1 & b \\ 1 & 0
+    \end{pmatrix}\begin{pmatrix}
+        a^{-1} & 0 \\ 0 & a
+    \end{pmatrix}\begin{pmatrix}
+        1 & -b \\ 0 & 1
+    \end{pmatrix} = \begin{pmatrix}
+        1 & b(a^2-1) \\ 0 & 1
+    \end{pmatrix}
+    \] as $q>3$ we can always find $a \in \bF_q\setminus \{0,\pm1 \}$, so $G'$ contains all of $U$. As $G'\unlhd G$, it also contains $\abr{gUg^{-1}}=G$. Hence, by Iwasawa's lemma, $G$ is simple.
+\end{proof}
+
+\subsection{Sylow's theorems}
+
+\begin{theorem}[Sylow 1]
+    If $\abs{G}=p^am$ for $p$ prime and $p\nmid m$, then $G$ has a subgroup of order $p^a$.
+    \begin{proof}
+        We do induction on $\abs{G}$. The base case $\abs{G}=1$ is trivial. First, for $x_1,\ldots,x_k$ representatives of the distinct non-central conjugacy classes of $G$, we have the conjugacy class equation  \[
+        \abs{G} = \abs{Z(G)} + \sum_{i=1}^k \abs{x_i^G}
+        \] If $p\mid \abs{Z(G)}$, then Cauchy's theorem gives some $z\in Z(G)$ of order $p$. As $\abr{z}\unlhd G$, we can find $H\leq G/\abr{z}$ of order $p^{a-1}$. And $H=P/\abr{z}$ for some $P\leq G$, so $\abs{P}=p^{a-1}$.
+
+        If $p\nmid \abs{Z(G)}$, then one of the $x_i^G$ has $p\nmid \abs{x_i^G}$. As $\abs{x_i^G}=\abs{G:C_G(x_i)}$, we must have $p^a\mid \abs{C_G(x_i)}$. Thus, by induction, there exists $P\leq C_G(x_i) < G$ with $\abs{P}=p^a$.
+    \end{proof}
+\end{theorem}
+
+\begin{definition}
+    Such a subgroup is called a \textbf{Sylow $p$-subgroup}. Write $\Syl_p(G)$ for the set of all Sylow $p$-subgroups. $G$ acts by conjugation on $\Syl_p(G)$, the stabiliser of $P\in \Syl_p(G)$ is $N_G(P)$. Wrtie $n_p(G) := \abs{\Syl_p(G)}$.
+\end{definition}
+
+\begin{lemma}
+    If $P\in \Syl_p(G)$, $Q$ is a $p$-subgroup of $G$, and $Q\leq N_G(P)$, then $Q\leq P$.
+    \begin{proof}
+        If $Q\leq N_G(P)$, then $PQ\leq G$, and $\abs{PQ}=\abs{P}\abs{Q}/\abs{P\cap Q} = p^a\abs{Q:P\cap Q}$, as $Q$ is a $p$-group, and $p^{a+1}\nmid \abs{G}$, we have $Q=P\cap Q$, thus $Q\leq P$.
+    \end{proof}
+\end{lemma}
+
+\begin{theorem}[Sylow 2]
+    For all primes $p$, we have $n_p(G) \equiv 1$ (mod $p$).
+    \begin{proof}
+        For $P\in \Syl_p(G)$, consider the action of $P$ on $\Syl_p(G)$ by conjugation. If $\{Q\}$ is any singleton orbit, then $P\leq N_G(Q)$, so $P\leq Q$ and hence $P=Q$. So this action has exatly one singleton orbit. Now, by the orbit stabiliser theorem, the other orbits have size dividing $\abs{P}$, so are divisible by $p$. As $n_p(G)=\abs{Syl_p(G)}$ is a sum of orbits, $n_p(G)\equiv 1$ (mod $p$).
+    \end{proof}
+\end{theorem}
+
+\begin{theorem}[Sylow 3]
+    If $Q$ is a $p$-subgroup of $G$, then there exists $P\in \Syl_p(G)$ with $Q\leq P$.
+    \begin{proof}
+        Consider the action of $Q$ on $\Syl_p(G)$ by conjugation. As $n_p(G)\equiv 1$ (mod $p$), not every $Q$-orbit has size divisible by $p$, so there is an orbit of size $1$, call it $\{P\}$. Then $Q\leq N_G(P)$, so $Q\leq P$.
+    \end{proof}
+\end{theorem}
+
+\begin{theorem}[Sylow 4]
+    The action of $G$ on $\Syl_p(G)$ by conjugation is transitive.
+    \begin{proof}
+        Let $P\in \Syl_p(G)$, and $\Omega$ be the $G$-oribt of $P$ in $\Syl_p(G)$. Again, there is some orbit of size $1$, thus $\abs{\Omega}\equiv 1$ (mod $p$). If $Q\in \Syl_p(G)$, consider the action of $Q$ on $\Omega$. Again, there is some orbit of size $1$, call it $\{R\}$. So $Q\leq N_G(R)$, hence $Q =R\in \Omega$.
+    \end{proof}
+\end{theorem}
+
+\begin{corollary}
+    If $P\in \Syl_p(G)$, then $n_p(G) = \abs{G:N_G(P)}$. In particular, $n_p(G)\mid \abs{G}$ and $n_p(G)=1$ iff $P\unlhd G$.
+    \begin{proof}
+        First, the stabiliser of $P$ in $\Syl_p(G)$ is $N_G(P)$, so this is just orbit stabiliser. The others follow.
+    \end{proof}
+\end{corollary}
+
+\begin{proposition}
+    If $\abs{G} = pq$ for $p>q$ primes, then $G$ has a normal Sylow $p$-subgroup. If, furthermore, $q\nmid p-1$, then $G\cong C_{pq}$.
+    \begin{proof}
+        First, $n_p(G)\leq \abs{G}/p=q$, and $n_p(G)\equiv 1$ (mod $p$). As $q<p$, we thus have $n_p(G)=1$. If $q\nmid p-1$, then $p\not\equiv 1$ (mod $q$). So, similarly, we get a normal Sylow $q$-subgroup. Call these $P,Q\unlhd G$. As $P\cap Q = 1$ and $G=PQ$, we must have $G\cong P\times Q \cong C_{pq}$.
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}
+    If $\abs{G}=p^2q$ with $p,q$ primes, then $G$ has either a normal Sylow $p$-subgroup or a normal Sylow $q$-subgroup.
+    \begin{proof}
+        If $n_p(G),n_q(G)\neq 1$, then we can't have $n_q(G)=p$, as $p\not\equiv 1$ (mod $q$), by $n_p(G)=q\equiv 1$ (mod $p$). So $n_q(G)=p^2$. These must be $p^2$ disjoint copies of $C_q$, so $\abs{G}-p^2$ elements of order $q$ in $G$. This only leaves room for one Sylow $p$-subgroup.
+    \end{proof}
+\end{proposition}
+
+\begin{proposition}
+    Let $\abs{G}=p^a m$, where $p$ is prime, $a\geq 1$, $m\geq 2$, and $p\nmid m$. If $G$ is simple, then $\abs{G}\mid n_p(G)!$.\begin{proof}
+        As $G$ acts transitively on $\Syl_p(G)$, there is a homomorphism $\phi:G\rightarrow \Sym(\Syl_p(G))$. The kernel is a proper normal subgroup of $G$, thus $\phi$ is injective. So $G$ is isomorphism so a subgroup of $S_{n_p(G)}$.
+    \end{proof}
+\end{proposition}
+
+\subsection{Extenstions and semidirect products}
+
+\begin{definition}
+    An extension of $N$ by $H$ is a group $G$ with $N\cong N_0 \unlhd G$ such that $G/N_0\cong H$.
+\end{definition}
+
+The Jordan-Holder theorem says that finding all extensions of $N$ by $H$ is the second half of classifying all finite groups. After we know the finite simple groups.
+
+\begin{definition}
+    If $G$ is an extensions of $N$ by $H$, we say $G$ is \textbf{split} if there is some $H_0\leq G$ such that $G=N_0H_0$ and $N_0\cap H_0=1$. Note that $H=G/N_0 = N_0H_0/H_0\cong H_0$.
+\end{definition}
+
+\begin{proposition}
+    if $G=NH$ with $N\cap H=1$ is a split extension, then we have the following: \begin{enumerate}
+        \item every $g\in G$ can abe written as $g=nh$ for unique $n\in N$ and $h\in H$;
+        \item for all $h\in H$ the map $\iota_h:N\rightarrow N$ by $\iota_h(n)=hnh^{-1}$ is in $\Aut(N)$;
+        \item the map $\iota:H\rightarrow \Aut(N)$ sending $h\mapsto \iota_h$ is a homomorphism;
+        \item multiplication is determined by $\iota$ as $(n_1h_1)(n_2h_2)=(n_1\iota_{h_1}(n_2))(h_1h_2)$.
+    \end{enumerate}
+    \begin{proof}
+        These are all immediate.
+    \end{proof}
+\end{proposition}
+
+\begin{definition}
+    Given $\iota:H\rightarrow \Aut(N)$, we give the set $N\times H$ the multiplication $(n_1,h_1)(n_2,h_2) = (n_1\iota_{h_1}(n_2),h_1h_2)$, where we write $\iota_{h_1}:=\iota(h_1)$. Call this the \textbf{semidirect product} $N \rtimes_\iota H$.
+\end{definition}
+
+\begin{proposition}
+    $N\rtimes_\iota H$ is a group under this multiplication, and a split extension of $N\times\{1\}$ by $\{1\}\times H$. If $\iota$ is the map from the previous proposition, then $G\cong N \rtimes_\iota H$.
+    \begin{proof}
+        These are also all immediate.
+    \end{proof}
+\end{proposition}
+
+Given to group $N,H$, if we find all homomorphisms $\iota:H\rightarrow \Aut(N)$, and compute all the corresponding semidirect products $N\rtimes_\iota H$, then these are all the split extensions, up to isomorphism.
+
+\begin{proposition}
+    Let $N,H$ be finite groups, with $\iota,\kappa:H\rightarrow \Aut(N)$ homomorphism. If there exists $\alpha \in \Aut(N)$ and $\beta \in \Aut(H)$ such that $\kappa(\beta(h))=\alpha\iota(h)\alpha^{-1}$ for all $h\in H$, then $N\rtimes_\iota H \cong N\rtimes_\kappa H$.\begin{proof}
+        Consider $\phi:N\rtimes_\iota H \rightarrow N \rtimes_\kappa H$ by $\phi(n,h)=(\alpha(n),\beta(h))$. This is an isomorphism.
+    \end{proof}
+\end{proposition}
+
+This condition is sufficient but certainly not necessary.
+
+\begin{proposition}
+    If $N$ and $H$ are finite abelian groups of coprime order, then every extension of $N$ by $H$ splits.
+    \begin{proof}
+        Exercise.
+    \end{proof}
+\end{proposition}
+
+\section{Series}
+
+\begin{definition}
+    A subgroup $N\leq G$ is \textbf{characteristic} if for all $\alpha \in \Aut(G)$, $\alpha(N)=N$, written $N\char G$. These are clearly automatically normal.
+\end{definition}
+
+\begin{proposition}
+    If $M\char N \unlhd G$ are subgroups, then $M\unlhd G$.
+    \begin{proof}
+        For all $g\in G$, conjugation by $g$ is an automorphism of $N$, under which $M$ is invariant.
+    \end{proof}
+\end{proposition}
+
+The centre, commutator, and inner automorphism group are all characteristic.
 
 \subsection{Composition series}
 
@@ -111,29 +447,106 @@ This is a stronger condition that being a normal subgroup which only requires in
         \end{gather*}
     \end{proof}
 \end{theorem}
-This `simplifies' the question of finding all finite groups to the follow two questions\begin{enumerate}
-    \item What are the finite simple groups?
-    \item Given groups $N,H$, what are the $G$ such that $G/N\cong H$?
-\end{enumerate}
-These will be motivating questions for the rest of the course.
-
-\subsection{Some finit simple groups}
 
 \newpage
 
-\subsection{Alternating groups}
+\subsection{Solvable groups}
 
-\subsection{Matrix groups}
+\begin{definition}
+    A finite group $G$ is \textbf{solvable} if it has a series of subgroups \[
+    1 = N_0 \leq N_1 \leq \cdots \leq N_s = G
+    \] where $N_i\unlhd G$ and $N_i/N_{i-1}$ is abelian for all $i$.
+\end{definition}
 
-\subsection{Iwasawa's lemma}
+Abelian groups are solvable. Finite $p$-groups are also solvable, as they always have nontrivial centre.
 
-\section{Sylow's theorems}
+\begin{definition}
+    The \textbf{$n$th derived subgroup} $G^{(n)}$ of $G$ is defined recursively as $G^{(0)}:= G$ and $G^{(i+1)} := (G^{(i)})'$. The \textbf{derived series} of $G$ is then the series  $G\geq G^{(1)} \geq G^{(2)} \geq \cdots$.
+\end{definition}
 
-\section{Extenstions and semidirect products}
+\begin{proposition}
+    If $\phi:G\rightarrow H$ is a surjective homomorphism, then $\phi(G^{(i)}) = H^{(i)}$.\begin{proof}
+        For $x,y\in G$, we have $\phi([x,y]) = [\phi(x),\phi(y)]$, so $\phi$ being surjective is enough.
+    \end{proof}
+\end{proposition}
 
-\subsection{Groups of order $pq$}
+\begin{corollary}
+    For all $i$, we have $G^{(i)}\char G$.
+\end{corollary}
 
-\section{Solvable groups}
+\begin{proposition}
+    $G$ is solvable iff $G^{(r)} = 1$ for some $r$.
+    \begin{proof}
+        If $G^{(r)}=1$, the consider the derived series \[
+        1 = G^{(r)} \leq G^{(r-1)} \leq \cdots \leq G^{(1)} \leq G
+        \] where each $G^{(i)}\unlhd G$ and each quotient $G^{(i)}/G^{(i+1)} = G^{(i)}/(G^{(i)})'$ is abelian. So $G$ is solvable.
+
+        Conversely, if $G$ is solvable, with series \[
+        1 = N_0 \leq N_1 \leq \cdots \leq N_s = G
+        \] where $N_i\unlhd G$ and $N_i/N_{i-1}$ is abelian for all $i$, then $N_i'\leq N_{i-1}$, so $G'\leq N_{s-1}$, $G^{(2)} \leq N_{s-1}' \leq N_{s-2}$ and so on. So, eventually, $G^{(s)} \leq N_0 = 1$.
+    \end{proof}
+\end{proposition}
+
+\begin{definition}
+    For a solvable group $G$, the \textbf{derived length} of $G$ is $\dl(G):=\min\{r \mid G^{(r)}=1\}$.
+\end{definition}
+
+\begin{lemma}
+    Subgroups and quotient groups of solvable groups are solvable.
+    \begin{proof}
+        If $G$ is solvable, and $H\leq G$, then $H'\leq G'$, and thus $H^{(i)}\leq G^{(i)}$. Hence $H^{(i)} = 1$ for some $i$, so $H$ is solvable.
+
+        Now, if $N\unlhd G$, and we consider the surjective quotient map $\phi:G\rightarrow G/N$, then $(G/N)^{(i)} = \phi(G^{(i)}) = 1$ for some $i$, hence $G/N$ is solvable.
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    If $N\lhd G$ and both $N$ and $G/N$ are solvable, then $G$ is solvable.
+    \begin{proof}
+        
+    \end{proof}
+\end{lemma}
+
+\begin{proposition}
+    If $G$ is a finite group with composition series \[
+    G = G_0 \rhd  G_1 \rhd \cdots \rhd G_{r-1} \rhd G_r = 1
+    \] then $G$ is solvable iff all the composition factors $G_i/G_{i-1}$ are cyclic and of prime order.
+    \begin{proof}
+        
+    \end{proof}
+\end{proposition}
+
+\begin{definition}
+    If $A$ is a finite abelian group and there exists a prime $p$ such that for all $x\in A$, $x^p=1$, then we call $A$ \textbf{elementary abelian}.
+\end{definition}
+
+By the classification of finite abelian groups, the elementary abelian groups are $\bF_p^n$.
+
+\begin{definition}
+    A normal subgroup $N\unlhd G$ is called \textbf{minimal normal} if $N$ contains no smaller nontrivial normal subgroup of $G$.
+\end{definition}
+
+\begin{proposition}
+    Let $G$ is a finite group, with $N$ a minimal normal subgroup. If $N$ is solvable, then $N$ is also elementary abelian.
+\end{proposition}
+
+\begin{definition}
+    For a finite group $G$, a \textbf{cheif series} is a series \[
+    1 = N_0 \leq N_1 \leq \cdots \leq N_r = G
+    \] where each $N_i\unlhd G$, and each $N_{i+1}/N_i$ is minimal normal in $G/N_i$. The quotient $N_{i+1}/N_i$ are called \textbf{cheif factors}.
+\end{definition}
+
+While there is a Jordan-H\"older type theory for the uniqueness of the set of chief factors of a finite group, we won't prove it here.
+
+\begin{corollary}
+    The chief factors of a finite solvable group are all elementary abelian.
+\end{corollary}
+
+\subsection{Hall's theorem}
+
+\begin{definition}
+    Let $\pi$ be a set of primes, we say a positive integer $n$ is a \textbf{$\pi$-number} if all the prime factors of $n$ are in $\pi$. In this context, write $\pi'$ for the complement of $\pi$. A subgroup $H\leq G$ is called a \textbf{$\pi$-subgroup} if $\abs{H}$ is a $\pi$-number.
+\end{definition}
 
 \begin{proposition}[Frattini Argument]
     Let $N\unlhd G$ and $P\in\Syl_p(N)$, then $G=N_G(P)N$.
@@ -142,9 +555,25 @@ These will be motivating questions for the rest of the course.
     \end{proof}
 \end{proposition}
 
-\subsection{Hall's theorem}
+The following is a generalisation of a question on an earlier problem sheet. These are both special cases of the Schur-Zassenhaus theorem, which applies to arbitrary groups, and will not be proved here.
 
-\section{Nilpotent groups}
+\begin{theorem}
+    If $N$ and $H$ be finite solvable groups of coprime orders, then every extension of $N$ by $H$ splits.
+\end{theorem}
+
+\begin{theorem}[Hall 1]
+    If $\pi$ be any set of primes, and $G$ a finite solvable group with $\abs{G}=nm$ where $n$ is a $\pi$-number and $m$ a $\pi'$-number, then $G$ has a subgroup of order $n$.
+\end{theorem}
+
+\begin{definition}
+    Such a subgroup $H$ is called a \textbf{Hall $\pi$-subgroup} of $G$.
+\end{definition}
+
+Like we have generalised Sylow 1 to Hall subgroups, there are similar generalisations of Sylow 3 and Sylow 4 to Hall subgroups, we won't prove these here.
+
+\newpage
+
+\subsection{Nilpotent groups}
 
 \begin{definition}
     A finite group $G$ is \textbf{nilpotent} if there exists a series of subgroups: \[
@@ -269,9 +698,9 @@ Nilpotent groups have lots of very nice characterisations.
 
 \subsection{Solvable radical and fitting subgroup}
 
-\newpage
+\section{Applications}
 
-\section{The Frattini subgroup}
+\subsection{The Frattini subgroup}
 
 \begin{definition}
     The $G$ a finite group the intersection all all maximal subgroups is called the \textbf{Frattini subgroup} and denoted $\Phi(G)$.
@@ -391,6 +820,6 @@ Not lectured.
     \end{itemize}
 \end{definition}
 
-\section{The transfer homomorphism}
+\subsection{The transfer homomorphism}
 
 \end{document}

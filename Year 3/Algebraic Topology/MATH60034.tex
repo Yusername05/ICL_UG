@@ -12,6 +12,199 @@ Scribed by Yu Coughlin}
 
 \tableofcontents
 
+\newpage
+
+\section{Covering spaces}
+
+\begin{definition}
+    A space $X$ is \textbf{locally connected} if for $x\in X$ and $x\in V\subseteq X$ open, there exists an open $x\in U\subset V$ which is connected, we can do the same for path-connected.
+\end{definition}
+
+For this entire section, all spaces are assumed to be path-connected and locally path-connected.
+
+\begin{definition}
+    A continuous map $p:\tilde{X}\rightarrow X$ is \textbf{covering map} if for all $x\in X$, there exists an open neighborhood $x\in U\subset X$ such that \[
+    p^{-1}(U) = \bigsqcup_{\alpha}V_\alpha
+    \]is a nonemtpy disjoint union of open $V_\alpha\subset \tilde{X}$, with $p\vert_{V_\alpha}:V_\alpha\rightarrow U$ a homeomorphism for all $\alpha$.
+\end{definition}
+
+\begin{lemma}
+    Covering maps are surjective.
+\end{lemma}
+
+\subsection{Lifting}
+
+\begin{lemma}
+    If $p:\tilde{X}\rightarrow X$ is a covering space, with $\tilde{f}_0,\tilde{f}_1:Y\rightarrow \tilde{X}$ two lifts of $f:Y\rightarrow X$, then the set \[
+    S = \{y\in Y \mid \tilde{f}_0(y) = \tilde{f}_1(y)
+    \] is both open and closed in $Y$.
+    \begin{proof}
+        For all $y\in S$, there exists an open neighbourhood $f(y)\in U \subset X$ with $p^{-1}(U) = \bigsqcup_\alpha V_\alpha$, then $\tilde{f}_0(y) = \tilde{f}_1(y) \in V_\beta$, and thus on $N:=\tilde{f}_0^{-1}(V_\beta)\cap\tilde{f}_1^{-1}(V_\beta)$ we have \[
+        p\vert_{V_\beta}\circ \tilde{f}_0\vert_N = f\vert_N = p\vert_{V_\beta}\circ \tilde{f}_1\vert_N
+        \] but $p\vert_{V_\beta}$ is a homeomorphism, so $\tilde{f}_0\vert_N = \tilde{f}_1\vert_N$, with $y\in N\subset S$ open, thus $S$ is open.
+
+        For all $y\in \overline{S}\setminus S$, there exists an open neighbourhood $f(y)\in U\subset X$ with $p^{-1}(U) = \bigsqcup_\alpha V_\alpha$, and thus $\tilde{f}_0(y)\in V_\beta$ and $\tilde{f}_1(y) \in V_\gamma$ for $\beta\neq\gamma$, so the open neighbourhood $\tilde{f}_0^{-1}(V_\beta)\cap\tilde{f}_1^{-1}(V_\gamma)$ of $y$ intersects $S$, but then $V_\beta\cap V_\gamma\neq \emptyset$, a contradiction.
+    \end{proof}
+\end{lemma}
+
+\begin{theorem}[Homotopy lifting theorem]
+    For $p:\tilde{X}\rightarrow X$ a covering map, and $Y$ a locally connected space, for all homotopies $H:Y\times I \rightarrow X$ with a lift $\tilde{h}_0:Y\times\{0\}\rightarrow\tilde{X}$ of $h_0(y) = H(Y,0)$, there there exists a unique homotopy \[
+    \begin{tikzcd}
+        Y\times\{0\} \arrow[r, "h_0"] \arrow[d, hook] & \tilde{X} \arrow[d, "p"] \\
+        Y\times I \arrow[r, "H"] \arrow[ur, "\exists ! \tilde{H}"] & X
+    \end{tikzcd}
+    \]\begin{proof}
+        For each $y\in Y$, consider the map $\gamma_y:I\rightarrow X$ by $\gamma_y(t) = H(y,t)$, if we have two lifts $\tilde{H},\tilde{K}$ of $H$, then they agree at $(y,0)$, and thus by the previous lemma, as $I$ is connected, they agree on all of $I$, hence $\tilde{H}=\tilde{K}$.
+
+        Now, fix $y_0\in Y$, for all $t\in I$, there exists open $y_0\in V_t\subset Y$ and $t \in W_t\subset I$, such that $H(V_t\times \overline{W}_t)$ lies in a single evenly covered $U_\alpha$, as $I$ is compact, we can cover this with finitely many $W_t$ and let $V$ be the intersection of the corresponding $V_t$. As $Y$ is locally connected, we may shrink $V$ to be connected and consider the $H(V\times[t_i,t_{i+1}])$ each contained in some $U_{\alpha_i}$ for $i = 0,1,\ldots,n-1$; now, starting with $\tilde{h}_0$, we can extend each $\tilde{H}(V\times[0,t_i])$ to $\tilde{H}(V\times [0,t_{i+1}])$ by taking the unique lift of the connected $V\times [0,t_{i+1}]$ lying interely in the same $V_{\beta_i}$ over $U_{\alpha_i}$ as $V\times \{t_i\}$.
+
+        We now have, for all $y\in Y$, a lift $\tilde{H}_y:V_y\times I\rightarrow \tilde{X}$, but by the previous lemma, these all agree on all their intersections ,so we can glue these all together to $\tilde{H}:Y\times I \rightarrow \tilde{X}$.
+    \end{proof}
+\end{theorem}
+
+\begin{corollary}[Path lifting theorem]
+    For $p:\tilde{X}\rightarrow X$ a covering map, and $\gamma:I\rightarrow X$ a path, then for each $\tilde{x}\in p^{-1}(\gamma(0))$, there exists a unique path $\tilde{\gamma}:I\rightarrow \tilde{X}$ lifting $\gamma$ to $\tilde{X}$ and starting at $\tilde{x}$.
+    \begin{proof}
+        This is the homotopy lifting theorem with $Y = *$.
+    \end{proof}
+\end{corollary}
+
+\subsection{Covers and the fundamental group}
+
+\begin{definition}
+    For $(X,x)$ a pointed topological space, let $\mathbf{Cov}(X,x)$ be the full subcategory of $\mathbf{Top}_*/(X,x)$ of covering maps. We get the functor $\pi_1:\mathbf{Cov}(X,x)\rightarrow\mathbf{Grp}$.
+\end{definition}
+
+\begin{proposition}
+    If $p:(Y,y)\rightarrow (X,x)$ is a covering map, then $p_*:\pi_1(Y,y)\rightarrow \pi_1(X,x)$ is injective.\begin{proof}
+        If $\gamma:I\rightarrow Y$ has $p_*([\gamma]) = [e_{x}]$, in $X$, then the homotopy $p\circ\gamma\simeq e_x$ has a unique lift to $\gamma\simeq e_y$.
+    \end{proof}
+\end{proposition}
+
+So can associate to each cover $p:Y\rightarrow X$ a subgroup $p_*\pi_1(Y,y)\leq \pi_1(X,x)$.
+
+\begin{theorem}[Lifting criterion]
+    If $p:(Y,y)\rightarrow (X,x)$ is a covering map and $f:(Z,z)\rightarrow (X,x)$ continuous with $Z$ path-connected and locally path-connected, then we can lift $f$ iff $f_*\pi_1(Z,z)\subseteq p_*\pi_1(Y,y)$.
+    \begin{proof}
+        The ($\Rightarrow$) direction is obvious, so we suppose $f_*\pi_1(Z,z)\subseteq p_*\pi_1(Y,y)$, and define the lift $\tilde{f}$. For all $w\in Z$, there exists a path $\gamma:I\rightarrow Z$ from $z$ to $w$, we can lift $f\circ \gamma$ to some unique $g$ with $g(0) = y$, now take $\tilde{f}(w):= g(1)$.
+
+        First, to show $\tilde{f}$ is well-defined, suppose we have another path $\gamma':I\rightarrow Z$ from $z$ to $w$, then consider $\phi = f\circ(\gamma * \overline{\gamma}')\in f_*\pi_1(Z,z)\subseteq p_*\pi_1(Y,y)$, so we can find a loop $\psi:I\rightarrow Y$ based at $y$ with $p_*[\psi] = [\phi]$, so there is a homotopy $H$ from $p\circ\psi$ to $\phi$ in $X$, which uniquely lifts to some $\tilde{H}$ from $\psi$ to some lift $\tilde{\phi}$ of $\phi$, which must be a loop based at $y$. But, we can form another lift of $\phi$ by following $g$, and then $g'$, a lift of $\overline{f\circ\gamma'}$ starting at $g(1)$, by uniquness, this lift must be a loop at $y$, so the unique lift of $f\circ\gamma'$ must start at $y$ and end of $g(1)$, so $\tilde{f}(w)$ doesn't depend on our choice of path.
+
+        Now, to show $\tilde{f}$ is continuous, let $U\subset X$ be an open, path-connected, evenly covered neighbourhood of $f(w)$, with $V_\alpha$ the unique sheet containing $\tilde{f}(w)$, as the $U,V$ form a basis of $X,Y$ respectively, it suffices to show $\tilde{f}^{-1}(V)$ contains an open neighbourhood of $w$. Let $W\subset f^{-1}(U)\subset Z$ be a path-connected open neighbourhood of $w$, then for all $w'\in W$, there exists a path $\eta:I\rightarrow W$ from $w$ to $w'$, its image $f\circ\eta$ lies entirely within $U$, where $p$ is a homeomorphism from $V$, so we have the lift $p^{-1}\circ f \circ \eta$ whose starting point is $\tilde{f}(w)$, by the uniqueness of lifts, the endpoint of $p^{-1}\circ f \circ \eta \in V$ is $\tilde{f}(w')$, therefore $W\subset \tilde{f}^{-1}(V)$, hence $\tilde{f}$ is continuous.
+    \end{proof}
+\end{theorem}
+
+\begin{corollary}
+    If $p:(Y,y)\rightarrow (X,x)$ and  $q:(Z,z)\rightarrow (X,x)$ are two non-isomorphic coverings of $(X,x)$, then $p_*\pi_1(Y,y)\neq q_*\pi_1(Z,z)$.\begin{proof}
+        Suppose $p_*\pi_1(Y,y)=q_*\pi_1(Z,z)$, then the lifting criterion gives $f:(Y,y)\rightarrow (Z,z)$ and $g:(Z,z)\rightarrow (Y,y)$, but now $f\circ g$ and $\id_Y$ are both lifts of $p$ along $p$, and so by uniqueness are equal.
+    \end{proof}
+\end{corollary}
+
+\begin{proposition}
+    If in the statement of the lifting criterion, $f=q$ is a covering map, then the lift $r$ is a covering map.
+    \begin{proof}
+        Take $v\in Y$, then $p(v)\in X$ has evenly open neighbourhoods $U_y$ and $U_z$ by $p$ and $q$ respectively, take $U\subset U_y\cap U_z$ connected, and have its sheets be $V_\alpha$ and $W_\beta$ in $p$ and $q$ respectively, let $V_0$ be the sheet containing $v$. For all $r(w)\in V_0$, with $w\in Z$, we have $q(w)=pr(w)\in U$, so $w\in W_\beta$ for some $\beta$, as $W_\beta$ is a connected, and $r(W_\beta)$ is a subset of $p^{-1}(U)$, we must have $r(W_\beta)\subset V_0$, with $r\vert_{W_\beta} = (p\vert_{V_0})^{-1}\circ q\vert_{W_\beta}$ a homeomorphism, so $r^{-1}(V_0)$ is a disjoint union of some of the $W_\beta$, with each $r\vert_{W_\beta}$ a homeomorphism onto $V_0$, hence $r$ is a covering map.
+    \end{proof}
+\end{proposition}
+
+\subsection{Deck transformations}
+
+\begin{theorem}
+    If $p:Y\rightarrow X$ is a covering map, then for each $x\in X$, there is a right action $p^{-1}(x)\curvearrowleft \pi_1(X,x)$. For all $y\in p^{-1}(x)$ and $\gamma:I\rightarrow X$, let $\tilde{\gamma}$ be the unique lift of $\gamma$ to $Y$ with starting point $y$, then take $y\cdot [\gamma] = \tilde{\gamma}(1)\in p^{-1}(x)$.
+    \begin{proof}
+        To show this is well-defined, suppose $\gamma,\gamma'$ are loops at $x$ in $X$, with $H$ a homotopy from $\gamma$ to $\gamma'$, then there is a unique lift \[
+        \begin{tikzcd}
+            I\times \{0\} \arrow[r, "\tilde{\gamma}"] \arrow[d, hook] & Y \arrow[d, "p"] \\
+            I\times I \arrow[ur, dashed, "\tilde{H}"] \arrow[r, "H"] & X
+        \end{tikzcd}
+        \] which must satisfy $\tilde{H}(0,t) = \tilde{\gamma}(0) = y$ and $\tilde{H}(1,t) = \tilde{\gamma}(1)$ for all $t$, which implies $\tilde{\gamma}'(1)=\tilde{\gamma}(1)$, so $y\cdot[\gamma]=y\cdot[\gamma']$.
+
+        To check this is a group homomorphism, we have to show $(y\cdot [\gamma])\cdot[\gamma'] = y\cdot([\gamma]\cdot[\gamma'])$, let $\tilde{\gamma}''$ be the unique lift of $\gamma*\gamma'$ starting at $y$, then the RHS is $\tilde{\gamma}''(1)$. But the first half of $\tilde{\gamma}''$ must be the unique lift of $\gamma$ starting at $y$, and the second half the unique lift of $\gamma'$ starting and $\tilde{\gamma}(1)$, so $\tilde{\gamma}''(1)=\tilde{\gamma}'(1)$.
+    \end{proof}
+\end{theorem}
+
+As $Y$ is path-connected, this action is clearly transitive.
+
+\begin{proposition}
+    For $p:Y\rightarrow X$ a covering with $x\in X$, the stabiliser of $y\in p^{-1}(x)$, is $p_*\pi(Y,y)$.
+    \begin{proof}
+        We can lift any loop $\gamma$ in the stabiliser to a loop $\tilde{\gamma}$ in $Y$, then $\gamma=p_*([\tilde{\gamma}])$.
+    \end{proof}
+\end{proposition}
+
+By orbit-stabiliser, we define the \textbf{degree} $\deg(p) :=\abs{p^{-1}(x)} = [\pi_1(X,x):p_*\pi_1(Y,y)]$.
+
+\begin{proposition}
+    For $p:Y\rightarrow X$ a covering with $x\in X$ and $y\in p^{-1}(x)$, then for all $[\gamma]\in\pi_1(X,x)$, we have $p_*\pi_1(Y,y\cdot[\gamma]) = [\gamma]^{-1}p_*\pi_1(Y,y)[\gamma]$.
+    \begin{proof}
+        Let $\tilde{\gamma}$ be the lift of $\gamma$ from $y$ to $z$ in $Y$, this induces an isomorphism $\phi_{\tilde{\gamma}}:\pi_1(Y,y)\rightarrow\pi_1(Y,z)$ by $[\psi]\mapsto[\overline{\tilde{\gamma}}*\psi*\tilde{\gamma}]$, and so $p_*\phi_{\tilde{\gamma}}([\psi]) = [(p\circ\overline{\tilde{\gamma}})*(p\circ\psi)*(p\circ\tilde{\gamma})]= [\overline{\gamma}*(p\circ \psi) * \gamma] = [\gamma]^{-1}p_*([\psi])[\gamma]$.
+    \end{proof}
+\end{proposition}
+
+\begin{definition}
+    We call an isomorphism of $p:(Y,y)\rightarrow (X,x)$ in $\mathbf{Cov}(X,x)$ a \textbf{Deck transformation} and write $\Deck(p)$ or $\Deck(Y)$ when clear from context. If $\Deck(Y)$ acts transitively on $p^{-1}(x)$, then we call $p$ \textbf{normal}.
+\end{definition}
+
+\begin{proposition}
+    For $p:Y\rightarrow X$ a covering, with $x\in X$, and $y,z\in p^{-1}(x)$, then there exists $f\in\Deck(Y)$ with $f(y)=z$ iff $p_*\pi_1(Y,y)=p_*\pi_1(Y,z)$.
+    \begin{proposition}
+        Such a deck transformation is exactly a lift of $p$ against $p$, so this is just the lifting criterion.
+    \end{proposition}
+\end{proposition}
+
+\begin{theorem}
+    A covering $p:(Y,y)\rightarrow (X,x)$ is regular iff $p_*\pi_1(Y,y)\unlhd \pi_1(X,x)$.\begin{proof}
+        This is combining all the previous props.
+    \end{proof}
+\end{theorem}
+
+\begin{theorem}
+    For $p:(Y,y)\rightarrow (X,x)$ a covering, $\Deck(Y)\cong N_{\pi_1(X,x)}(p_*\pi_1(X,x))/p_*\pi_1(X,x)$\begin{proof}
+        Write $G = \pi_1(X,x)$ and $H=p_*\pi_1(Y,y)$, and define a map $\phi:N_G(H)\rightarrow \Deck(Y)$ by for all $[\gamma]\in N_G(H)$, as $p_*\pi_1(Y,y\cdot[\gamma]) = [\gamma]^{-1}p_*\pi_1(Y,y)[\gamma] = p_*\pi_1(Y,y)$ which gives a funique deck transformation $f=\phi([\gamma])$ such that $f(y)=y\cdot[\gamma]$.
+
+        To show $\phi$ is a homomorphism, take $[\gamma],[\gamma']\in N_G(H)$ with $\phi([\gamma])=f$ and $\phi([\gamma'])=g$, then we can lift $\gamma'$ to a path $\alpha$ from $y\cdot [\gamma]$ to $(y\cdot [\gamma])\cdot [\gamma']$, then $f^{-1}\circ \alpha$ is the unique lift of $\gamma'$ starting at $y$, so $f^{-1}(\alpha(1)) = g(y)$, thus $\phi[\gamma]\circ\phi[\gamma'](y) = f(g(y)) = \alpha(1)= \phi[\gamma *\gamma'](y)$.
+
+        For surjectivity, $f\in \Deck(Y)$ sending $y$ to $z\in p^{-1}(x)$, then the trasitive $\pi_1(X,x)$ action on $p^{-1}(x)$ gives $\gamma$ with $z=y\cdot[\gamma]$, so $p_*\pi_1(X,y)=p_*\pi_1(X,y\cdot [\gamma])$, hence $\gamma$ is in the normaliser.
+
+        $[\gamma]\in N_G(H)$ has $\phi[\gamma]=\id_Y$ iff $y\cdot[\gamma]=y$ iff $[\gamma]\in P_*\pi_1(Y,y)=H$.
+    \end{proof}
+\end{theorem}
+
+\subsection{Universal covers}
+
+The lifting criterion for covering spaces says is $(\tilde{X},\tilde{x})$ is simply connected, then it is initial in $\mathbf{Cov}(X,x)$, the previous theorem thus says $\pi_1(X,x)\cong \Deck(\tilde{X})$, we want to know when these exists.
+
+\begin{definition}
+    A space $X$ is \textbf{semi-locally simply connected} if all $x\in X$ has an open neighbourhood $U\subset X$ such that the induced map from the inclusion $i_*\pi_1(U,x)\rightarrow \pi_1(X,x)$ is trivial.
+\end{definition}
+
+This is weaker than locally simply connected as we allow loops in our neighbourhood to be trivial only when considered in all of $\pi_1(X,x)$. Consider the cone on the Hawaiian earing for something semi-locally simply connected but no locally simply-connected
+
+\begin{theorem}
+    If $X$ is path-connected, locally path-connected, and semi-locally simply connected, then $X$ admites a simply connected cover $p:(\tilde{X},\tilde{x}_0)\rightarrow (X,x_0)$.\begin{proof}
+        First consider the set $\tilde{X} = \{\gamma:I\rightarrow X \mid \gamma(0) = x\}$ module homotopy rel the endpoints, and let $\tilde{x}=[e_x]$ and $p:\tilde{X}\rightarrow X$ send $[\gamma]$ to $\gamma(1)$, wich is clearly well-defined.
+
+        To define a topology on this set, first consider the set $\cU$ of path-connected open sets $U\subset X$ where $i_*:\pi_1(U,z)\rightarrow \pi_1(X,z)$ is trivial for some $z\in U$, as $X$ is locally path-connected and semi-locally simply connected, this is a basis for the topology on $X$. Now define a basis on $\tilde{X}$, for $U\in \cU$ and $\gamma:I\rightarrow X$ from $x_0$ to some $x\in U$, consider $V_{U,[\gamma]} = \{[\gamma * \eta] \mid \eta :I\rightarrow U, \ \eta(0)=\gamma(1)\}$. We can immediately check: if $[\gamma] = [\gamma']$ then $V_{U,[\gamma]} = V_{U,[\gamma']}$, if $[\gamma']\in V_{U,[\gamma]}$ then $V_{U,[\gamma]}=V_{U,[\gamma']}$, and if $\gamma(1)\in W \in \cU$, then $V_{W,[\gamma]}\subset V_{U,[\gamma]}$, so let these form a basis for the topology on $\tilde{X}$.
+    \end{proof}
+    TODO: finish the proof
+\end{theorem}
+
+\subsection{Fundamental theorem}
+
+\begin{theorem}
+    For $(X,x)$ path-connected, locally path-connected, and semi-locally simply connected, there is a bijection between isomorphism class of covers of $(X,x)$ and subgroup of $\pi_1(X,x)$, by sending $p$ to $p_*\pi_1(Y,y)$.\begin{proof}
+        We have already shown this is injective, so for a subgroup $G\leq \pi_1(X,x)$ we have to construct a cover $p:(Y,y)\rightarrow (X,x)$ with $p_*\pi_1(Y,y)=G$, let $q:\tilde{X}\rightarrow X$ be the universal cover, and $H\leq \Deck(\tilde{X})$ correspond to $H$, then let $Y = \tilde{X}/H$ with basepoint $y=[\tilde{x}]$, then for all $h\in H$, we have $q(z)=q(h(z))$, the universal property gives us $p:(Y,y)\rightarrow (X,x)$ with $p\pi = q$ sending $[z]$ to $q(z)$.
+
+        To show $p$ is a covering, choose $w\in X$ with $w\in U \subset X$ a path-connected neighbourhood with $q^{-1}(U) = \bigsqcup_{\alpha\in A} V_\alpha \subset \tilde{X}$ with each $q\vert_{V_\alpha}V_\alpha\rightarrow U$ a homeomorphism.
+    \end{proof}
+
+    TODO: finish this too
+\end{theorem}
+
+\begin{proposition}
+    Any subgroup of a free group is free.
+\end{proposition}
+
 \section{Homology}
 
 If we want an invariant that detects higher dimensional holes, the natural choice would be to consider $\pi_n(X)$ the homotopy classes of maps $S^n\rightarrow X$; unforutnately, these are very difficult to compute. By adding some combinatorial structure to our shapes, and keeping our groups abelian, we can define a functor that's much easier to compute on many of the nice spaces we care about.

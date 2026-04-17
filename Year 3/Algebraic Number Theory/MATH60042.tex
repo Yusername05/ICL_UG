@@ -153,7 +153,7 @@ In the quadratic field $\bQ(\sqrt{d})$, every $\alpha\notin\bQ$ has degree $2$, 
 \begin{proposition}
     Let $K$ be a number field with $\alpha\in\cO_K$, then $\tr_K(\alpha),N_K(\alpha)\in\bZ$.
     \begin{proof}
-        We already have the formulas for the trace and norm over $K$ in terms of it over $\bQ(\alpha)$, these are both coefficients in the itneger-coefficient monic minimal polynomial of $\alpha$.
+        We already have the formulas for the trace and norm over $K$ in terms of it over $\bQ(\alpha)$, these are both coefficients in the integer-coefficient monic minimal polynomial of $\alpha$.
     \end{proof}
 \end{proposition}
 
@@ -483,7 +483,7 @@ We want to show the ring of integers of a number field is a Dedekin domain.
 \begin{proposition}
     Let $K$ be a number field, then $\cO_K$ is a Dedekind domain.
     \begin{proof}
-        We already know $\cO_K$ is integrally closed. Let $\fp\unlhd\cO_K$ be a nonzero prime ideal, by the previous lemma we know $\cO_K/\fp$ is a finite integral domain, thus a field, hence $\fp$ is maximal. Finally, to check $\cO_K$ is Noetherian, say we having an ascending chain of ideals $I_1\subseteq I_2\subseteq I_3 \subseteq \cdots$, then we can apply the previous lemma to get the innequality  \[
+        We already know $\cO_K$ is integrally closed. Let $\fp\unlhd\cO_K$ be a nonzero prime ideal, by the previous lemma we know $\cO_K/\fp$ is a finite integral domain, thus a field, hence $\fp$ is maximal. Finally, to check $\cO_K$ is Noetherian, say we having an ascending chain of ideals $I_1\subseteq I_2\subseteq I_3 \subseteq \cdots$, then we can apply the previous lemma to get the inequality  \[
         \infty > [\cO_K:I_1] \geq [\cO_K:I_2] \geq [\cO_K:I_3]\geq \cdots \geq 0
         \] so there is eventually some $n$ where $[\cO_K:I_m] = [\cO_K:I_n]$ for all $m\geq n$, and hence $I_m=I_n$.
     \end{proof}
@@ -778,7 +778,9 @@ This can be better stated with a tool from elementary number theory.
         -1 & \text{if $m$ is a quadratic nonresidue mod $p$} \\
         0 & \text{if $p\mid m$}
     \end{cases}
-    \] The proof that $\pr{\frac{m}{p}}\pr{\frac{n}{p}}=\pr{\frac{mn}{p}}$ is an exercise.
+    \]\begin{proof}
+        If we consider $(\bZ/p\bZ)^\times\cong \bZ/(p-1)\bZ$ a cyclic group of order $p-1$, then $((\bZ/(p-1)\bZ)^\times)^2$ is an order $2$ subgroup, the induced map $(\bZ/p\bZ)^\times \rightarrow \{1,-1\}\cong \bZ/2\bZ$, with kernel $((\bZ/(p-1)\bZ)^\times)^2$ is exactly the Legendre symbol.
+    \end{proof}
 \end{definition}
 
 \begin{theorem}
@@ -933,20 +935,274 @@ A good application of this method is for the Cyclotomic fields $\bQ[\zeta_p]$ wh
 
 \subsection{Quadratic reciprocity}
 
+\begin{lemma}
+    If we write write $p^* := (-1)^{\frac{p-1}{2}}p$, then $\bQ(\sqrt{p^*})\subseteq \bQ(\zeta_p)$.\begin{proof}
+        The set of all embeddings $\tau_1,\ldots,\tau_{p-1}:\bQ(\zeta_p)\rightarrow \bC$ are given by $\tau_i(\zeta_p)=\zeta_p^i$, and $\zeta_p,\zeta_p^2,\ldots,\zeta_p^{p-1}$ is an integral basis for $\bZ[\zeta_{p-1}]$, so we can compute \[
+        (-1)^{p-1}p^{p-2} = D_{\bQ(\zeta_p)} = \det(\tau_i(\zeta_p^j))^2 = \det(\zeta_p^{ij})^2 \quad \implies \quad (-1)^\frac{p-1}{2}p = \det(\zeta_p^{ij})^2p^{1-p}\in (\bQ(\zeta_p))^2\qedhere
+        \]
+    \end{proof}
+\end{lemma}
+
+To prove reciprocity, we wan't to compare how $q$ splits it $\bQ(\sqrt{p^*})$ and $\bQ(\zeta_p)$, we already know the latter, so we prove the following lemmata regarding the former.
+
+\begin{lemma}
+    Let $f$ be the order or $q$ (mod $p$) and $r=\frac{p-1}{f}$ the number of prime factors of $(q)$ in $\bZ[\zeta_p]$, then if $q$ splits in $\bQ(\sqrt{p^*})$, $r$ must be even.\begin{proof}
+        Write $q\cO_{p^*}=\fq\cdot\overline{\fq}$, then if $\tau$ is an automorphism of $\bQ(\zeta_p)$ extending conjugation on $\bQ(\sqrt{p^*})$, then as $\tau$ is an automorphism on $\bZ[\zeta_p]$ we'll have $\tau(\fq\cdot\bZ[\zeta_p]) = \overline{\fq}\cdot\bZ[\zeta_p]$ with the same number of prime factors, and thus $q\bZ[\zeta_p] = (\fq\cdot\bZ[\zeta_p])(\overline{\fq}\cdot\bZ[\zeta_p])$ has an even number of prime factors, $r$.
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    If $p\equiv 3$ (mod $4$), then the converse holds.
+    \begin{proof}
+        First, if $q$ is inert in $\cO(\sqrt{p^*})$ (with no condition on $p$), then if we let $\fq\unlhd \bZ[\zeta_p]$ be a prime lying over $q$, we have \[
+        \bF_q = \bZ/q\bQ \subset \cO_{p^*}/q\cO_{p^*} \subset \bZ[\zeta_q]/\fq
+        \] so by the tower law, $2=[\cO_{p^*}/q\cO_{p^*}] \mid [\bZ[\zeta_p]/\fq:\bF_q] = f(\fq) = f$. Thus, if $p\equiv 3$ (mod 4), then $rf = p-1\equiv 2$ (mod 4) must have $r$ odd.
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    For $p$ an odd prime and $a,b\in \bZ$, we have $\pr{\frac{a}{p}}=1$ iff $\frac{p-1}{f}$ is even, where $f$ is the order of $a\in(\bZ/p\bZ)^\times$. In particular, $\pr{\frac{-1}{p}}=(-1)^{\frac{p-1}{2}}$.
+    \begin{proof}
+        From group theory, if $a\mapsto r$ in $(\bZ/p\bZ)^\times \cong \bZ/(p-1)\bZ$, then $f$ is the order or $r$ in $\bZ/(p-1)\bZ$, so satisfies $f\cdot\gcd(r,p-1)=p-1$, then $a$ is a quadratic residue iff $r$ is even iff $\gcd(r,p-1)$ is even.
+
+        $(-1)$ has order $2$ in $(\bZ/p\bZ)^\times$, so $\gcd(r,p-1)$ is even iff $\frac{p-1}{2}$ is even.
+    \end{proof}
+\end{lemma}
+
+\begin{theorem}[Gauss' quadratic reciprocity]
+    Let $p,q$ be distinct odd primes, then \[
+    \pr{\frac{p^*}{q}} = \pr{\frac{q}{p}}
+    \]\begin{proof}
+        By the previous lemma, if $p$ and $q$ are not both $1$ (mod 4), then we can take $p\equiv 3$ (mod 4), now $\pr{\frac{p^*}{q}}=1$ iff $q$ splits in $\bQ(\sqrt{p^*})$ iff $r$ is even iff $\pr{\frac{q}{p}}=1$. If $p$ and $q$ are not both $3$ (mod 4), then we use the previous lemma to write $\pr{\frac{p}{q}}\pr{\frac{q}{p}} = 1$.
+    \end{proof}
+\end{theorem}
+
+Our main use of quadratic reciprocity is an easier method for testing how odd primes split in $\cO_p$.
+
 \section{Finiteness of the class group}
+
+\begin{lemma}
+    For $K$ a number field and $C\in \bR$, the number of ideals $I\unlhd \cO_K$ with $N_K(I)\leq C$ is finite.
+    \begin{proof}
+        Consider the factorisation $I=\fp_1\cdots\fp_r$, then since $N_K(\fp_i)\geq p_i\geq 2$, for $p_i$ the unique prime in $\fp_i$, we have $2^r\leq N_K(C)\leq C$, so $r\leq \log_2(C)$. For each prime in the factorisation, we must have $N_K(\fp_i)\leq C$, so $p\leq p^{f(\fp_i)} = N_K(\fp_i)\leq C$, so there are only finitely prime ideals lying over each $p_i$, and only finitely many $p_i$ that can be under the primes in $I$.
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    For $K$ a number field and $C\in \bR$, if for all $I\unlhd \cO_K$, there exists $0\neq \alpha\in I$ with $\abs{N_K(\alpha)} < CN_K(I)$, then for all classes $[I]\in \Cl(\cO_K)$, there exists $I'\in [I]$ with $N_K(I') < C$.
+\end{lemma}
+
+So if we find such a bound, any ideal class can be represented by one of a finite set of ideals, so the class group will be finite.
 
 \subsection{Minkowski's theorem}
 
-\subsection{Minkowski's bound}
+\begin{definition}
+    A subgroup $\Lambda\leq \bR^n$ is called a \textbf{lattice} if it has a basis $v_1,\ldots,v_n$ as an abelian group which is also an $\bR$-basis for $\bR^n$.
+\end{definition}
 
-\subsection{Computing some class groups}
+\begin{definition}
+    Let $\Lambda\subset \bR^n$ be a lattice with basis $v_1,\ldots,v_n$, then the \textbf{fundamental parallelotope} is \[
+    P(v_1,\ldots,v_n) = \{c_1v_1 + \cdots + c_nv_n \mid 0\leq c_i < 1\}
+    \]
+\end{definition}
 
-\subsection{Primes $x^2+ny^2$}
+By linear algebra, we have $\vol(P(v_1,\ldots,v_n)) := \mu(P(v_1,\ldots,v_n)) = \abs{\det(A)}$ where $\mu$ is the Lebesgue measure on $\bR^n$.
 
-\subsection{Mordell's equation}
+\begin{lemma}
+    if $v_1,\ldots,v_n$ and $w_1,\ldots,w_n$ are bases for a lattice $\Lambda\subset \bR^n$, then \[\vol(P(v_1,\ldots,v_n))=\vol(P(w_1,\ldots,w_n))\]
+    \begin{proof}
+        Let $A$ and $B$ be the matrices with columns $v_1,\ldots,v_n$ and $w_1,\ldots,w_n$ respectively, then we can write $B=SA$ for $S$ a change of basis matrix. As the $w_i$ and integer linear combinations of the $v_i$, we have $S\in M_n(\bZ)$, but as $S^{-1}\in M_n(\bZ)$ as well, we have $\det(S)\in \bZ^\times = \{\pm 1\}$.
+    \end{proof}
+\end{lemma}
 
-\section{Units in rings of integers}
+More generally, if $D_1,D_2\subset \bR^n$ are two measurable fundamental domains for $\Lambda$, then $\vol(D_1)=\vol(D_2)$ by  \[
+\vol(D_1) = \sum_{u\in\Lambda}\vol((D_2+v)\cap D_1) = \sum_{v\in \Lambda}\vol(D_2\cap (D_1-v)) = \vol(D_2)
+\] by the translation invariance of $\mu$.
 
-\subsection{Dirichilet's unit theorem}
+\begin{definition}
+    For a lattice $\Lambda \subseteq \bR^n$, the \textbf{covolume} of $\Lambda$ is $\covol(\Lambda):=\vol(P(v_1,\ldots,v_n))$ for some a basis $v_1,\ldots,v_n$ of $\Lambda$.
+\end{definition}
+
+\begin{lemma}[Blichfeldt's lemma]
+    For $\Lambda\subseteq \bR^n$ a lattice, and $S\subseteq \bR^n$ a measurable subset, if $\vol(S)>\covol(\Lambda)$, then there exists $x,y\in S$ with $0\neq x-y \in \Lambda$.\begin{proof}
+        Intuitivelym, if the quotient $\bR^n\rightarrow \bR^n/\Lambda$ was injective on $S$, then $\vol(S) \leq \covol(\Lambda)$. To formalise this, consider $\mu(S)$ as a sum or intersections with the countably many translates of $P(v_1,\ldots,v_n)$.
+    \end{proof}
+\end{lemma}
+
+\begin{theorem}[Minkowski's convex body theorem]
+    For $\Lambda\subset \bR^n$ a lattice and $S\subset \bR^n$ a measurable convex symmetric set, if $\vol(S) > 2^n\covol(\Lambda)$, then there exists $0\neq x\in S\cap \Lambda$.\begin{proof}
+        Apply Blichfeldt's lemma to $\frac{1}{2}S$, then $\vol(\frac{1}{2}S) = \frac{1}{2^n}\vol(S)>\covol(\Lambda)$, so there exists $x\neq y\in \frac{1}{2}S$ with $x-y\in \Lambda$, but then $x-y\in S$.
+    \end{proof}
+\end{theorem}
+
+\subsection{Minkowski bound for quadratic fields}
+
+\begin{lemma}
+    If $\Lambda\subset \bR^n$ isa lattice, and $\Lambda'\leq \Lambda$ is a subgroup of finite index, then $\Lambda'$ is also a lattice, and $\covol(\Lambda')=[\Lambda:\Lambda']\cdot\covol(\Lambda)$.\begin{proof}
+        As $\Lambda'$ must be a free abelian group of rank $n$ as it can be sandwiched, $[\Lambda:\Lambda']\Lambda \subseteq \Lambda'\subseteq \Lambda$, between two free abelian groups of rank $n$. Let $A$ and $B$ be matrices with columns the basis of $\Lambda'$ and $\Lambda$ respectively, then we can write $A=SB$ for some $S\in M_n(\bZ)$, and get $\covol(\Lambda')=\abs{\det(S)}\cdot\covol(\Lambda)$. From earlier in the course, we know $\abs{\det(S)} = [\Lambda:\Lambda']$.
+    \end{proof}
+\end{lemma}
+
+We can also prove this without the structure theorem, by picking coset representative, we can write \[
+\Lambda = \coprod_{i=1}^{[\Lambda:\Lambda']}v_i + \Lambda' \qquad \implies \qquad P' = \coprod_{i=1}^{[\Lambda:\Lambda']} v_i + P
+\] to get a fundamental domain for $\Lambda'$.
+
+\begin{lemma}
+    For $d<0$ squarefree, $\cO_d\subseteq \bC \cong \bR^2$ is a lattice with covolume $\frac{1}{2}\sqrt{\abs{D_K}}$.\begin{proof}
+        $\bZ[\sqrt{d}]$ is a lattice with basis $(1,0),(0,\sqrt{-d})$, so covolume $\sqrt{-d}$. If $d\not\equiv 1$ (mod 4), then $\cO_d=\bZ[\sqrt{d}]$ with $D_K=4d$. Otherwise, $[\cO_d:\bZ[\sqrt{d}]]=2$, so $\covol\cO_d = \frac{1}{2}\sqrt{-d}$ and $D_K=d$.
+    \end{proof}
+\end{lemma}
+
+\begin{corollary}
+    Any nonzero ideal $I\unlhd \cO_d$ is a lattice $I\subset \bC \cong \bR^2$ with covolume $N_K(I)\frac{1}{2}\sqrt{\abs{D_K}}$.
+\end{corollary}
+
+\begin{theorem}[Minkowski's bound for IQF]
+    For any nonzero $I\unlhd \cO_d$, there exists $0\neq\alpha \in I$ with \[
+    N_K(\alpha) \leq \frac{2}{\pi}\sqrt{\abs{D_K}}N_K(I)
+    \]\begin{proof}
+        Choose $R>\frac{2}{\pi}\sqrt{\abs{D_K}}N_K(I)$ with $\lfloor R\rfloor = \lfloor\frac{2}{\pi}\sqrt{\abs{D_K}}N_K(I)\rfloor$, and let $S_R$ be the circle of radius $\sqrt{R}$ which is convex, centrally symmetric, and has volume $\vol(S_R) > 2^2\covol(I)$. Thus, Minkowski' theorem applies and we can find $0\neq \alpha \in I\cap S_R$ hence $N_K(\alpha) \leq R$.
+    \end{proof}
+\end{theorem}
+
+Now for the real quadratic case, fix $d > 1$ squarefree with $K= \bQ(\sqrt{d})$, remember $\cO_d$ is dense in $\bR$.
+
+\begin{lemma}
+    Consider $\iota:\cO_d\rightarrow \bR^2$ by $\iota(\alpha) = (\alpha,\overline{\alpha})$, then $\iota(\cO_d)\subset \bR^2$ is a lattice with covolume $\sqrt{D_K}$\begin{proof}
+        Let $\alpha_1,\alpha_2$ be an integral basis, then $\iota(\cO_d)$ is spanned by $(\alpha_1,\overline{\alpha_1}),(\alpha_2,\overline{\alpha_2})$, and so \[
+        \covol(\iota(\cO_d)) = \abs{\det\begin{pmatrix}
+            \alpha_1 & \alpha_2 \\ \overline{\alpha_1} & \overline{\alpha_2}
+        \end{pmatrix}} = \sqrt{\abs{D_K}}\qedhere
+        \]
+    \end{proof}
+\end{lemma}
+
+\begin{corollary}
+    For any nonzero ideal $I\unlhd \cO_d$, $\iota(I)\subset \bR^2$ is a lattice with covolum $\sqrt{D_K}N_K(I)$.
+\end{corollary}
+
+\begin{theorem}[Minkowski's bound for RQF]
+    For any nonzero $I\unlhd \cO_d$, there exists $0\neq \alpha \in I$ with \[
+    N_K(\alpha)\leq \frac{\sqrt{D_K}}{2}N_K(I)
+    \]\begin{proof}
+        This time consider $M_R = \{(x,y) \in \bR^2 \mid \abs{xy}\leq R\}$, the region bounded by two hyperbolas, so not convex, if we take $S_R = \{(x,y)\in \bR^2 \mid \abs{x}+\abs{y}\leq 2\sqrt{R}\}$ the biggest diamond in $M_R$, then $\vol(S_R) = 8R$, and so we compare this to $2^2\covol(I)$, and find the bound on $R$ to make Minkowski's theorem work as before.
+    \end{proof}
+\end{theorem}
+
+\subsection{Minkowski bound}
+
+Now for a general number field $K$, we combine the two previous methods to write $\cO_K$ as a lattice.
+
+Let $\tau_1,\ldots,\tau_r:k\rightarrow \bR$ be the real embeddings, and $\sigma_1, \overline{\sigma}_1,\ldots,\sigma_s,\overline{\sigma}_s:K\rightarrow \bC$ be the complex embeddings, so $r+2s=n = [K:\bQ]$, then define $\iota:K\rightarrow \bR^n$ by \[
+\iota(\alpha) = (\tau_1(\alpha),\ldots,\tau_r(\alpha),\Re(\sigma_1(\alpha)),\Im(\sigma_1(\alpha)),\ldots,\Re(\sigma_s(\alpha)),\Im(\sigma_s(\alpha)))
+\]
+
+\begin{lemma}
+    $\iota(\cO_K)\subset \bR^n$ is a lattice with covolume $\frac{1}{2^s}\sqrt{\abs{D_K}}$.\begin{proof}
+        Pick an integral basis $\alpha_1,\ldots,\alpha_n$ of $\cO_K$, then observe \[
+        \begin{pmatrix}
+            \tau_1(\alpha_1) & \cdots & \tau_1(\alpha_n) \\
+            \vdots & & \vdots \\
+            \tau_r(\alpha_1) & \cdots & \tau_r(\alpha_n) \\
+            \Re(\sigma_1(\alpha_1)) & \cdots & \Re(\sigma_1(\alpha_n)) \\
+            \Im(\sigma_1(\alpha_1)) & \cdots & \Im(\sigma_1(\alpha_n)) \\
+            \vdots & & \vdots \\
+            \Re(\sigma_s(\alpha_1)) & \cdots & \Re(\sigma_s(\alpha_n)) \\
+            \Im(\sigma_s(\alpha_1)) & \cdots & \Im(\sigma_s(\alpha_n))
+        \end{pmatrix} = 
+        \begin{pmatrix}
+            1 \\
+            & \ddots \\
+            & & 1 \\
+            & & & \frac{1}{2} & \frac{1}{2} \\
+            & & & \frac{1}{2i} & \frac{-1}{2i} \\
+            & & & & & \ddots \\
+            & & & & & & \frac{1}{2} & \frac{1}{2} \\
+            & & & & & & \frac{1}{2i} & \frac{-1}{2i}
+        \end{pmatrix}
+        \begin{pmatrix}
+            \tau_1(\alpha_1) & \cdots & \tau_1(\alpha_n) \\
+            \vdots & & \vdots \\
+            \tau_r(\alpha_1) & \cdots & \tau_r(\alpha_n) \\
+            \sigma_1(\alpha_1) & \cdots & \sigma_1(\alpha_n) \\
+            \overline{\sigma_1}(\alpha_1) & \cdots & \overline{\sigma_1}(\alpha_n) \\
+            \vdots & & \vdots \\
+            \sigma_s(\alpha_1) & \cdots & \sigma_s(\alpha_n) \\
+            \overline{\sigma_s}(\alpha_1) & \cdots & \overline{\sigma_s}(\alpha_n)
+        \end{pmatrix}
+        \] where taking absolute value of determinants gives $\covol(\iota(\cO_K)) = \frac{1}{2^s}\sqrt{\abs{D_K}}$.
+    \end{proof}
+\end{lemma}
+
+\begin{corollary}
+    For any nonzero ideal $I\unlhd \cO_K$, $\iota(I)\subset \bR^n$ is a lattice with covolum $\frac{1}{2^s}\sqrt{D_K}N_K(I)$.
+\end{corollary}
+
+\begin{proposition}
+    For some $R>0$ consider the sets \begin{gather*}
+        M_R = \{(x_1,\ldots,x_r,y_1,z_1,\ldots,y_s,z_s) \mid \abs{x_1,\ldots,x_r}(y_1^2+z_1^2)\cdots(y_s^2+z_s^2) \leq R\} \\
+        S_R = \left\{(x_1,\ldots,x_r,y_1,z_1,\ldots,y_s,z_s) \mid \abs{x_1} + \cdots \abs{x_r} + 2\pr{\sqrt{y_1^2+z_1^2} + \cdots + \sqrt{y_s^2+z_s^2}} \leq nR^{\frac{1}{n}}\right\}
+    \end{gather*} then $S_R$ is convex and centrally symmetric, $S_R\subseteq M_R$ and $\vol(S_R) = \frac{n^n}{n!}2^r\pr{\frac{\pi}{2}}^sR$.\begin{proof}
+        $S_R$ is clearly symmetric, and convexity is a direct consequence of the triangle inequality for $\abs{-}$ on $\bR$ and $\norm{-}$ on $\bR^2$. $S_R\subset M_R$ is just the AM-GN inequality.
+
+        For the volume, consider \[
+        V_{r,s}(t) = \vol\pr{\left\{\abs{x_1}+\cdots \abs{x_r} + 2\pr{\sqrt{y_1^2+z_1^2} + \cdots + \sqrt{y_s^2 + z_s^2}}\right\}}
+        \] which satisfies $V_{r,s}(t) = t^{r+2s}V(1)$ and \[
+        V_{r,s}(1) = 2\int_0^1 V_{r-1,s}(1-x)dx \qquad V_{r,s}(1) = \int_{2\sqrt{y^2+z^2}<1}V_{r,s-1}\pr{1-2\sqrt{y^2+z^2}}dydz
+        \] we can then use induction and basic calculus to prove \[
+        V_{r,s}(t) = \frac{2^r}{(r+2s)!}\frac{\pi}{2}^s t^{r+2s} \quad \implies \quad \vol(S_R) = V_{r,s}(nR^{1/n}) = \frac{n^n}{n!}2^r\pr{\frac{\pi}{2}}^sR\qedhere
+        \] 
+    \end{proof}
+\end{proposition}
+
+\begin{theorem}
+    Let $K$ be a number field, and let \[
+    C_K = \frac{n!}{n^n}\pr{\frac{4}{\pi}}^s\sqrt{\abs{D_K}}
+    \] then for any nonzero $I\unlhd \cO_K$, there exists $0\neq \alpha \in I$ with $\abs{N_K(\alpha)}\leq C_KN_K(I)$, consequently any ideal class in $\Cl(\cO_K)$ is represented by an ideal $I$ with $N_K(I)\leq C_K$.
+\end{theorem}
+
+\begin{corollary}
+    For $K$ a number field, if $K\neq \bQ$, then $D_K\neq \pm 1$ and some prime $p$ ramfiies in $K$.\begin{proof}
+        By applying the Minkowski bound to the trivial ideal, we get $0\neq\alpha \in \cO_K$ with $\abs{N_K(\alpha)}\leq C_K$, and $\abs{N_K(\alpha)}\geq 1$, so \[\abs{\sqrt{D_K}}\geq \frac{n^n}{n!}\pr{\frac{\pi}{4}}^s\qedhere\]
+    \end{proof}
+\end{corollary}
+
+\subsection{Generalising Fermat's theorem}
+
+\begin{theorem}[Fermat]
+    For $p$ a prime, we have \begin{enumerate}
+        \item $p=x^2+y^2$ for $x,y\in \bZ$ iff $p = 2$ or $p\equiv 1$ (mod 4);
+        \item $p=x^2+2y^2$ for $x,y\in \bZ$ iff $p=2$ of $p\equiv 1,3$ (mod 8).
+    \end{enumerate}\begin{proof}
+        We have $p=x^2+y^2$ iff $p=(x+iy)(x-iy)$ in $\bZ[i]$, a PID, which is equivalent to $\fp\unlhd \bZ[i]$ with $N_K(\fp)=p$, so we need $p$ to ramify or split in $\bZ[i]$, we know this is equivalent to $p=2$ or $p\equiv 1$ (mod 4).
+
+        Repeat for $\bZ[\sqrt{-2}]$ which is also a PID.
+    \end{proof}
+\end{theorem}
+
+We can do the same procedure for all $\cO_d$ which are PIDs, there is the following very hard theorem.
+
+\begin{theorem}[Heegner-Baker-Stark]
+    If $\cO_d$ is a PID for $d<0$ squarefree then \[
+    d = -1,\ -2,\ -3,\ -7,\ -11,\ -19,\ -43,\ -67,\ -163
+    \]
+\end{theorem}
+
+When $\cO_d$ isn't a PID we can still use our new computations of the class group.
+
+\begin{theorem}
+    For $p$ a prime, we have \begin{enumerate}
+        \item if $p\equiv 1,9$ (mod 20) then $(p)=\fp\overline{\fp}$ in $\cO_{-5}$ and $\fp,\overline{\fp}$ are principal, moreover $p=x^2+5y^2$ for $x,y\in \bZ$;
+        \item if $p\equiv 3,7$ (mod 20) then $(p)=\fp\overline{\fp}$ splits in $\cO_{-5}$ and $[\fp]=[\overline{\fp}]=[\fp_2]$ and $2p=x^2+5y^2$ for $x,y\in \bZ$;
+        \item $(2) = \fp_2^2$ and $(5)=(\sqrt{-5})^2$ ramify;
+        \item otherwise, $p$ is inert in $\cO_{-5}$.
+    \end{enumerate}\begin{proof}
+        An odd prime $p$ splits in $\cO_{-5}$ iff $\pr{\frac{-5}{p}}=1$ which we write as a congruence mod $20$ by \[
+        \pr{\frac{-5}{p}} = \pr{\frac{-1}{p}}\pr{\frac{5}{p}} = \pr{\frac{-1}{p}}\pr{\frac{\phantom{|}p\phantom{|}}{5}}
+        \] as either $p \equiv 1$ (mod 4) and $p \equiv \pm 1$ (mod 5), or $p\equiv 3$ (mod 4) and $p\equiv \pm 2$ (mod 5).
+    \end{proof}
+\end{theorem}
+
+\subsection{Mordlell's equation}
 
 \end{document}
